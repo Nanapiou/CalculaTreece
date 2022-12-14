@@ -3,6 +3,8 @@
 # Press Maj+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
+import pygame
+
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -14,3 +16,13 @@ if __name__ == '__main__':
     print_hi('PyCharm')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+
+class Fenetre:
+    def __init__(self, width, height, title):
+        self.width = width
+        self.height = height
+        self.title = title
+        self.window = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption(self.title)
+
