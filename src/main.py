@@ -19,13 +19,18 @@ class App:
         self.title = "CalculaTreece"
         self.font = pygame.font.SysFont("Arial", 36)
 
-    def handle_events(self):  # handle events
+    def handle_events(self):
+        """
+        Handle events
+        """
         for event in pygame.event.get():  # get all events
             if event.type == pygame.QUIT:  # if the event is QUIT
                 self.running = False  # stop the loop
 
     def display(self):
-        # Background
+        """
+        Background
+        """
         self.screen.fill("grey")  # fill the screen with grey
         pygame.display.set_caption(self.title)  # set the title of the window
 
@@ -38,6 +43,9 @@ class App:
         pygame.display.flip()
 
     def run(self):
+        """
+        Run the app
+        """
         while self.running:  # loop until the user clicks the close button
             self.handle_events()
             self.display()
