@@ -1,5 +1,13 @@
-import sys, pygame
-import automaton, calculator, trees, transformations
+"""
+The main entry
+"""
+import pygame
+import sys
+
+import automaton
+import calculator
+import transformations
+import trees
 
 
 class App:
