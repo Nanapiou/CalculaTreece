@@ -1,24 +1,10 @@
-# This is a sample Python script.
+import sys, pygame
+import automaton, calculator, trees, transformations
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-import pygame
+pygame.init()
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
-
-
-class Fenetre:
+class Calculator:
     def __init__(self, width, height, title):
         self.width = width
         self.height = height
@@ -26,3 +12,11 @@ class Fenetre:
         self.window = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption(self.title)
 
+
+fenetre = Calculator(800, 600, "CalculaTreece")
+running = True
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
