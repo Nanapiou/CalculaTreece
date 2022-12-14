@@ -1,35 +1,43 @@
 import sys, pygame
 import automaton, calculator, trees, transformations
 
-pygame.init()
 
+class App:
+    def __init__(self, screen1):
+        self.screen = screen1
+        self.running = True
+        self.clock = pygame.time.Clock()
+        self.rectangle = pygame.Rect(150, 50, 500, 500)
+        self.title = "CalculaTreece"
+        self.font = pygame.font.SysFont("Arial", 36)
 
-class Calculator:
-    def __init__(self, width, height, title):
-        self.width = width
-        self.height = height
-        self.title = title
-        self.window = pygame.display.set_mode((self.width, self.height))
-        pygame.display.set_caption(self.title)
+    def handle_events(self):  # handle events
+        for event in pygame.event.get():  # get all events
+            if event.type == pygame.QUIT:  # if the event is QUIT
+                self.running = False  # stop the loop
 
-    def text_test(self, text, font, color, x, y):
-        text = font.render(text, True, color)
-        self.window.blit(text, (x, y))
+    def display(self):
+        # Background
+        self.screen.fill("grey")  # fill the screen with grey
+        pygame.display.set_caption(self.title)  # set the title of the window
+
+        # Content
+        text = self.font.render("Test", True, "black")
+        pygame.draw.rect(self.screen, "red", self.rectangle)
+        self.screen.blit(text, (0, 0))
+
+        # Update
+        pygame.display.flip()
 
     def run(self):
-        running = True
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-            self.window.fill((255, 255, 255))
-            pygame.display.update()
-        pygame.quit()
-        sys.exit()
+        while self.running:  # loop until the user clicks the close button
+            self.handle_events()
+            self.display()
+            self.clock.tick(60)
 
 
-if __name__ == '__main__':
-    calc = Calculator(800, 600, 'Calculator')
-    calc.run()
-    calc.text_test('Hello World', pygame.font.SysFont('Arial', 20), (0, 0, 0), 0, 0)
-
+pygame.init()
+screen = pygame.display.set_mode((800, 600))
+app = App(screen)
+app.run()
+pygame.quit()
