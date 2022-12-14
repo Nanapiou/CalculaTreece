@@ -1,0 +1,68 @@
+"""
+Calculation.
+"""
+from transformations import postfix_list_to_tree, infix_list_to_tree, clean_list_to_infix
+from trees import BinaryTree
+from turtle import Turtle, done
+from automaton import Automaton, infix_states, postfix_states
+
+
+infix_automaton = Automaton(infix_states)
+postfix_automaton = Automaton(postfix_states)
+Number = int | float
+
+
+def calculate_tree(tree: BinaryTree) -> Number:
+    """
+    Calculate the provided tree
+
+    :param tree:
+    :return:
+    """
+    branches = tree.branches
+    match len(branches):
+        case 0:
+            return tree.value
+        case 1:
+            t_a = branches[0]
+            a = t_a.value if t_a.is_leaf() else calculate_tree(t_a)
+            if hasattr(tree.value, '__call__'):
+                return tree.value(a)
+            else:
+                raise TypeError(type(tree.value))  # For now...
+        case 2:
+            t_a, t_b = branches
+            a = t_a.value if t_a.is_leaf() else calculate_tree(t_a)
+            b = t_b.value if t_b.is_leaf() else calculate_tree(t_b)
+            match tree.value:
+                case '*':
+                    return a * b
+                case '+':
+                    return a + b
+                case '-':
+                    return a - b
+                case '/' | ':':
+                    return a / b
+                case '//':
+                    return a // b
+                case '%':
+                    return a % b
+                case '**' | '^':
+                    return a ** b
+
+
+if __name__ == '__main__':
+    lis = infix_automaton.build(input('Give me an infix expression:\n'))
+    clean_list_to_infix(lis)
+
+    tree = infix_list_to_tree(lis)
+
+    t = Turtle()
+    t.penup()
+    t.goto(0, 300)
+    tree.draw(t, 20)
+    t.penup()
+    t.setheading(90)
+    t.forward(50)
+    t.write(str(calculate_tree(tree)), align='center', font=('', 20, ''))
+    done()
