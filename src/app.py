@@ -10,11 +10,12 @@ class App:
     """
 
     def __init__(self, screen1):
+        super().__init__()
         self.screen = screen1
         self.running = True
         self.clock = pygame.time.Clock()
         self.title = "CalculaTreece"
-        self.font = pygame.font.SysFont("Arial", 36)
+        self.font = pygame.font.SysFont("Intro", 55)
 
     def handle_events(self):
         """
@@ -48,7 +49,7 @@ class App:
         for i in range(3):
             for j in range(3):
                 num = self.font.render(str(3 * i + j + 1), True, "black")
-                self.screen.blit(num, (j * 100 + 40, -i * 100 + 325))
+                self.screen.blit(num, (j * 100 + 40, -i * 100 + 335))
 
     def run(self):
         """
@@ -61,6 +62,20 @@ class App:
             self.draw_button()
             self.draw_numbers()
             pygame.display.flip()  # update the display
+
+
+"""class Button:
+    def __init__(self, text, width, height, pos):
+        self.top_rect = pygame.Rect(pos, (width, height))
+        self.top_color = '#475F77'
+
+        # text
+        self.text_surf = gui_font.render(text, True, '#FFFFFF')
+        self.text_rect = self.text_surf.get_rect(center=self.top_rect.center)
+
+    def draw(self):
+        pygame.draw.rect(screen, self.top_color, self.top_rect)
+        screen.blit(self.text_surf, self.text_rect)"""
 
 
 pygame.init()
