@@ -7,7 +7,7 @@ https://fr.wikipedia.org/wiki/Automate_pond%C3%A9r%C3%A9
 from typing import Dict, List, Callable, Tuple
 from copy import deepcopy
 from collections.abc import Iterable
-from math import sin, sqrt, pi
+from math import sin, sqrt, pi, cos
 
 NewStateBuilder = Tuple[int, Callable[[str], any] | str | Iterable | None] | \
                   Tuple[int, Callable[[str], any] | str | Iterable | None, any] | \
@@ -140,7 +140,8 @@ infix_states: States = [
         '9': (1, None),
         'a': (7, None),
         's': (10, None),
-        'p': (16, None)
+        'p': (16, None),
+        'c': (20, None),
     },
     #  1
     {  # Numbers
@@ -250,6 +251,18 @@ infix_states: States = [
     {  # /-/
         '': (0, '//'),
     },
+    #  20
+    {  # c
+        'o': (21, None)
+    },
+    #  21
+    {  # c-o
+        's': (22, None)
+    },
+    #  20
+    {  # co-s
+        '': (0, lambda old, _: cos)
+    }
 
 ]
 
@@ -300,7 +313,7 @@ postfix_states: States = [
         '7': (1, None),
         '8': (1, None),
         '9': (1, None),
-        '': (0, lambda old, elt: int(old) if elt in (' ', '*', '/') else (int(old), elt), True)
+        '': (0, lambda old, elt: int(old) if elt in (' ', '*', '/') else (int(old), elt)),
     },
     # 2
     {  # *
@@ -329,4 +342,4 @@ for e in postfix_states:
 
 if __name__ == '__main__':
     math_auto = Automaton(postfix_states)
-    print(math_auto.build('8 5**6*'))
+    print(math_auto.build('8 5**6 4 3 2 1 + + + +'))
