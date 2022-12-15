@@ -1,13 +1,4 @@
-"""
-The main entry
-"""
 import pygame
-import sys
-
-import automaton
-import calculator
-import transformations
-import trees
 
 
 class App:
@@ -31,21 +22,38 @@ class App:
 
         # Content
         text = self.font.render("Test", True, "black")
-        pygame.draw.rect(self.screen, "red", self.rectangle)
+        # pygame.draw.rect(self.screen, "red", self.rectangle)
         self.screen.blit(text, (0, 0))
 
         # Update
-        pygame.display.flip()
+
+    def draw_button(self): # dessine les boutons de la calculatrice
+        for i in range(4):
+            for j in range(4):
+                pygame.draw.rect(self.screen, "white", (i * 100, j * 100, 100, 100), 1)
+        number = self.font.render("1", True, "black")
+        self.screen.blit(number, (165, 10))
 
     def run(self):
         while self.running:  # loop until the user clicks the close button
             self.handle_events()
             self.display()
             self.clock.tick(60)
+            self.draw_button()
+            pygame.display.flip()  # update the display
+
+
+class Bouton:
+    def __init__(self, x, y, width, height, text):
+        self.rectangle = pygame.Rect(x, y, width, height)
+        self.font = pygame.font.SysFont("Arial", 36)
+        self.text = self.font.render(text, True, "black")
+        self.screen = pygame.display.set_mode((800, 600))
+
+    def display(self):
+        pygame.draw.rect(self.screen, "red", self.rectangle)
+        self.screen.blit(self.text, (0, 0))
+        pygame.display.flip()
 
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
-app = App(screen)
-app.run()
-pygame.quit()
