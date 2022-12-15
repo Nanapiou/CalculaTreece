@@ -8,11 +8,11 @@ class App:
     """
     Main class for the app
     """
+
     def __init__(self, screen1):
         self.screen = screen1
         self.running = True
         self.clock = pygame.time.Clock()
-        self.rectangle = pygame.Rect(150, 50, 500, 500)
         self.title = "CalculaTreece"
         self.font = pygame.font.SysFont("Arial", 36)
 
@@ -38,9 +38,14 @@ class App:
         """
         for i in range(4):
             for j in range(4):
-                pygame.draw.rect(self.screen, "white", (i * 100, j * 100, 100, 100), 1)
-                number = self.font.render(str(i + j * 4), True, "white")
-                self.screen.blit(number, (i * 100 + 40, j * 100 + 40))
+                pygame.draw.rect(self.screen, "white", (i * 100, j * 100 + 100, 100, 100), 1)
+
+    def draw_numbers(self):
+        # dessine les nombres sur les boutons en partant en bas à gauche
+        for i in range(4):
+            for j in range(4):
+                text = self.font.render(str(4 * i + j + 1), True, "white")
+                self.screen.blit(text, (i * 100 + 50, j * 100 + 150))
 
     def run(self):
         """
@@ -51,6 +56,7 @@ class App:
             self.display()
             self.clock.tick(60)
             self.draw_button()
+            self.draw_numbers()
             pygame.display.flip()  # update the display
 
 
