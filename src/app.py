@@ -20,13 +20,6 @@ class App:
         self.screen.fill("grey")  # fill the screen with grey
         pygame.display.set_caption(self.title)  # set the title of the window
 
-        # Content
-        text = self.font.render("Test", True, "black")
-        # pygame.draw.rect(self.screen, "red", self.rectangle)
-        self.screen.blit(text, (0, 0))
-
-        # Update
-
     def draw_button(self): # dessine les boutons de la calculatrice
         for i in range(4):
             for j in range(4):
@@ -41,19 +34,6 @@ class App:
             self.clock.tick(60)
             self.draw_button()
             pygame.display.flip()  # update the display
-
-
-class Bouton:
-    def __init__(self, x, y, width, height, text):
-        self.rectangle = pygame.Rect(x, y, width, height)
-        self.font = pygame.font.SysFont("Arial", 36)
-        self.text = self.font.render(text, True, "black")
-        self.screen = pygame.display.set_mode((800, 600))
-
-    def display(self):
-        pygame.draw.rect(self.screen, "red", self.rectangle)
-        self.screen.blit(self.text, (0, 0))
-        pygame.display.flip()
 
 
 pygame.init()
