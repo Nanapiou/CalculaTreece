@@ -41,11 +41,13 @@ class App:
                 pygame.draw.rect(self.screen, "white", (i * 100, j * 100 + 100, 100, 100), 1)
 
     def draw_numbers(self):
-        # dessine les nombres sur les boutons en partant en bas à gauche
-        for i in range(4):
-            for j in range(4):
-                text = self.font.render(str(4 * i + j + 1), True, "white")
-                self.screen.blit(text, (i * 100 + 50, j * 100 + 150))
+        num0 = self.font.render("0", True, "black")
+        self.screen.blit(num0, (140, 425))
+        # place les chiffres en ligne de bas en haut
+        for i in range(3):
+            for j in range(3):
+                num = self.font.render(str(3 * i + j + 1), True, "black")
+                self.screen.blit(num, (j * 100 + 40, -i * 100 + 325))
 
     def run(self):
         """
