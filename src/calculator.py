@@ -77,7 +77,7 @@ def infix_iter_with_parentheses(tree: BinaryTree) -> Generator[str | Number | Ca
 
 
 if __name__ == '__main__':
-    lis = infix_automaton.build(input('Give me an infix expression:\n'))
+    lis = infix_automaton.build(input('Give me an infix expression :\n'))
     clean_list_to_infix(lis)
     tree = infix_list_to_tree(lis)
 
