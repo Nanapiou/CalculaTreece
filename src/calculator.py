@@ -1,10 +1,11 @@
 """
 Calculation.
 """
-from transformations import postfix_list_to_tree, infix_list_to_tree, clean_list_to_infix
+from transformations import infix_list_to_tree, clean_list_to_infix
 from trees import BinaryTree
 from turtle import Turtle, done
 from automaton import Automaton, infix_states, postfix_states
+from typing import Generator, Callable
 
 
 infix_automaton = Automaton(infix_states)
@@ -51,10 +52,33 @@ def calculate_tree(tree: BinaryTree) -> Number:
                     return a ** b
 
 
+def infix_iter_with_parentheses(tree: BinaryTree) -> Generator[str | Number | Callable, None, None]:
+    """
+    Iterate over the tree in infix syntax, with parentheses
+
+    :param tree:
+    :return:
+    """
+    branches = tree.branches
+    match len(branches):
+        case 0:
+            yield tree.value
+        case 1:
+            yield '('
+            yield from infix_iter_with_parentheses(branches[0])
+            yield tree.value
+            yield ')'
+        case 2:
+            yield '('
+            yield from infix_iter_with_parentheses(branches[0])
+            yield tree.value
+            yield from infix_iter_with_parentheses(branches[1])
+            yield ')'
+
+
 if __name__ == '__main__':
     lis = infix_automaton.build(input('Give me an infix expression:\n'))
     clean_list_to_infix(lis)
-
     tree = infix_list_to_tree(lis)
 
     t = Turtle()
