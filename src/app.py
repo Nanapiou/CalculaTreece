@@ -38,7 +38,8 @@ class App:
         """
         for i in range(4):
             for j in range(4):
-                pygame.draw.rect(self.screen, "white", (i * 100, j * 100 + 100, 100, 100), 1)
+                pygame.draw.rect(self.screen, "Black", (i * 100, j * 100 + 100, 100, 100), 1)
+        pygame.draw.line(self.screen, "Black", (0, 100), (400, 100), 7)  # draw a line
 
     def draw_numbers(self):
         num0 = self.font.render("0", True, "black")
