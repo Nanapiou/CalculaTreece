@@ -88,6 +88,30 @@ class App:
         button_9 = Button("9", 100, 75, (200, 200), self.screen)
         button_9.draw()
 
+    def button_operation_add(self):
+        button_add = Button("+", 100, 75, (300, 350), self.screen)
+        button_add.draw()
+
+    def button_operation_sub(self):
+        button_sub = Button("-", 100, 75, (300, 275), self.screen)
+        button_sub.draw()
+
+    def button_operation_mul(self):
+        button_mul = Button("*", 100, 75, (300, 200), self.screen)
+        button_mul.draw()
+
+    def button_operation_div(self):
+        button_div = Button("/", 100, 75, (300, 125), self.screen)
+        button_div.draw()
+
+    def button_operation_equal(self):
+        button_equal = Button("=", 100, 75, (300, 425), self.screen)
+        button_equal.draw()
+
+    def button_operation_clear(self):
+        button_clear = Button("C", 100, 75, (200, 125), self.screen)
+        button_clear.draw()
+
     def run(self):
         """
         Main loop
@@ -107,6 +131,12 @@ class App:
                 self.button_number_7()
                 self.button_number_8()
                 self.button_number_9()
+                self.button_operation_add()
+                self.button_operation_sub()
+                self.button_operation_mul()
+                self.button_operation_div()
+                self.button_operation_equal()
+                self.button_operation_clear()
             pygame.display.flip()  # update the display
 
 
