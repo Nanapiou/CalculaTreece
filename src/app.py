@@ -15,6 +15,7 @@ class App:
         self.running = True
         self.clock = pygame.time.Clock()
         self.title = "CalculaTreece"
+        self.icon = pygame.image.load("icon.ico")
         self.font = pygame.font.SysFont("Intro", 55)
 
     def handle_events(self):
@@ -30,23 +31,8 @@ class App:
         Global display of the app
         """
         # Background
-        self.screen.fill("grey")  # fill the screen with grey
+        self.screen.fill("white")  # fill the screen with grey
         pygame.display.set_caption(self.title)  # set the title of the window
-
-    """def draw_button(self):
-        for i in range(4):
-            for j in range(4):
-                pygame.draw.rect(self.screen, "Black", (i * 100, j * 100 + 100, 100, 100), 1)
-        pygame.draw.line(self.screen, "Black", (0, 100), (400, 100), 7)  # draw a line
-
-    def draw_numbers(self):
-        num0 = self.font.render("0", True, "black")
-        self.screen.blit(num0, (140, 425))
-        # place les chiffres en ligne de bas en haut
-        for i in range(3):
-            for j in range(3):
-                num = self.font.render(str(3 * i + j + 1), True, "black")
-                self.screen.blit(num, (j * 100 + 40, -i * 100 + 335))"""
 
     def button_number_0(self):
         button_0 = Button("0", 100, 75, (100, 425), self.screen)
@@ -103,14 +89,17 @@ class App:
     def button_operation_div(self):
         button_div = Button("/", 100, 75, (300, 125), self.screen)
         button_div.draw()
+        button_div.check_click()
 
     def button_operation_equal(self):
         button_equal = Button("=", 100, 75, (300, 425), self.screen)
-        button_equal.draw()
+        button_equal.draw_equal_button()
+        button_equal.check_click()
 
     def button_operation_clear(self):
         button_clear = Button("C", 100, 75, (200, 125), self.screen)
         button_clear.draw()
+        button_clear.check_click()
 
     def run(self):
         """
@@ -137,13 +126,15 @@ class App:
                 self.button_operation_div()
                 self.button_operation_equal()
                 self.button_operation_clear()
+
             pygame.display.flip()  # update the display
 
 
 class Button:
     def __init__(self, text, width, height, pos, screen):
+        self.pressed = False
         self.top_rect = pygame.Rect(pos, (width, height))
-        self.top_color = '#000000'
+        self.top_color = '#808080'
         self.screen = screen
 
         # text
@@ -151,8 +142,39 @@ class Button:
         self.text_rect = self.text_surf.get_rect(center=self.top_rect.center)
 
     def draw(self):
-        pygame.draw.rect(self.screen, self.top_color, self.top_rect, 3)
+        pygame.draw.rect(self.screen, self.top_color, self.top_rect, 0)
         self.screen.blit(self.text_surf, self.text_rect)
+        if self.top_rect.collidepoint(pygame.mouse.get_pos()):
+            if pygame.mouse.get_pressed()[0]:
+                pygame.draw.rect(self.screen, 'Black', self.top_rect, 1)
+                self.screen.blit(self.text_surf, self.text_rect)
+                print('Number pressed')
+            else:
+                pygame.draw.rect(self.screen, 'Grey', self.top_rect, 0)
+                self.screen.blit(self.text_surf, self.text_rect)
+
+    def draw_equal_button(self):
+        pygame.draw.rect(self.screen, 'Cyan', self.top_rect, 0)
+        self.screen.blit(self.text_surf, self.text_rect)
+        if self.top_rect.collidepoint(pygame.mouse.get_pos()):
+            if pygame.mouse.get_pressed()[0]:
+                pygame.draw.rect(self.screen, '#0072EB', self.top_rect, 5)
+                self.screen.blit(self.text_surf, self.text_rect)
+            else:
+                pygame.draw.rect(self.screen, '#00B6EB', self.top_rect, 0)
+                self.screen.blit(self.text_surf, self.text_rect)
+
+    def check_click(self):
+        mouse_pos = pygame.mouse.get_pos()  # get the mouse position
+        if self.top_rect.collidepoint(mouse_pos):  # check if the mouse position is over the button
+            if pygame.mouse.get_pressed()[0]:
+                print("Clicked")
+                self.pressed = True
+                return True
+            else:
+                if self.pressed:
+                    print("Button pressed")
+                    self.pressed = False
 
 
 pygame.init()
