@@ -33,10 +33,7 @@ class App:
         self.screen.fill("grey")  # fill the screen with grey
         pygame.display.set_caption(self.title)  # set the title of the window
 
-    def draw_button(self):
-        """
-        Draw calculator buttons
-        """
+    """def draw_button(self):
         for i in range(4):
             for j in range(4):
                 pygame.draw.rect(self.screen, "Black", (i * 100, j * 100 + 100, 100, 100), 1)
@@ -49,7 +46,47 @@ class App:
         for i in range(3):
             for j in range(3):
                 num = self.font.render(str(3 * i + j + 1), True, "black")
-                self.screen.blit(num, (j * 100 + 40, -i * 100 + 335))
+                self.screen.blit(num, (j * 100 + 40, -i * 100 + 335))"""
+
+    def button_number_0(self):
+        button_0 = Button("0", 100, 75, (100, 425), self.screen)
+        button_0.draw()
+
+    def button_number_1(self):
+        button_1 = Button("1", 100, 75, (0, 350), self.screen)
+        button_1.draw()
+
+    def button_number_2(self):
+        button_2 = Button("2", 100, 75, (100, 350), self.screen)
+        button_2.draw()
+
+    def button_number_3(self):
+        button_3 = Button("3", 100, 75, (200, 350), self.screen)
+        button_3.draw()
+
+    def button_number_4(self):
+        button_4 = Button("4", 100, 75, (0, 275), self.screen)
+        button_4.draw()
+
+    def button_number_5(self):
+        button_5 = Button("5", 100, 75, (100, 275), self.screen)
+        button_5.draw()
+
+    def button_number_6(self):
+        button_6 = Button("6", 100, 75, (200, 275), self.screen)
+        button_6.draw()
+
+    def button_number_7(self):
+        button_7 = Button("7", 100, 75, (0, 200), self.screen)
+        button_7.draw()
+
+    def button_number_8(self):
+        button_8 = Button("8", 100, 75, (100, 200), self.screen)
+        button_8.draw()
+
+    def button_number_9(self):
+        button_9 = Button("9", 100, 75, (200, 200), self.screen)
+        button_9.draw()
 
     def run(self):
         """
@@ -59,23 +96,34 @@ class App:
             self.handle_events()
             self.display()
             self.clock.tick(60)
-            self.draw_button()
-            self.draw_numbers()
+            if self.running:
+                self.button_number_0()
+                self.button_number_1()
+                self.button_number_2()
+                self.button_number_3()
+                self.button_number_4()
+                self.button_number_5()
+                self.button_number_6()
+                self.button_number_7()
+                self.button_number_8()
+                self.button_number_9()
             pygame.display.flip()  # update the display
 
 
-"""class Button:
-    def __init__(self, text, width, height, pos):
+class Button:
+    def __init__(self, text, width, height, pos, screen):
         self.top_rect = pygame.Rect(pos, (width, height))
-        self.top_color = '#475F77'
+        self.top_color = '#000000'
+        self.screen = screen
 
         # text
-        self.text_surf = gui_font.render(text, True, '#FFFFFF')
+        self.text_surf = gui_font.render(text, True, '#000000')
         self.text_rect = self.text_surf.get_rect(center=self.top_rect.center)
 
     def draw(self):
-        pygame.draw.rect(screen, self.top_color, self.top_rect)
-        screen.blit(self.text_surf, self.text_rect)"""
+        pygame.draw.rect(self.screen, self.top_color, self.top_rect, 3)
+        self.screen.blit(self.text_surf, self.text_rect)
 
 
 pygame.init()
+gui_font = pygame.font.Font(None, 50)
