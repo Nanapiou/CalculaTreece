@@ -148,7 +148,7 @@ class App:
         if button_color.check_click():
             print("Color")
 
-    def boutton_operation_remains(self):
+    def button_operation_remains(self):
         button_rest = Button("%", 100, 75, (215, 120), self.screen)
         button_rest.draw_operation_button()
         if button_rest.check_click():
@@ -158,7 +158,7 @@ class App:
     allFuncs = [button_number_0, button_number_1, button_number_2, button_number_3, button_number_4, button_number_5,
                 button_number_6, button_number_7, button_number_8, button_number_9, button_operation_add,
                 button_operation_sub, button_operation_mul, button_operation_div, button_operation_equal, button_point,
-                button_operation_clear, button_change_mode_fix, button_change_mode_color, boutton_operation_remains]
+                button_operation_clear, button_change_mode_fix, button_change_mode_color, button_operation_remains]
 
     def run(self):
         """
