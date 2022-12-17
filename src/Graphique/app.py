@@ -17,6 +17,12 @@ class App:
         self.icon = pygame.image.load("Graphique/Assets/icon.ico")
         self.font = pygame.font.SysFont("Intro", 55)
         self.textbox = TextBox(self.screen)
+        self.numberstring = ""
+
+        # Create buttons
+        self.buttons = []
+        for i in range(10):
+            self.buttons.append(Button(str(i), 100, 75, (5 + 105 * (i % 3), 360 - 80 * (i // 3)), self.screen))
 
     def handle_events(self):
         """
@@ -39,85 +45,85 @@ class App:
         button_0 = Button("0", 100, 75, (110, 440), self.screen)
         button_0.draw()
         if button_0.check_click():
-            self.textbox.WriteValue("0")
+            self.numberstring += "0"
 
     def button_number_1(self):
         button_1 = Button("1", 100, 75, (5, 360), self.screen)
         button_1.draw()
         if button_1.check_click():
-            self.textbox.WriteValue("1")
+            self.numberstring += "1"
 
     def button_number_2(self):
         button_2 = Button("2", 100, 75, (110, 360), self.screen)
         button_2.draw()
         if button_2.check_click():
-            self.textbox.WriteValue("2")
+            self.numberstring += "2"
 
     def button_number_3(self):
         button_3 = Button("3", 100, 75, (215, 360), self.screen)
         button_3.draw()
         if button_3.check_click():
-            self.textbox.WriteValue("3")
+            self.numberstring += "3"
 
     def button_number_4(self):
         button_4 = Button("4", 100, 75, (5, 280), self.screen)
         button_4.draw()
         if button_4.check_click():
-            self.textbox.WriteValue("4")
+            self.numberstring += "4"
 
     def button_number_5(self):
         button_5 = Button("5", 100, 75, (110, 280), self.screen)
         button_5.draw()
         if button_5.check_click():
-            self.textbox.WriteValue("5")
+            self.numberstring += "5"
 
     def button_number_6(self):
         button_6 = Button("6", 100, 75, (215, 280), self.screen)
         button_6.draw()
         if button_6.check_click():
-            self.textbox.WriteValue("6")
+            self.numberstring += "6"
 
     def button_number_7(self):
         button_7 = Button("7", 100, 75, (5, 200), self.screen)
         button_7.draw()
         if button_7.check_click():
-            self.textbox.WriteValue("7")
+            self.numberstring += "7"
 
     def button_number_8(self):
         button_8 = Button("8", 100, 75, (110, 200), self.screen)
         button_8.draw()
         if button_8.check_click():
-            self.textbox.WriteValue("8")
+            self.numberstring += "8"
 
     def button_number_9(self):
         button_9 = Button("9", 100, 75, (215, 200), self.screen)
         button_9.draw()
         if button_9.check_click():
-            self.textbox.WriteValue("9")
+            self.numberstring += "9"
 
     def button_operation_add(self):
         button_add = Button("+", 100, 75, (320, 360), self.screen)
         button_add.draw_operation_button()
         if button_add.check_click():
-            self.textbox.WriteValue("+")
+            self.numberstring += "+"
 
     def button_operation_sub(self):
         button_sub = Button("-", 100, 75, (320, 280), self.screen)
         button_sub.draw_operation_button()
         if button_sub.check_click():
-            self.textbox.WriteValue("-")
+            self.numberstring += "-"
 
     def button_operation_mul(self):
         button_mul = Button("X", 100, 75, (320, 200), self.screen)
         button_mul.draw_operation_button()
         if button_mul.check_click():
-            self.textbox.WriteValue("*")
+            self.numberstring += "*"
 
     def button_operation_div(self):
         button_div = Button("/", 100, 75, (320, 120), self.screen)
         button_div.draw_operation_button()
         if button_div.check_click():
-            self.textbox.WriteValue("/")
+            self.numberstring += "/"
 
     def button_operation_equal(self):
         button_equal = Button("=", 100, 75, (320, 440), self.screen)
@@ -129,7 +135,7 @@ class App:
         button_point = Button(".", 100, 75, (215, 440), self.screen)
         button_point.draw()
         if button_point.check_click():
-            self.textbox.WriteValue(".")
+            self.numberstring += "."
 
     def button_operation_clear(self):
         button_clear = Button("C", 100, 75, (5, 440), self.screen)
@@ -176,7 +182,7 @@ class App:
                         f(self)
 
             self.textbox.draw()
-
+            self.textbox.WriteValue(self.numberstring)
             pygame.display.flip()  # update the display
 
 
@@ -216,13 +222,13 @@ class Button:
 
     def check_click(self):
         mouse_pos = pygame.mouse.get_pos()  # get the mouse position
-        if self.top_rect.collidepoint(mouse_pos):  # check if the mouse position is over the button
+        if self.top_rect.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]:
-                self.pressed = True
+                # add time delay to prevent double click
+                pygame.time.delay(200)
                 return True
             else:
-                if self.pressed:
-                    self.pressed = False
+                return False
 
 
 class TextBox:
@@ -241,6 +247,12 @@ class TextBox:
         self.text_surf = gui_font.render(self.text, True, '#000000')
         self.text_rect = self.text_surf.get_rect(center=(400, 80))
         self.screen.blit(self.text_surf, self.text_rect)
+        # if text is too long, cut it
+        if len(self.text) > 10:
+            self.text = self.text[1:]
+            self.text_surf = gui_font.render(self.text, True, '#000000')
+            self.text_rect = self.text_surf.get_rect(center=(400, 80))
+            self.screen.blit(self.text_surf, self.text_rect)
 
 
 pygame.init()
