@@ -30,7 +30,7 @@ class App:
         Global display of the app
         """
         # Background
-        self.screen.fill("black")  # fill the screen with grey
+        self.screen.fill("White")  # fill the screen with grey
         pygame.display.set_caption(self.title)  # set the title of the window
         pygame.display.set_icon(self.icon)  # set the icon of the window
 
@@ -154,8 +154,11 @@ class App:
         if button_rest.check_click():
             print("%")
 
-    #buttons functions
-    allFuncs = [button_number_0, button_number_1, button_number_2, button_number_3, button_number_4, button_number_5, button_number_6, button_number_7, button_number_8, button_number_9, button_operation_add, button_operation_sub, button_operation_mul, button_operation_div, button_operation_equal, button_point, button_operation_clear, button_change_mode_fix, button_change_mode_color, boutton_operation_remains]
+    # buttons functions
+    allFuncs = [button_number_0, button_number_1, button_number_2, button_number_3, button_number_4, button_number_5,
+                button_number_6, button_number_7, button_number_8, button_number_9, button_operation_add,
+                button_operation_sub, button_operation_mul, button_operation_div, button_operation_equal, button_point,
+                button_operation_clear, button_change_mode_fix, button_change_mode_color, boutton_operation_remains]
 
     def run(self):
         """
