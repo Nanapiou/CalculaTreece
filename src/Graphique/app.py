@@ -134,12 +134,16 @@ class App:
         button_equal = Button("=", 100, 75, (320, 440), self.screen)
         button_equal.draw_operation_button()
         if button_equal.check_click():
-            self.textbox.calculate()
-            # convert into an integer if there is no decimal
-            if self.textbox.calculate() % 1 == 0:
-                self.numberstring = f'{int(self.textbox.calculate())}'
+            result = self.textbox.calculate()
+            if isinstance(result, str):
+                self.numberstring = result
             else:
-                self.numberstring = f'{self.textbox.calculate()}'
+                # convert into an integer if there is no decimal
+                if result % 1 == 0:
+                    self.numberstring = f'{int(self.textbox.calculate())}'
+                else:
+                    self.numberstring = f'{self.textbox.calculate()}'
+
 
     def button_point(self):
         button_point = Button(".", 100, 75, (215, 440), self.screen)
@@ -166,10 +170,13 @@ class App:
             print("Color")
 
     def button_operation_remains(self):
+        """
+        Button for the operation of the remains
+        """
         button_rest = Button("%", 100, 75, (215, 120), self.screen)
         button_rest.draw_operation_button()
         if button_rest.check_click():
-            self.textbox.writeValue("%")
+            self.textbox.write_value("%")
 
     # buttons functions
     allFuncs = [button_number_0, button_number_1, button_number_2, button_number_3, button_number_4, button_number_5,
@@ -192,7 +199,7 @@ class App:
                         f(self)
 
             self.textbox.draw()
-            self.textbox.writeValue(self.numberstring)
+            self.textbox.write_value(self.numberstring)
 
             if self.numberstring == "None":
                 self.numberstring = ""
@@ -200,6 +207,9 @@ class App:
 
 
 class Button:
+    """
+    Button class
+    """
     def __init__(self, text, width, height, pos, screen):
         self.pressed = False
         self.top_rect = pygame.Rect(pos, (width, height))
@@ -211,6 +221,9 @@ class Button:
         self.text_rect = self.text_surf.get_rect(center=self.top_rect.center)
 
     def draw(self):
+        """
+        Draw the button
+        """
         pygame.draw.rect(self.screen, self.top_color, self.top_rect, 0, 3)
         self.screen.blit(self.text_surf, self.text_rect)
         if self.top_rect.collidepoint(pygame.mouse.get_pos()):
@@ -223,6 +236,9 @@ class Button:
                 self.screen.blit(self.text_surf, self.text_rect)
 
     def draw_operation_button(self):
+        """
+        Draw the operation buttons
+        """
         pygame.draw.rect(self.screen, 'Orange', self.top_rect, 0, 3)
         self.screen.blit(self.text_surf, self.text_rect)
         if self.top_rect.collidepoint(pygame.mouse.get_pos()):
@@ -234,6 +250,9 @@ class Button:
                 self.screen.blit(self.text_surf, self.text_rect)
 
     def check_click(self):
+        """
+        Check if the button is clicked
+        """
         mouse_pos = pygame.mouse.get_pos()  # get the mouse position
         if self.top_rect.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]:
@@ -245,6 +264,9 @@ class Button:
 
 
 class TextBox:
+    """
+    A class to manage the text box
+    """
     def __init__(self, screen):
         self.screen = screen
         self.text = ''
@@ -252,57 +274,31 @@ class TextBox:
         self.text_rect = self.text_surf.get_rect(center=(160, 50))
 
     def draw(self):
+        """
+        Draw the textbox
+        """
         pygame.draw.rect(self.screen, 'Grey', (0, 0, 425, 115), 0, 0)
         self.screen.blit(self.text_surf, self.text_rect)
 
-    def writeValue(self, value):
+    def write_value(self, value):
+        """
+        Write the value on the screen
+        """
         self.text = value
         self.text_surf = mode_font.render(self.text, True, '#000000')
         self.text_rect = self.text_surf.get_rect(center=(200, 60))
         # if text is too long, cut it
 
     def calculate(self):
-        # calculate the result and if there is more than one operation, calculate it
-        # result = 0
-        # if self.text.count('+') > 1:
-        #     for c, i in enumerate(self.text.split('+')):
-        #         if c == 0:
-        #             result += float(i)
-        #         else:
-        #             result += float(i)
-        # elif self.text.count('+') == 1:
-        #     result = float(self.text.split('+')[0]) + float(self.text.split('+')[1])
-        # elif self.text.count('-') > 1:
-        #     for c, i in enumerate(self.text.split('-')):
-        #         if c == 0:
-        #             result += float(i)
-        #         else:
-        #             result -= float(i)
-        # elif self.text.count('-') == 1:
-        #     result = float(self.text.split('-')[0]) - float(self.text.split('-')[1])
-        # elif self.text.count('*') > 1:
-        #     for c, i in enumerate(self.text.split('*')):
-        #         if c == 0:
-        #             result += float(i)
-        #         else:
-        #             result *= float(i)
-        # elif self.text.count('*') == 1:
-        #     result = float(self.text.split('*')[0]) * float(self.text.split('*')[1])
-        # elif self.text.count('/') > 1:
-        #     for c, i in enumerate(self.text.split('/')):
-        #         if c == 0:
-        #             result += float(i)
-        #         else:
-        #             result /= float(i)
-        # elif self.text.count('/') == 1:
-        #     result = float(self.text.split('/')[0]) / float(self.text.split('/')[1])
-        # return result
+        """
+        Calculate the result of the expression
+        """
         try:
             lis = infix_automaton.build(self.text)
             clean_list_to_infix(lis)
             tree = infix_list_to_tree(lis)
             return calculate_tree(tree)
-        except SyntaxError | TypeError:
+        except (SyntaxError, TypeError) as e:
             return "Error"
 
 
