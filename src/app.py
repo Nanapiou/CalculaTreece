@@ -38,8 +38,10 @@ class App:
     def button_number_0(self):
         button_0 = Button("0", 100, 75, (105, 440), self.screen)
         button_0.draw()
+        Value = TextBox(self.screen)
         if button_0.check_click():
             print("0")
+            Value.draw()
 
     def button_number_1(self):
         button_1 = Button("1", 100, 75, (0, 360), self.screen)
@@ -135,7 +137,7 @@ class App:
         """
         Main loop
         """
-        textbox = Text_Box(self.screen)
+        textbox = TextBox(self.screen)
         while self.running:  # loop until the user clicks the close button
             self.handle_events()
             self.display()
@@ -207,7 +209,7 @@ class Button:
                     self.pressed = False
 
 
-class Text_Box:
+class TextBox:
     def __init__(self, screen):
         self.screen = screen
         self.text = ''
@@ -215,7 +217,7 @@ class Text_Box:
         self.text_rect = self.text_surf.get_rect(center=(210, 50))
 
     def draw(self):
-        pygame.draw.rect(self.screen, '#285DCD', (0, 0, 420, 100), 0, 3)
+        pygame.draw.rect(self.screen, '#5882D9', (0, 0, 420, 100), 0, 3)
         self.screen.blit(self.text_surf, self.text_rect)
 
 
