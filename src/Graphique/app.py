@@ -45,79 +45,79 @@ class App:
         button_1 = Button("1", 100, 75, (5, 360), self.screen)
         button_1.draw()
         if button_1.check_click():
-            print("1")
+            self.textbox.WriteValue("1")
 
     def button_number_2(self):
         button_2 = Button("2", 100, 75, (110, 360), self.screen)
         button_2.draw()
         if button_2.check_click():
-            print("2")
+            self.textbox.WriteValue("2")
 
     def button_number_3(self):
         button_3 = Button("3", 100, 75, (215, 360), self.screen)
         button_3.draw()
         if button_3.check_click():
-            print("3")
+            self.textbox.WriteValue("3")
 
     def button_number_4(self):
         button_4 = Button("4", 100, 75, (5, 280), self.screen)
         button_4.draw()
         if button_4.check_click():
-            print("4")
+            self.textbox.WriteValue("4")
 
     def button_number_5(self):
         button_5 = Button("5", 100, 75, (110, 280), self.screen)
         button_5.draw()
         if button_5.check_click():
-            print("5")
+            self.textbox.WriteValue("5")
 
     def button_number_6(self):
         button_6 = Button("6", 100, 75, (215, 280), self.screen)
         button_6.draw()
         if button_6.check_click():
-            print("6")
+            self.textbox.WriteValue("6")
 
     def button_number_7(self):
         button_7 = Button("7", 100, 75, (5, 200), self.screen)
         button_7.draw()
         if button_7.check_click():
-            print("7")
+            self.textbox.WriteValue("7")
 
     def button_number_8(self):
         button_8 = Button("8", 100, 75, (110, 200), self.screen)
         button_8.draw()
         if button_8.check_click():
-            print("8")
+            self.textbox.WriteValue("8")
 
     def button_number_9(self):
         button_9 = Button("9", 100, 75, (215, 200), self.screen)
         button_9.draw()
         if button_9.check_click():
-            print("9")
+            self.textbox.WriteValue("9")
 
     def button_operation_add(self):
         button_add = Button("+", 100, 75, (320, 360), self.screen)
         button_add.draw_operation_button()
         if button_add.check_click():
-            print("+")
+            self.textbox.WriteValue("+")
 
     def button_operation_sub(self):
         button_sub = Button("-", 100, 75, (320, 280), self.screen)
         button_sub.draw_operation_button()
         if button_sub.check_click():
-            print("-")
+            self.textbox.WriteValue("-")
 
     def button_operation_mul(self):
         button_mul = Button("X", 100, 75, (320, 200), self.screen)
         button_mul.draw_operation_button()
         if button_mul.check_click():
-            print("*")
+            self.textbox.WriteValue("*")
 
     def button_operation_div(self):
         button_div = Button("/", 100, 75, (320, 120), self.screen)
         button_div.draw_operation_button()
         if button_div.check_click():
-            print("/")
+            self.textbox.WriteValue("/")
 
     def button_operation_equal(self):
         button_equal = Button("=", 100, 75, (320, 440), self.screen)
@@ -129,7 +129,7 @@ class App:
         button_point = Button(".", 100, 75, (215, 440), self.screen)
         button_point.draw()
         if button_point.check_click():
-            print(".")
+            self.textbox.WriteValue(".")
 
     def button_operation_clear(self):
         button_clear = Button("C", 100, 75, (5, 440), self.screen)
@@ -153,7 +153,7 @@ class App:
         button_rest = Button("%", 100, 75, (215, 120), self.screen)
         button_rest.draw_operation_button()
         if button_rest.check_click():
-            print("%")
+            self.textbox.WriteValue("%")
 
     # buttons functions
     allFuncs = [button_number_0, button_number_1, button_number_2, button_number_3, button_number_4, button_number_5,
@@ -229,8 +229,8 @@ class TextBox:
     def __init__(self, screen):
         self.screen = screen
         self.text = ''
-        self.text_surf = gui_font.render(self.text, True, 'White')
-        self.text_rect = self.text_surf.get_rect(center=(210, 50))
+        self.text_surf = gui_font.render(self.text, True, '#000000')
+        self.text_rect = self.text_surf.get_rect(center=(160, 50))
 
     def draw(self):
         pygame.draw.rect(self.screen, 'Grey', (0, 0, 425, 115), 0, 0)
@@ -238,8 +238,8 @@ class TextBox:
 
     def WriteValue(self, value):
         self.text = value
-        self.text_surf = gui_font.render(self.text, True, 'Black')
-        self.text_rect = self.text_surf.get_rect(center=(210, 50))
+        self.text_surf = gui_font.render(self.text, True, '#000000')
+        self.text_rect = self.text_surf.get_rect(center=(400, 80))
         self.screen.blit(self.text_surf, self.text_rect)
 
 
