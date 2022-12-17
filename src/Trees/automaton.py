@@ -145,14 +145,14 @@ infix_states: States = [
     },
     #  1
     {  # Numbers
-        '': (0, lambda old, _: (int(old), '*')),
-        '*': (2, lambda old, _: int(old)),
-        '/': (18, lambda old, _: int(old)),
-        '-': (6, lambda old, _: int(old)),
-        ':': (6, lambda old, _: int(old)),
-        '+': (6, lambda old, _: int(old)),
-        '^': (6, lambda old, _: int(old)),
-        ')': (4, lambda old, _: int(old)),
+        '': (0, lambda old, _: (float(old), '*')),
+        '*': (2, lambda old, _: float(old)),
+        '/': (18, lambda old, _: float(old)),
+        '-': (6, lambda old, _: float(old)),
+        ':': (6, lambda old, _: float(old)),
+        '+': (6, lambda old, _: float(old)),
+        '^': (6, lambda old, _: float(old)),
+        ')': (4, lambda old, _: float(old)),
         '0': (1, None),
         '1': (1, None),
         '2': (1, None),
@@ -163,8 +163,9 @@ infix_states: States = [
         '7': (1, None),
         '8': (1, None),
         '9': (1, None),
+        '.': (1, None),  # For float
         #  Hard coding pi...
-        'end': lambda old: pi if old == 'pi' else int(old)
+        'end': lambda old: pi if old == 'pi' else float(old)
     },
     #  2
     {  # *
