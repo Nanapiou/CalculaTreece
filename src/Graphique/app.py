@@ -15,7 +15,7 @@ class App:
         self.running = True
         self.clock = pygame.time.Clock()
         self.title = "CalculaTreece"
-        self.icon = pygame.image.load("icon.ico")
+        self.icon = pygame.image.load("Graphique/Assets/icon.ico")
         self.font = pygame.font.SysFont("Intro", 55)
 
     def handle_events(self):

@@ -3,7 +3,7 @@ Functions used to transform thing to other things
 """
 # TODO Create verifications functions (in another file) so we can avoid dumb errors
 from typing import List
-from trees import BinaryTree
+from src.Calculator.trees import BinaryTree
 
 
 Number = int | float
