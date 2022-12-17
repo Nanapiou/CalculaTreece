@@ -154,6 +154,9 @@ class App:
         if button_rest.check_click():
             print("%")
 
+    #buttons functions
+    allFuncs = [button_number_0, button_number_1, button_number_2, button_number_3, button_number_4, button_number_5, button_number_6, button_number_7, button_number_8, button_number_9, button_operation_add, button_operation_sub, button_operation_mul, button_operation_div, button_operation_equal, button_point, button_operation_clear, button_change_mode_fix, button_change_mode_color, boutton_operation_remains]
+
     def run(self):
         """
         Main loop
@@ -165,34 +168,9 @@ class App:
             self.clock.tick(60)
             if self.running:
 
-                #number
-                self.button_number_0()
-                self.button_number_1()
-                self.button_number_2()
-                self.button_number_3()
-                self.button_number_4()
-                self.button_number_5()
-                self.button_number_6()
-                self.button_number_7()
-                self.button_number_8()
-                self.button_number_9()
-
-                 #operation
-                self.button_operation_add()
-                self.button_operation_sub()
-                self.button_operation_mul()
-                self.button_operation_div()
-                self.button_operation_equal()
-                self.boutton_operation_remains()
-
-                #other
-                self.button_operation_clear()
-                self.button_point()
-
-                #mode
-                self.button_change_mode_fix()
-                self.button_change_mode_color()
-
+                for f in self.allFuncs:
+                    if callable(f):
+                        f(self)
 
             textbox.draw()
 
