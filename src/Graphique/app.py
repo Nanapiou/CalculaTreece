@@ -299,6 +299,8 @@ class TextBox:
             tree = infix_list_to_tree(lis)
             return calculate_tree(tree)
         except (SyntaxError, TypeError) as e:
+            print('-' * 20)
+            print(e)
             return "Error"
 
 
