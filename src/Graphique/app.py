@@ -235,7 +235,7 @@ class TextBox:
         self.text_rect = self.text_surf.get_rect(center=(210, 50))
 
     def draw(self):
-        pygame.draw.rect(self.screen, 'Black', (0, 0, 425, 115), 0, 0)
+        pygame.draw.rect(self.screen, 'White', (0, 0, 425, 115), 0, 0)
         self.screen.blit(self.text_surf, self.text_rect)
         self.screen.blit(self.text_mode, (3, 3))
 
