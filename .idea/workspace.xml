@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8ae4ccf7-0332-4af0-9fa2-0afa02592818" name="Changes" comment="Type 0 in textbox">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Graphique/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Graphique/app.py" afterDir="false" />
-    </list>
+    <list default="true" id="8ae4ccf7-0332-4af0-9fa2-0afa02592818" name="Changes" comment="Display Numbers in TextBox" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -137,7 +134,7 @@
       <workItem from="1671292826330" duration="115000" />
       <workItem from="1671293081122" duration="624000" />
       <workItem from="1671294548436" duration="991000" />
-      <workItem from="1671295571252" duration="321000" />
+      <workItem from="1671295571252" duration="347000" />
     </task>
     <task id="LOCAL-00001" summary="Test">
       <created>1671134784996</created>
@@ -209,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671295401931</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Display Numbers in TextBox">
+      <created>1671295909599</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1671295909599</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -231,7 +235,8 @@
     <MESSAGE value="Résolu" />
     <MESSAGE value="1" />
     <MESSAGE value="Type 0 in textbox" />
-    <option name="LAST_COMMIT_MESSAGE" value="Type 0 in textbox" />
+    <MESSAGE value="Display Numbers in TextBox" />
+    <option name="LAST_COMMIT_MESSAGE" value="Display Numbers in TextBox" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CalculaTreece$app.coverage" NAME="app Coverage Results" MODIFIED="1671276885106" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
