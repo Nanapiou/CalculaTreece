@@ -16,6 +16,7 @@ class App:
         self.title = "CalculaTreece"
         self.icon = pygame.image.load("Graphique/Assets/icon.ico")
         self.font = pygame.font.SysFont("Intro", 55)
+        self.textbox = TextBox(self.screen)
 
     def handle_events(self):
         """
@@ -38,7 +39,7 @@ class App:
         button_0 = Button("0", 100, 75, (110, 440), self.screen)
         button_0.draw()
         if button_0.check_click():
-            print("0")
+            self.textbox.WriteValue("0")
 
     def button_number_1(self):
         button_1 = Button("1", 100, 75, (5, 360), self.screen)
@@ -164,7 +165,6 @@ class App:
         """
         Main loop
         """
-        textbox = TextBox(self.screen)
         while self.running:  # loop until the user clicks the close button
             self.handle_events()
             self.display()
@@ -175,7 +175,7 @@ class App:
                     if callable(f):
                         f(self)
 
-            textbox.draw()
+            self.textbox.draw()
 
             pygame.display.flip()  # update the display
 
@@ -228,16 +228,19 @@ class Button:
 class TextBox:
     def __init__(self, screen):
         self.screen = screen
-        self.mode = 'None'
         self.text = ''
         self.text_surf = gui_font.render(self.text, True, 'White')
-        self.text_mode = mode_font.render(self.mode, True, 'White')
         self.text_rect = self.text_surf.get_rect(center=(210, 50))
 
     def draw(self):
         pygame.draw.rect(self.screen, 'Grey', (0, 0, 425, 115), 0, 0)
         self.screen.blit(self.text_surf, self.text_rect)
-        self.screen.blit(self.text_mode, (330, 80))
+
+    def WriteValue(self, value):
+        self.text = value
+        self.text_surf = gui_font.render(self.text, True, 'Black')
+        self.text_rect = self.text_surf.get_rect(center=(210, 50))
+        self.screen.blit(self.text_surf, self.text_rect)
 
 
 pygame.init()
