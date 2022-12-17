@@ -129,7 +129,8 @@ class App:
         button_equal = Button("=", 100, 75, (320, 440), self.screen)
         button_equal.draw_operation_button()
         if button_equal.check_click():
-            print("=")
+            self.textbox.calculate()
+            self.numberstring = f'{self.textbox.calculate()}'
 
     def button_point(self):
         button_point = Button(".", 100, 75, (215, 440), self.screen)
@@ -141,7 +142,7 @@ class App:
         button_clear = Button("C", 100, 75, (5, 440), self.screen)
         button_clear.draw()
         if button_clear.check_click():
-            print("C")
+            self.numberstring = ""
 
     def button_change_mode_fix(self):
         button_prefixe = Button("Fix", 100, 75, (110, 120), self.screen)
@@ -202,7 +203,7 @@ class Button:
         self.screen.blit(self.text_surf, self.text_rect)
         if self.top_rect.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0]:
-                pygame.draw.rect(self.screen, 'Black', self.top_rect, 3, 3)
+                pygame.draw.rect(self.screen, 'Black', self.top_rect, 3, 5)
                 self.screen.blit(self.text_surf, self.text_rect)
                 return 'Number Pressed'
             else:
@@ -225,7 +226,7 @@ class Button:
         if self.top_rect.collidepoint(mouse_pos):
             if pygame.mouse.get_pressed()[0]:
                 # add time delay to prevent double click
-                pygame.time.delay(200)
+                pygame.time.delay(100)
                 return True
             else:
                 return False
@@ -235,7 +236,7 @@ class TextBox:
     def __init__(self, screen):
         self.screen = screen
         self.text = ''
-        self.text_surf = gui_font.render(self.text, True, '#000000')
+        self.text_surf = mode_font.render(self.text, True, '#000000')
         self.text_rect = self.text_surf.get_rect(center=(160, 50))
 
     def draw(self):
@@ -244,17 +245,24 @@ class TextBox:
 
     def WriteValue(self, value):
         self.text = value
-        self.text_surf = gui_font.render(self.text, True, '#000000')
-        self.text_rect = self.text_surf.get_rect(center=(400, 80))
-        self.screen.blit(self.text_surf, self.text_rect)
+        self.text_surf = mode_font.render(self.text, True, '#000000')
+        self.text_rect = self.text_surf.get_rect(center=(200, 60))
         # if text is too long, cut it
-        if len(self.text) > 10:
-            self.text = self.text[1:]
-            self.text_surf = gui_font.render(self.text, True, '#000000')
-            self.text_rect = self.text_surf.get_rect(center=(400, 80))
-            self.screen.blit(self.text_surf, self.text_rect)
+
+    def calculate(self):
+        for j in range(len(self.text)):
+            if self.text[j] == '+':
+                return int(self.text[:j]) + int(self.text[j + 1:])
+            elif self.text[j] == '-':
+                return int(self.text[:j]) - int(self.text[j + 1:])
+            elif self.text[j] == '*':
+                return int(self.text[:j]) * int(self.text[j + 1:])
+            elif self.text[j] == '/':
+                return int(self.text[:j]) / int(self.text[j + 1:])
+            elif self.text[j] == '%':
+                return int(self.text[:j]) % int(self.text[j + 1:])
 
 
 pygame.init()
 gui_font = pygame.font.Font(None, 50)
-mode_font = pygame.font.Font(None, 50)
+mode_font = pygame.font.Font(None, 60)
