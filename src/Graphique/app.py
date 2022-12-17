@@ -2,6 +2,11 @@
 The pygame app
 """
 import pygame
+from src.Trees.transformations import infix_list_to_tree, clean_list_to_infix
+from src.Trees.automaton import Automaton, infix_states
+from src.Trees.calculator import calculate_tree
+
+infix_automaton = Automaton(infix_states)
 
 
 class App:
@@ -164,7 +169,7 @@ class App:
         button_rest = Button("%", 100, 75, (215, 120), self.screen)
         button_rest.draw_operation_button()
         if button_rest.check_click():
-            self.textbox.WriteValue("%")
+            self.textbox.writeValue("%")
 
     # buttons functions
     allFuncs = [button_number_0, button_number_1, button_number_2, button_number_3, button_number_4, button_number_5,
@@ -187,7 +192,7 @@ class App:
                         f(self)
 
             self.textbox.draw()
-            self.textbox.WriteValue(self.numberstring)
+            self.textbox.writeValue(self.numberstring)
 
             if self.numberstring == "None":
                 self.numberstring = ""
@@ -250,7 +255,7 @@ class TextBox:
         pygame.draw.rect(self.screen, 'Grey', (0, 0, 425, 115), 0, 0)
         self.screen.blit(self.text_surf, self.text_rect)
 
-    def WriteValue(self, value):
+    def writeValue(self, value):
         self.text = value
         self.text_surf = mode_font.render(self.text, True, '#000000')
         self.text_rect = self.text_surf.get_rect(center=(200, 60))
@@ -258,40 +263,44 @@ class TextBox:
 
     def calculate(self):
         # calculate the result and if there is more than one operation, calculate it
-        result = 0
-        if self.text.count('+') > 1:
-            for c, i in enumerate(self.text.split('+')):
-                if c == 0:
-                    result += float(i)
-                else:
-                    result += float(i)
-        elif self.text.count('+') == 1:
-            result = float(self.text.split('+')[0]) + float(self.text.split('+')[1])
-        elif self.text.count('-') > 1:
-            for c, i in enumerate(self.text.split('-')):
-                if c == 0:
-                    result += float(i)
-                else:
-                    result -= float(i)
-        elif self.text.count('-') == 1:
-            result = float(self.text.split('-')[0]) - float(self.text.split('-')[1])
-        elif self.text.count('*') > 1:
-            for c, i in enumerate(self.text.split('*')):
-                if c == 0:
-                    result += float(i)
-                else:
-                    result *= float(i)
-        elif self.text.count('*') == 1:
-            result = float(self.text.split('*')[0]) * float(self.text.split('*')[1])
-        elif self.text.count('/') > 1:
-            for c, i in enumerate(self.text.split('/')):
-                if c == 0:
-                    result += float(i)
-                else:
-                    result /= float(i)
-        elif self.text.count('/') == 1:
-            result = float(self.text.split('/')[0]) / float(self.text.split('/')[1])
-        return result
+        # result = 0
+        # if self.text.count('+') > 1:
+        #     for c, i in enumerate(self.text.split('+')):
+        #         if c == 0:
+        #             result += float(i)
+        #         else:
+        #             result += float(i)
+        # elif self.text.count('+') == 1:
+        #     result = float(self.text.split('+')[0]) + float(self.text.split('+')[1])
+        # elif self.text.count('-') > 1:
+        #     for c, i in enumerate(self.text.split('-')):
+        #         if c == 0:
+        #             result += float(i)
+        #         else:
+        #             result -= float(i)
+        # elif self.text.count('-') == 1:
+        #     result = float(self.text.split('-')[0]) - float(self.text.split('-')[1])
+        # elif self.text.count('*') > 1:
+        #     for c, i in enumerate(self.text.split('*')):
+        #         if c == 0:
+        #             result += float(i)
+        #         else:
+        #             result *= float(i)
+        # elif self.text.count('*') == 1:
+        #     result = float(self.text.split('*')[0]) * float(self.text.split('*')[1])
+        # elif self.text.count('/') > 1:
+        #     for c, i in enumerate(self.text.split('/')):
+        #         if c == 0:
+        #             result += float(i)
+        #         else:
+        #             result /= float(i)
+        # elif self.text.count('/') == 1:
+        #     result = float(self.text.split('/')[0]) / float(self.text.split('/')[1])
+        # return result
+        lis = infix_automaton.build(self.text)
+        clean_list_to_infix(lis)
+        tree = infix_list_to_tree(lis)
+        return calculate_tree(tree)
 
 
 pygame.init()
