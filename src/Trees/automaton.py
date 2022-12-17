@@ -164,7 +164,7 @@ infix_states: States = [
         '8': (1, None),
         '9': (1, None),
         #  Hard coding pi...
-        'end': lambda old, _: pi if old == 'pi' else int(old)
+        'end': lambda old: pi if old == 'pi' else int(old)
     },
     #  2
     {  # *
