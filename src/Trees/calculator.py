@@ -1,10 +1,10 @@
 """
 Calculation.
 """
-from transformations import infix_list_to_tree, clean_list_to_infix
-from trees import BinaryTree
+from src.Trees.transformations import infix_list_to_tree, clean_list_to_infix
+from src.Trees.trees import BinaryTree
 from turtle import Turtle, done
-from automaton import Automaton, infix_states, postfix_states
+from src.Trees.automaton import Automaton, infix_states, postfix_states
 from typing import Generator, Callable
 
 
