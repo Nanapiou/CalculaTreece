@@ -184,6 +184,9 @@ class App:
 
             self.textbox.draw()
             self.textbox.WriteValue(self.numberstring)
+
+            if self.numberstring == "None":
+                self.numberstring = ""
             pygame.display.flip()  # update the display
 
 
@@ -252,15 +255,15 @@ class TextBox:
     def calculate(self):
         for j in range(len(self.text)):
             if self.text[j] == '+':
-                return int(self.text[:j]) + int(self.text[j + 1:])
+                return float(self.text[:j]) + float(self.text[j + 1:])
             elif self.text[j] == '-':
-                return int(self.text[:j]) - int(self.text[j + 1:])
+                return float(self.text[:j]) - float(self.text[j + 1:])
             elif self.text[j] == '*':
-                return int(self.text[:j]) * int(self.text[j + 1:])
+                return float(self.text[:j]) * float(self.text[j + 1:])
             elif self.text[j] == '/':
-                return int(self.text[:j]) / int(self.text[j + 1:])
+                return float(self.text[:j]) / float(self.text[j + 1:])
             elif self.text[j] == '%':
-                return int(self.text[:j]) % int(self.text[j + 1:])
+                return float(self.text[:j]) % float(self.text[j + 1:])
 
 
 pygame.init()

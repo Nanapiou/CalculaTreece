@@ -112,9 +112,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Users\compte_test\AppData\Local\Microsoft\WindowsApps\python3.10.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -185,7 +185,8 @@
       <workItem from="1671294548436" duration="991000" />
       <workItem from="1671295571252" duration="347000" />
       <workItem from="1671298568315" duration="1405000" />
-      <workItem from="1671300594226" duration="3023000" />
+      <workItem from="1671300594226" duration="3108000" />
+      <workItem from="1671303856705" duration="392000" />
     </task>
     <task id="LOCAL-00001" summary="Test">
       <created>1671134784996</created>
@@ -301,7 +302,7 @@
     <SUITE FILE_PATH="coverage/CalculaTreece$app.coverage" NAME="app Coverage Results" MODIFIED="1671276885106" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/CalculaTreece$app__1_.coverage" NAME="app (1) Coverage Results" MODIFIED="1671299143252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Graphique" />
     <SUITE FILE_PATH="coverage/CalculaTreece$openai_app.coverage" NAME="openai_app Coverage Results" MODIFIED="1671298978914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Downloads" />
-    <SUITE FILE_PATH="coverage/CalculaTreece$main.coverage" NAME="main Coverage Results" MODIFIED="1671303747289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/CalculaTreece$main.coverage" NAME="main Coverage Results" MODIFIED="1671304223144" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/CalculaTreece$calculator.coverage" NAME="calculator Coverage Results" MODIFIED="1671138898068" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
   </component>
 </project>
