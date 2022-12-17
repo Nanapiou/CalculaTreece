@@ -10,7 +10,6 @@ class App:
     """
 
     def __init__(self, screen1):
-        super().__init__()
         self.screen = screen1
         self.running = True
         self.clock = pygame.time.Clock()
@@ -31,116 +30,142 @@ class App:
         Global display of the app
         """
         # Background
-        self.screen.fill("#E7E7E7")  # fill the screen with grey
+        self.screen.fill("black")  # fill the screen with grey
         pygame.display.set_caption(self.title)  # set the title of the window
         pygame.display.set_icon(self.icon)  # set the icon of the window
 
     def button_number_0(self):
-        button_0 = Button("0", 100, 75, (105, 440), self.screen)
+        button_0 = Button("0", 100, 75, (110, 440), self.screen)
         button_0.draw()
         if button_0.check_click():
             print("0")
 
     def button_number_1(self):
-        button_1 = Button("1", 100, 75, (0, 360), self.screen)
+        button_1 = Button("1", 100, 75, (5, 360), self.screen)
         button_1.draw()
         if button_1.check_click():
             print("1")
 
     def button_number_2(self):
-        button_2 = Button("2", 100, 75, (105, 360), self.screen)
+        button_2 = Button("2", 100, 75, (110, 360), self.screen)
         button_2.draw()
         if button_2.check_click():
             print("2")
 
     def button_number_3(self):
-        button_3 = Button("3", 100, 75, (210, 360), self.screen)
+        button_3 = Button("3", 100, 75, (215, 360), self.screen)
         button_3.draw()
         if button_3.check_click():
             print("3")
 
     def button_number_4(self):
-        button_4 = Button("4", 100, 75, (0, 280), self.screen)
+        button_4 = Button("4", 100, 75, (5, 280), self.screen)
         button_4.draw()
         if button_4.check_click():
             print("4")
 
     def button_number_5(self):
-        button_5 = Button("5", 100, 75, (105, 280), self.screen)
+        button_5 = Button("5", 100, 75, (110, 280), self.screen)
         button_5.draw()
         if button_5.check_click():
             print("5")
 
     def button_number_6(self):
-        button_6 = Button("6", 100, 75, (210, 280), self.screen)
+        button_6 = Button("6", 100, 75, (215, 280), self.screen)
         button_6.draw()
         if button_6.check_click():
             print("6")
 
     def button_number_7(self):
-        button_7 = Button("7", 100, 75, (0, 200), self.screen)
+        button_7 = Button("7", 100, 75, (5, 200), self.screen)
         button_7.draw()
         if button_7.check_click():
             print("7")
 
     def button_number_8(self):
-        button_8 = Button("8", 100, 75, (105, 200), self.screen)
+        button_8 = Button("8", 100, 75, (110, 200), self.screen)
         button_8.draw()
         if button_8.check_click():
             print("8")
 
     def button_number_9(self):
-        button_9 = Button("9", 100, 75, (210, 200), self.screen)
+        button_9 = Button("9", 100, 75, (215, 200), self.screen)
         button_9.draw()
         if button_9.check_click():
             print("9")
 
     def button_operation_add(self):
-        button_add = Button("+", 100, 75, (315, 360), self.screen)
-        button_add.draw()
+        button_add = Button("+", 100, 75, (320, 360), self.screen)
+        button_add.draw_operation_button()
         if button_add.check_click():
             print("+")
 
     def button_operation_sub(self):
-        button_sub = Button("-", 100, 75, (315, 280), self.screen)
-        button_sub.draw()
+        button_sub = Button("-", 100, 75, (320, 280), self.screen)
+        button_sub.draw_operation_button()
         if button_sub.check_click():
             print("-")
 
     def button_operation_mul(self):
-        button_mul = Button("*", 100, 75, (315, 200), self.screen)
-        button_mul.draw()
+        button_mul = Button("X", 100, 75, (320, 200), self.screen)
+        button_mul.draw_operation_button()
         if button_mul.check_click():
             print("*")
 
     def button_operation_div(self):
-        button_div = Button("/", 100, 75, (315, 120), self.screen)
-        button_div.draw()
+        button_div = Button("/", 100, 75, (320, 120), self.screen)
+        button_div.draw_operation_button()
         if button_div.check_click():
             print("/")
 
     def button_operation_equal(self):
-        button_equal = Button("=", 100, 75, (315, 440), self.screen)
-        button_equal.draw_equal_button()
+        button_equal = Button("=", 100, 75, (320, 440), self.screen)
+        button_equal.draw_operation_button()
         if button_equal.check_click():
             print("=")
 
+    def button_point(self):
+        button_point = Button(".", 100, 75, (215, 440), self.screen)
+        button_point.draw()
+        if button_point.check_click():
+            print(".")
+
     def button_operation_clear(self):
-        button_clear = Button("C", 100, 75, (210, 120), self.screen)
+        button_clear = Button("C", 100, 75, (5, 440), self.screen)
         button_clear.draw()
         if button_clear.check_click():
             print("C")
+
+    def button_change_mode_fix(self):
+        button_prefixe = Button("Fix", 100, 75, (110, 120), self.screen)
+        button_prefixe.draw()
+        if button_prefixe.check_click():
+            print("Fix")
+
+    def button_change_mode_color(self):
+        button_color = Button("Color", 100, 75, (5, 120), self.screen)
+        button_color.draw()
+        if button_color.check_click():
+            print("Color")
+
+    def boutton_operation_remains(self):
+        button_rest = Button("%", 100, 75, (215, 120), self.screen)
+        button_rest.draw_operation_button()
+        if button_rest.check_click():
+            print("%")
 
     def run(self):
         """
         Main loop
         """
-        textbox = Text_Box(self.screen)
+        textbox = TextBox(self.screen)
         while self.running:  # loop until the user clicks the close button
             self.handle_events()
             self.display()
             self.clock.tick(60)
             if self.running:
+
+                #number
                 self.button_number_0()
                 self.button_number_1()
                 self.button_number_2()
@@ -151,12 +176,24 @@ class App:
                 self.button_number_7()
                 self.button_number_8()
                 self.button_number_9()
+
+                 #operation
                 self.button_operation_add()
                 self.button_operation_sub()
                 self.button_operation_mul()
                 self.button_operation_div()
                 self.button_operation_equal()
+                self.boutton_operation_remains()
+
+                #other
                 self.button_operation_clear()
+                self.button_point()
+
+                #mode
+                self.button_change_mode_fix()
+                self.button_change_mode_color()
+
+
             textbox.draw()
 
             pygame.display.flip()  # update the display
@@ -185,15 +222,15 @@ class Button:
                 pygame.draw.rect(self.screen, '#9E9E9E', self.top_rect, 0, 3)
                 self.screen.blit(self.text_surf, self.text_rect)
 
-    def draw_equal_button(self):
-        pygame.draw.rect(self.screen, 'Cyan', self.top_rect, 0, 3)
+    def draw_operation_button(self):
+        pygame.draw.rect(self.screen, 'Orange', self.top_rect, 0, 3)
         self.screen.blit(self.text_surf, self.text_rect)
         if self.top_rect.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0]:
-                pygame.draw.rect(self.screen, '#0072EB', self.top_rect, 3, 3)
+                pygame.draw.rect(self.screen, '#f9bc60', self.top_rect, 3, 3)
                 self.screen.blit(self.text_surf, self.text_rect)
             else:
-                pygame.draw.rect(self.screen, '#00B6EB', self.top_rect, 0, 3)
+                pygame.draw.rect(self.screen, '#f9bc60', self.top_rect, 0, 3)
                 self.screen.blit(self.text_surf, self.text_rect)
 
     def check_click(self):
@@ -207,17 +244,21 @@ class Button:
                     self.pressed = False
 
 
-class Text_Box:
+class TextBox:
     def __init__(self, screen):
         self.screen = screen
+        self.mode = 'None'
         self.text = ''
-        self.text_surf = gui_font.render(self.text, True, 'Black')
+        self.text_surf = gui_font.render(self.text, True, 'White')
+        self.text_mode = mode_font.render(self.mode, True, 'White')
         self.text_rect = self.text_surf.get_rect(center=(210, 50))
 
     def draw(self):
-        pygame.draw.rect(self.screen, '#285DCD', (0, 0, 420, 100), 0, 3)
+        pygame.draw.rect(self.screen, 'Black', (0, 0, 425, 115), 0, 0)
         self.screen.blit(self.text_surf, self.text_rect)
+        self.screen.blit(self.text_mode, (3, 3))
 
 
 pygame.init()
 gui_font = pygame.font.Font(None, 50)
+mode_font = pygame.font.Font(None, 25)
