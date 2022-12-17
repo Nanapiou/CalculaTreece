@@ -297,10 +297,13 @@ class TextBox:
         # elif self.text.count('/') == 1:
         #     result = float(self.text.split('/')[0]) / float(self.text.split('/')[1])
         # return result
-        lis = infix_automaton.build(self.text)
-        clean_list_to_infix(lis)
-        tree = infix_list_to_tree(lis)
-        return calculate_tree(tree)
+        try:
+            lis = infix_automaton.build(self.text)
+            clean_list_to_infix(lis)
+            tree = infix_list_to_tree(lis)
+            return calculate_tree(tree)
+        except SyntaxError | TypeError:
+            return "Error"
 
 
 pygame.init()
