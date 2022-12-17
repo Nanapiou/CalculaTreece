@@ -46,6 +46,8 @@ def infix_list_to_tree(lis: List[str | Number | BinaryTree]) -> BinaryTree:
     :param lis:
     :return:
     """
+    if len(lis) == 0:
+        return BinaryTree(0)
     for i in range(len(lis)):
         e = lis[i]
         if isinstance(e, list):
