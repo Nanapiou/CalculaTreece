@@ -114,7 +114,7 @@ class App:
             self.numberstring += "-"
 
     def button_operation_mul(self):
-        button_mul = Button("X", 100, 75, (320, 200), self.screen)
+        button_mul = Button("*", 100, 75, (320, 200), self.screen)
         button_mul.draw_operation_button()
         if button_mul.check_click():
             self.numberstring += "*"
@@ -130,7 +130,11 @@ class App:
         button_equal.draw_operation_button()
         if button_equal.check_click():
             self.textbox.calculate()
-            self.numberstring = f'{self.textbox.calculate()}'
+            # convert into an integer if there is no decimal
+            if self.textbox.calculate() % 1 == 0:
+                self.numberstring = f'{int(self.textbox.calculate())}'
+            else:
+                self.numberstring = f'{self.textbox.calculate()}'
 
     def button_point(self):
         button_point = Button(".", 100, 75, (215, 440), self.screen)
@@ -253,19 +257,43 @@ class TextBox:
         # if text is too long, cut it
 
     def calculate(self):
-        for j in range(len(self.text)):
-            if self.text[j] == '+':
-                return float(self.text[:j]) + float(self.text[j + 1:])
-            elif self.text[j] == '-':
-                return float(self.text[:j]) - float(self.text[j + 1:])
-            elif self.text[j] == '*':
-                return float(self.text[:j]) * float(self.text[j + 1:])
-            elif self.text[j] == '/':
-                return float(self.text[:j]) / float(self.text[j + 1:])
-            elif self.text[j] == '%':
-                return float(self.text[:j]) % float(self.text[j + 1:])
+        # calculate the result and if there is more than one operation, calculate it
+        result = 0
+        if self.text.count('+') > 1:
+            for c, i in enumerate(self.text.split('+')):
+                if c == 0:
+                    result += float(i)
+                else:
+                    result += float(i)
+        elif self.text.count('+') == 1:
+            result = float(self.text.split('+')[0]) + float(self.text.split('+')[1])
+        elif self.text.count('-') > 1:
+            for c, i in enumerate(self.text.split('-')):
+                if c == 0:
+                    result += float(i)
+                else:
+                    result -= float(i)
+        elif self.text.count('-') == 1:
+            result = float(self.text.split('-')[0]) - float(self.text.split('-')[1])
+        elif self.text.count('*') > 1:
+            for c, i in enumerate(self.text.split('*')):
+                if c == 0:
+                    result += float(i)
+                else:
+                    result *= float(i)
+        elif self.text.count('*') == 1:
+            result = float(self.text.split('*')[0]) * float(self.text.split('*')[1])
+        elif self.text.count('/') > 1:
+            for c, i in enumerate(self.text.split('/')):
+                if c == 0:
+                    result += float(i)
+                else:
+                    result /= float(i)
+        elif self.text.count('/') == 1:
+            result = float(self.text.split('/')[0]) / float(self.text.split('/')[1])
+        return result
 
 
 pygame.init()
 gui_font = pygame.font.Font(None, 50)
-mode_font = pygame.font.Font(None, 60)
+mode_font = pygame.font.Font("C:\Windows\Fonts\micross.ttf", 50)
