@@ -4,12 +4,11 @@ The main entry
 import pygame
 from src.Graphique.app import App
 
+pygame.init()
+
 # Window size
 WIDTH = 425
 HEIGHT = 520
-
-# Init pygame
-pygame.init()
 
 # Create the window
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
