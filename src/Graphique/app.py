@@ -96,15 +96,15 @@ class App:
         height_part_count = len(self.buttons_mat) + 1
         width_part_count = len(self.buttons_mat[0])
 
-        # Calculate the width and height of each screen part based on the screen size and number of rows and columns
-        self.parts_width = (screen_width - self.padding * (width_part_count + 1)) // width_part_count
+        # Calculate the width and height of the buttons and there is no padding on the right and bottom
+        self.parts_width = (screen_width - self.padding * (width_part_count + 1)) / width_part_count
         self.parts_height = (screen_height - self.padding * (height_part_count + 1)) // height_part_count
 
         # Loop through each button and update its position and size based on the calculated width and height of the
         # screen parts
         for i, button in enumerate(self.buttons):
-            button.x = self.padding + i % 4 * (self.parts_width + self.padding)
-            button.y = self.parts_height + self.padding * 2 + i // 4 * (self.parts_height + self.padding)
+            button.x = self.padding + i % width_part_count * (self.parts_width + self.padding)
+            button.y = self.parts_height + self.padding * 2 + i // width_part_count * (self.parts_height + self.padding)
             button.width = self.parts_width
             button.height = self.parts_height
             button.rect = pygame.Rect(button.x, button.y, button.width, button.height)
