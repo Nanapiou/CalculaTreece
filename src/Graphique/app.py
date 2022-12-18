@@ -190,11 +190,10 @@ class App:
              ("=", (255, 139, 61), (255, 157, 92)), ("/", (255, 139, 61), (255, 157, 92))]
         ]
         gui_font = pygame.font.Font(None, 50)
-        self.buttons: List[List[Button]] = []
+        self.buttons: List[Button] = []
         for i, row in enumerate(self.buttons_mat):
-            self.buttons.append([])
             for j, (value, bg_color, hover_color) in enumerate(row):
-                self.buttons[i].append(
+                self.buttons.append(
                     Button(0, 0, 0, 0, value, value, bg_color, hover_color, (0, 0, 0), self.button_callback,
                            self.screen, gui_font))
         self.resize_parts()
