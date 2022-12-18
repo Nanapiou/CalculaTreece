@@ -170,6 +170,7 @@ class App:
                                 (127, 127, 127), (0, 0, 0))
 
         # Creating buttons
+        # Structure of each tuple: (text/value, bg_color, bg_hover_color)
         self.buttons_mat: List[List[Tuple[str, Color, Color]]] = [
             [("C", (255, 139, 61), (255, 157, 92)), ("(", (255, 139, 61), (255, 157, 92)),
              (")", (255, 139, 61), (255, 157, 92)), ("DEL", (255, 139, 61), (255, 157, 92))],
@@ -197,6 +198,12 @@ class App:
         Return the screen size
         """
         return self.screen.get_size()
+
+    def is_fullscreen(self):
+        """
+        Return True if the app is fullscreen
+        """
+        return self.screen.get_flags() & pygame.FULLSCREEN or self.desktop_size == self.screen_size
 
     def resize_parts(self, screen_size: Tuple[int, int] | None = None):
         """
