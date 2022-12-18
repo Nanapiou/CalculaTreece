@@ -151,7 +151,7 @@ class App:
         pygame.display.set_caption(self.title)
 
         # Set the icon
-        self.icon = pygame.image.load("Graphique/Assets/icon.ico")
+        self.icon = pygame.image.load("Graphique/Assets/icon.png")
         pygame.display.set_icon(self.icon)
 
         # Set the running flag to True
