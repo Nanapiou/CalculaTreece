@@ -170,7 +170,7 @@ class App:
                                 (127, 127, 127), (0, 0, 0))
 
         # Creating buttons
-        buttons_mat: List[List[Tuple[str, Color, Color]]] = [
+        self.buttons_mat: List[List[Tuple[str, Color, Color]]] = [
             [("C", (255, 139, 61), (255, 157, 92)), ("(", (255, 139, 61), (255, 157, 92)),
              (")", (255, 139, 61), (255, 157, 92)), ("DEL", (255, 139, 61), (255, 157, 92))],
             [("7", (100, 100, 100), (127, 127, 127)), ("8", (100, 100, 100), (127, 127, 127)),
@@ -184,19 +184,12 @@ class App:
         ]
         gui_font = pygame.font.Font(None, 50)
         self.buttons: List[Button] = []
-        for i, row in enumerate(buttons_mat):
+        for i, row in enumerate(self.buttons_mat):
             for j, (value, bg_color, hover_color) in enumerate(row):
                 self.buttons.append(
                     Button(0, 0, 0, 0, value, value, bg_color, hover_color, (0, 0, 0), self.button_callback,
                            self.screen, gui_font))
         self.resize_parts()
-        # for i, row in enumerate(buttons_mat):
-        #     for j, (value, bg_color, hover_color) in enumerate(row):
-        #         self.buttons.append(
-        #             Button(self.padding + j * (self.parts_width + self.padding),
-        #                    self.parts_height + self.padding * 2 + i * (self.parts_height + self.padding),
-        #                    self.parts_width, self.parts_height, value, value, bg_color, hover_color, (0, 0, 0),
-        #                    self.button_callback, self.screen, gui_font))
 
     @property
     def screen_size(self):
@@ -210,8 +203,11 @@ class App:
         Resize the parts of the screen (buttons and text box)
         """
         screen_width, screen_height = self.screen_size if screen_size is None else self.screen_size
-        self.parts_width = screen_width // 4 - self.padding * 5 // 4
-        self.parts_height = (screen_height - self.padding * 6) // 6
+        print(screen_width, screen_height)
+        height_part_count = len(self.buttons_mat) + 1
+        width_part_count = len(self.buttons_mat[0])
+        self.parts_width = (screen_width - self.padding * (width_part_count + 1)) // width_part_count
+        self.parts_height = (screen_height - self.padding * (height_part_count + 1)) // height_part_count
         for i, button in enumerate(self.buttons):
             button.x = self.padding + i % 4 * (self.parts_width + self.padding)
             button.y = self.text_box.height + self.padding * 2 + i // 4 * (self.parts_height + self.padding)
@@ -222,6 +218,7 @@ class App:
         self.text_box.y = self.padding
         self.text_box.width = screen_width - self.padding * 2
         self.text_box.height = self.parts_height
+        self.text_box.write_value(self.text_box.text)
 
     def button_callback(self, button: Button):
         """
