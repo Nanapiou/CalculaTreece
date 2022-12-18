@@ -16,9 +16,8 @@ class Button:
     A button class
     """
 
-    def __init__(self, x: int, y: int, width: int, height: int, text: str, value: str,
-                 box_color: Color, box_hover_color: Color, text_color: Color, callback: Callable,
-                 screen: pygame.Surface,
+    def __init__(self, x: int, y: int, width: int, height: int, text: str, value: str, box_color: Color,
+                 box_hover_color: Color, text_color: Color, callback: Callable, screen: pygame.Surface,
                  font: pygame.font.Font):
         self.x = x
         self.y = y
@@ -35,6 +34,10 @@ class Button:
         self.rect = pygame.Rect(x, y, width, height)
 
         self.clicked = False
+
+    def __repr__(self):
+        return f"Button({self.x}, {self.y}, {self.width}, {self.height}, {self.text}, {self.value}, {self.box_color},\
+         {self.box_hover_color}, {self.text_color}, {self.callback}, {self.screen}, {self.font})"
 
     @property
     def mouse_hover(self) -> bool:
@@ -85,6 +88,9 @@ class TextBox:
         self.text = ''
         self.text_surf = font.render(self.text, True, self.text_color)
         self.text_rect = self.text_surf.get_rect(center=(x + width // 2, y + height // 2))
+
+    def __repr__(self):
+        return self.text
 
     def draw(self):
         """
@@ -184,10 +190,11 @@ class App:
              ("=", (255, 139, 61), (255, 157, 92)), ("/", (255, 139, 61), (255, 157, 92))]
         ]
         gui_font = pygame.font.Font(None, 50)
-        self.buttons: List[Button] = []
+        self.buttons: List[List[Button]] = []
         for i, row in enumerate(self.buttons_mat):
+            self.buttons.append([])
             for j, (value, bg_color, hover_color) in enumerate(row):
-                self.buttons.append(
+                self.buttons[i].append(
                     Button(0, 0, 0, 0, value, value, bg_color, hover_color, (0, 0, 0), self.button_callback,
                            self.screen, gui_font))
         self.resize_parts()
