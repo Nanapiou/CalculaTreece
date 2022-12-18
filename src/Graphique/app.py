@@ -202,22 +202,34 @@ class App:
         """
         Resize the parts of the screen (buttons and text box)
         """
+        # If screen_size is not provided, use the screen_size attribute of the class
+        # Otherwise, use the provided screen_size
         screen_width, screen_height = self.screen_size if screen_size is None else self.screen_size
-        print(screen_width, screen_height)
+
+        # Calculate the number of rows and columns of buttons
         height_part_count = len(self.buttons_mat) + 1
         width_part_count = len(self.buttons_mat[0])
+
+        # Calculate the width and height of each screen part based on the screen size and number of rows and columns
         self.parts_width = (screen_width - self.padding * (width_part_count + 1)) // width_part_count
         self.parts_height = (screen_height - self.padding * (height_part_count + 1)) // height_part_count
+
+        # Loop through each button and update its position and size based on the calculated width and height of the
+        # screen parts
         for i, button in enumerate(self.buttons):
             button.x = self.padding + i % 4 * (self.parts_width + self.padding)
             button.y = self.text_box.height + self.padding * 2 + i // 4 * (self.parts_height + self.padding)
             button.width = self.parts_width
             button.height = self.parts_height
             button.rect = pygame.Rect(button.x, button.y, button.width, button.height)
+
+        # Update the position and size of the text box
         self.text_box.x = self.padding
         self.text_box.y = self.padding
         self.text_box.width = screen_width - self.padding * 2
         self.text_box.height = self.parts_height
+
+        # Update the text in the text box
         self.text_box.write_value(self.text_box.text)
 
     def button_callback(self, button: Button):
