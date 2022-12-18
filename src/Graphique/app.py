@@ -154,7 +154,7 @@ class App:
         """
         Handle button clicks
         """
-        print(f"Button {button.value} clicked")
+        self.text_box.write_value(self.text_box.text + button.value)
 
     def run(self):
         """
