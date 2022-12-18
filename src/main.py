@@ -18,7 +18,7 @@ gui_font = pygame.font.Font(None, 30)
 
 # Create the app
 app = App(screen)
-app.run()
+app.run()  # Launch a loop
 
 # Quit pygame
 pygame.quit()
