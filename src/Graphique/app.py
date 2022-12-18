@@ -116,6 +116,20 @@ class TextBox:
             print(e)
             return "Error"
 
+    def clean_write(self, value):
+        """
+        Write the value on the screen
+        """
+        if isinstance(value, str):
+            self.write_value(value)
+        elif isinstance(value, float):
+            if value.is_integer():
+                self.write_value(str(int(value)))
+            else:
+                self.write_value(str(value))
+        else:
+            self.write_value(str(value))
+
 
 class App:
     """
@@ -174,16 +188,7 @@ class App:
             case "x²":
                 self.text_box.write_value(self.text_box.text + "^2")
             case "=":
-                result = self.text_box.calculate()
-                if isinstance(result, str):
-                    self.text_box.write_value(result)
-                elif isinstance(result, float):
-                    if result.is_integer():
-                        self.text_box.write_value(str(int(result)))
-                    else:
-                        self.text_box.write_value(str(result))
-                else:
-                    self.text_box.write_value(str(result))
+                self.text_box.clean_write(self.text_box.calculate())
             case _:
                 self.text_box.write_value(self.text_box.text + button.value)
 
@@ -196,6 +201,50 @@ class App:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                elif event.type == pygame.KEYDOWN:
+                    match event.key:
+                        case pygame.K_ESCAPE:
+                            self.running = False
+                        case pygame.K_BACKSPACE:
+                            self.text_box.write_value(self.text_box.text[:-1])
+                        case pygame.K_RETURN | pygame.K_KP_ENTER | pygame.K_KP_EQUALS | pygame.K_EQUALS:
+                            self.text_box.clean_write(self.text_box.calculate())
+                        case pygame.K_c:
+                            self.text_box.write_value("")
+                        case pygame.K_0 | pygame.K_KP0:
+                            self.text_box.write_value(self.text_box.text + "0")
+                        case pygame.K_1 | pygame.K_KP1:
+                            self.text_box.write_value(self.text_box.text + "1")
+                        case pygame.K_2 | pygame.K_KP2:
+                            self.text_box.write_value(self.text_box.text + "2")
+                        case pygame.K_3 | pygame.K_KP3:
+                            self.text_box.write_value(self.text_box.text + "3")
+                        case pygame.K_4 | pygame.K_KP4:
+                            self.text_box.write_value(self.text_box.text + "4")
+                        case pygame.K_5 | pygame.K_KP5:
+                            self.text_box.write_value(self.text_box.text + "5")
+                        case pygame.K_6 | pygame.K_KP6:
+                            self.text_box.write_value(self.text_box.text + "6")
+                        case pygame.K_7 | pygame.K_KP7:
+                            self.text_box.write_value(self.text_box.text + "7")
+                        case pygame.K_8 | pygame.K_KP8:
+                            self.text_box.write_value(self.text_box.text + "8")
+                        case pygame.K_9 | pygame.K_KP9:
+                            self.text_box.write_value(self.text_box.text + "9")
+                        case pygame.K_PERIOD | pygame.K_KP_PERIOD:
+                            self.text_box.write_value(self.text_box.text + ".")
+                        case pygame.K_PLUS | pygame.K_KP_PLUS:
+                            self.text_box.write_value(self.text_box.text + "+")
+                        case pygame.K_MINUS | pygame.K_KP_MINUS:
+                            self.text_box.write_value(self.text_box.text + "-")
+                        case pygame.K_SLASH | pygame.K_KP_DIVIDE:
+                            self.text_box.write_value(self.text_box.text + "/")
+                        case pygame.K_KP_MULTIPLY:
+                            self.text_box.write_value(self.text_box.text + "*")
+                        case pygame.K_LEFTPAREN:
+                            self.text_box.write_value(self.text_box.text + "(")
+                        case pygame.K_RIGHTPAREN:
+                            self.text_box.write_value(self.text_box.text + ")")
                 for button in self.buttons:
                     button.handle_event(event)
 
