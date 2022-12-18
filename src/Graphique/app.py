@@ -80,22 +80,36 @@ class TextBox:
     A class to manage the text box
     """
 
-    def __init__(self, screen: pygame.Surface, x: int, y: int, width: int, height: int, font: pygame.font.Font,
+    def __init__(self, screen: pygame.Surface, x: int, y: int, width: int, height: int, font_src: str,
                  bg_color: Tuple[int, int, int], text_color: Tuple[int, int, int]):
         self.screen = screen
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.font = font
+        self.font_src = font_src
         self.bg_color = bg_color
         self.text_color = text_color
         self.text = ''
-        self.text_surf = font.render(self.text, True, self.text_color)
+        self.text_surf = self.font.render(self.text, True, self.text_color)
         self.text_rect = self.text_surf.get_rect(center=(x + width // 2, y + height // 2))
 
     def __repr__(self):
         return self.text
+
+    @property
+    def font(self):
+        """
+        Return the font of the textbox
+        """
+        return pygame.font.Font(self.font_src, self.height // 2)
+
+    def rewrite_text(self):
+        """
+        Rewrite the text on the screen
+        """
+        self.text_surf = self.font.render(self.text, True, self.text_color)
+        self.text_rect = self.text_surf.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
 
     def draw(self):
         """
@@ -177,7 +191,7 @@ class App:
         self.padding = 10
 
         # Create the text box
-        self.text_box = TextBox(self.screen, 0, 0, 0, 0, pygame.font.Font("C:\Windows\Fonts\micross.ttf", 50),
+        self.text_box = TextBox(self.screen, 0, 0, 0, 0, "C:\Windows\Fonts\micross.ttf",
                                 (127, 127, 127), (0, 0, 0))
 
         # Creating buttons
@@ -246,8 +260,8 @@ class App:
         self.text_box.width = screen_width - self.padding * 2
         self.text_box.height = self.parts_height
 
-        # Update the text in the text box
-        self.text_box.write_value(self.text_box.text)
+        # Rewrite the text box value
+        self.text_box.rewrite_text()
 
     def button_callback(self, button: Button):
         """
