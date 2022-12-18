@@ -231,20 +231,16 @@ class App:
                             self.text_box.write_value(self.text_box.text + "8")
                         case pygame.K_9 | pygame.K_KP9:
                             self.text_box.write_value(self.text_box.text + "9")
-                        case pygame.K_PERIOD | pygame.K_KP_PERIOD:
+                        case pygame.K_KP_PERIOD:
                             self.text_box.write_value(self.text_box.text + ".")
-                        case pygame.K_PLUS | pygame.K_KP_PLUS:
+                        case pygame.K_KP_PLUS:
                             self.text_box.write_value(self.text_box.text + "+")
-                        case pygame.K_MINUS | pygame.K_KP_MINUS:
+                        case pygame.K_KP_MINUS:
                             self.text_box.write_value(self.text_box.text + "-")
-                        case pygame.K_SLASH | pygame.K_KP_DIVIDE:
+                        case pygame.K_KP_DIVIDE:
                             self.text_box.write_value(self.text_box.text + "/")
                         case pygame.K_KP_MULTIPLY:
                             self.text_box.write_value(self.text_box.text + "*")
-                        case pygame.K_LEFTPAREN:
-                            self.text_box.write_value(self.text_box.text + "(")
-                        case pygame.K_RIGHTPAREN:
-                            self.text_box.write_value(self.text_box.text + ")")
                 for button in self.buttons:
                     button.handle_event(event)
 
