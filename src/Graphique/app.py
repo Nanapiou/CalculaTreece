@@ -13,7 +13,7 @@ Color = Tuple[int, int, int] | str
 
 class Button:
     """
-    Button class, with a text, a value, and a callback (for when it's clicked)
+    A button class
     """
 
     def __init__(self, x: int, y: int, width: int, height: int, text: str, value: str,
@@ -34,6 +34,8 @@ class Button:
         self.font = font
         self.rect = pygame.Rect(x, y, width, height)
 
+        self.clicked = False
+
     @property
     def mouse_hover(self) -> bool:
         """
@@ -45,7 +47,7 @@ class Button:
         """
         Draw the button on the screen
         """
-        self.screen.fill(self.box_hover_color if self.mouse_hover else self.box_color, self.rect)
+        self.screen.fill(self.box_hover_color if self.mouse_hover and not self.clicked else self.box_color, self.rect)
         text_surface = self.font.render(self.text, True, self.text_color)
         text_rect = text_surface.get_rect()
         text_rect.center = (self.x + self.width / 2, self.y + self.height / 2)
@@ -60,6 +62,9 @@ class Button:
             if self.rect.collidepoint(event.pos):
                 # Call the button's callback function
                 self.callback(self)
+                self.clicked = True
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            self.clicked = False
 
 
 class TextBox:
@@ -143,7 +148,7 @@ class App:
                                 (127, 127, 127), (0, 0, 0))
 
         # Creating buttons
-        gui_font = pygame.font.SysFont(None, 20)
+        gui_font = pygame.font.Font(None, 20)
         self.buttons: List[Button] = []
         for i in range(10):
             self.buttons.append(
