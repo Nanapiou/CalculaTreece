@@ -155,7 +155,7 @@ class App:
             ["1", "2", "3", "*"],
             [".", "0", "=", "/"]
         ]
-        gui_font = pygame.font.Font(None, 20)
+        gui_font = pygame.font.Font(None, 50)
         self.buttons: List[Button] = []
         for i, row in enumerate(buttons_mat):
             for j, value in enumerate(row):
@@ -171,6 +171,8 @@ class App:
                 self.text_box.write_value("")
             case "DEL":
                 self.text_box.write_value(self.text_box.text[:-1])
+            case "x²":
+                self.text_box.write_value(self.text_box.text + "^2")
             case "=":
                 result = self.text_box.calculate()
                 if isinstance(result, str):
@@ -200,8 +202,8 @@ class App:
             # Update the screen
             self.update()
 
-            # Limit the frame rate to 60 FPS
-            self.clock.tick(60)
+            # Limit the frame rate to 40 FPS
+            self.clock.tick(40)
 
     def update(self):
         """
