@@ -241,8 +241,6 @@ class App:
                 self.text_box.write_value("")
             case "DEL":
                 self.text_box.write_value(self.text_box.text[:-1])
-            case "x²":
-                self.text_box.write_value(self.text_box.text + "^2")
             case "=":
                 self.text_box.clean_write(self.text_box.calculate())
             case _:
