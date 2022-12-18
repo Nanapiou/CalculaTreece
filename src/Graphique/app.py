@@ -147,6 +147,7 @@ class App:
         self.text_box = TextBox(self.screen, 10, 10, 390, 100, pygame.font.Font("C:\Windows\Fonts\micross.ttf", 50),
                                 (127, 127, 127), (0, 0, 0))
 
+        # Creating buttons
         buttons_mat = [
             ["C", "(", ")", "DEL"],
             ["7", "8", "9", "+"],
@@ -154,7 +155,6 @@ class App:
             ["1", "2", "3", "*"],
             [".", "0", "=", "/"]
         ]
-        # Creating buttons
         gui_font = pygame.font.Font(None, 20)
         self.buttons: List[Button] = []
         for i, row in enumerate(buttons_mat):
@@ -166,7 +166,24 @@ class App:
         """
         Handle button clicks
         """
-        self.text_box.write_value(self.text_box.text + button.value)
+        match button.value:
+            case "C":
+                self.text_box.write_value("")
+            case "DEL":
+                self.text_box.write_value(self.text_box.text[:-1])
+            case "=":
+                result = self.text_box.calculate()
+                if isinstance(result, str):
+                    self.text_box.write_value(result)
+                elif isinstance(result, float):
+                    if result.is_integer():
+                        self.text_box.write_value(str(int(result)))
+                    else:
+                        self.text_box.write_value(str(result))
+                else:
+                    self.text_box.write_value(str(result))
+            case _:
+                self.text_box.write_value(self.text_box.text + button.value)
 
     def run(self):
         """
