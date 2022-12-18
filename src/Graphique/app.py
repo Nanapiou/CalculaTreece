@@ -47,7 +47,7 @@ class Button:
         """
         Draw the button on the screen
         """
-        self.screen.fill(self.box_hover_color if self.mouse_hover and not self.clicked else self.box_color, self.rect)
+        pygame.draw.rect(self.screen, self.box_color if not self.mouse_hover else self.box_hover_color, self.rect, 0, 3)
         text_surface = self.font.render(self.text, True, self.text_color)
         text_rect = text_surface.get_rect()
         text_rect.center = (self.x + self.width / 2, self.y + self.height / 2)
@@ -90,7 +90,7 @@ class TextBox:
         """
         Draw the textbox
         """
-        pygame.draw.rect(self.screen, self.bg_color, (self.x, self.y, self.width, self.height), 0, 0)
+        pygame.draw.rect(self.screen, self.bg_color, (self.x, self.y, self.width, self.height), 0, 2)
         self.screen.blit(self.text_surf, self.text_rect)
 
     def write_value(self, value):
@@ -162,18 +162,17 @@ class App:
                                 (127, 127, 127), (0, 0, 0))
 
         # Creating buttons
-        # Structure of button_mat: List[List[Tuple[str, Color, Color]]]
-        buttons_mat = [
-            [("C", (255, 102, 0), (255, 139, 61)), ("(", (255, 102, 0), (255, 139, 61)),
-             (")", (255, 102, 0), (255, 139, 61)), ("DEL", (255, 102, 0), (255, 139, 61))],
+        buttons_mat: List[List[Tuple[str, Color, Color]]] = [
+            [("C", (255, 139, 61), (255, 157, 92)), ("(", (255, 139, 61), (255, 157, 92)),
+             (")", (255, 139, 61), (255, 157, 92)), ("DEL", (255, 139, 61), (255, 157, 92))],
             [("7", (100, 100, 100), (127, 127, 127)), ("8", (100, 100, 100), (127, 127, 127)),
-                ("9", (100, 100, 100), (127, 127, 127)), ("^", (255, 102, 0), (255, 139, 61))],
+                ("9", (100, 100, 100), (127, 127, 127)), ("^", (255, 139, 61), (255, 157, 92))],
             [("4", (100, 100, 100), (127, 127, 127)), ("5", (100, 100, 100), (127, 127, 127)),
-                ("6", (100, 100, 100), (127, 127, 127)), ("-", (255, 102, 0), (255, 139, 61))],
+                ("6", (100, 100, 100), (127, 127, 127)), ("-", (255, 139, 61), (255, 157, 92))],
             [("1", (100, 100, 100), (127, 127, 127)), ("2", (100, 100, 100), (127, 127, 127)),
-                ("3", (100, 100, 100), (127, 127, 127)), ("*", (255, 102, 0), (255, 139, 61))],
-            [(".", (255, 102, 0), (255, 139, 61)), ("0", (100, 100, 100), (127, 127, 127)),
-                ("=", (255, 102, 0), (255, 139, 61)), ("/", (255, 102, 0), (255, 139, 61))]
+                ("3", (100, 100, 100), (127, 127, 127)), ("*", (255, 139, 61), (255, 157, 92))],
+            [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
+                ("=", (255, 139, 61), (255, 157, 92)), ("/", (255, 139, 61), (255, 157, 92))]
         ]
         gui_font = pygame.font.Font(None, 50)
         self.buttons: List[Button] = []
