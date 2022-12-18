@@ -5,6 +5,7 @@ import pygame
 from typing import Tuple, List
 from src.Graphique.button import Button
 from src.Graphique.text_box import TextBox
+
 Color = Tuple[int, int, int] | str
 
 
@@ -42,9 +43,8 @@ class App:
         self.parts_height = 90
         self.padding = 10
 
-        # Create the text box
-        self.text_box = TextBox(self.screen, 0, 0, 0, 0, "C:\Windows\Fonts\micross.ttf",
-                                (127, 127, 127), (0, 0, 0))
+        # Create the text box, at 0, 0, with a width and height of 0 (just to initialize it)
+        self.text_box = TextBox(self.screen, 0, 0, 0, 0, "C:\Windows\Fonts\micross.ttf", (127, 127, 127), (0, 0, 0))
 
         # Creating buttons
         # Structure of each tuple: (text/value, bg_color, bg_hover_color)
@@ -61,11 +61,14 @@ class App:
              ("=", (255, 139, 61), (255, 157, 92)), ("/", (255, 139, 61), (255, 157, 92))]
         ]
         self.buttons: List[Button] = []
-        for i, row in enumerate(self.buttons_mat):
-            for j, (value, bg_color, hover_color) in enumerate(row):
+        for row in self.buttons_mat:
+            for value, bg_color, hover_color in row:
+                # Adding a button at 0, 0 with a width and height of 0 (just to initialize the button)
                 self.buttons.append(
                     Button(0, 0, 0, 0, value, value, bg_color, hover_color, (0, 0, 0), self.button_callback,
                            self.screen))
+
+        # Resize the parts of the screen
         self.resize_parts()
 
     @property
@@ -87,7 +90,7 @@ class App:
         """
         # If screen_size is not provided, use the screen_size attribute of the class
         # Otherwise, use the provided screen_size
-        screen_width, screen_height = self.screen_size if screen_size is None else self.screen_size
+        screen_width, screen_height = screen_size or self.screen_size
 
         # Calculate the number of rows and columns of buttons
         height_part_count = len(self.buttons_mat) + 1
