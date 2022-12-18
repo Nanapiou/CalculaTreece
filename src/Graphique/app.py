@@ -144,16 +144,23 @@ class App:
         self.running = True
 
         # Create the text box
-        self.text_box = TextBox(self.screen, 10, 10, 300, 100, pygame.font.SysFont('Arial', 30), (127, 127, 127),
-                                (0, 0, 0))
+        self.text_box = TextBox(self.screen, 10, 10, 390, 100, pygame.font.Font("C:\Windows\Fonts\micross.ttf", 50),
+                                (127, 127, 127), (0, 0, 0))
 
+        buttons_mat = [
+            ["C", "(", ")", "DEL"],
+            ["7", "8", "9", "+"],
+            ["4", "5", "6", "-"],
+            ["1", "2", "3", "*"],
+            [".", "0", "=", "/"]
+        ]
         # Creating buttons
         gui_font = pygame.font.Font(None, 20)
         self.buttons: List[Button] = []
-        for i in range(10):
-            self.buttons.append(
-                Button(10 + 100 * (i % 3), 135 + 100 * (i // 3), 90, 75, str(i), str(i), (127, 127, 127),
-                       (255, 255, 255), (0, 0, 0), self.button_callback, self.screen, gui_font))
+        for i, row in enumerate(buttons_mat):
+            for j, value in enumerate(row):
+                self.buttons.append(Button(10 + j * 100, 120 + i * 100, 90, 90, value, value, (127, 127, 127),
+                                           (100, 100, 100), (0, 0, 0), self.button_callback, self.screen, gui_font))
 
     def button_callback(self, button: Button):
         """
