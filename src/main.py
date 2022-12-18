@@ -8,10 +8,10 @@ pygame.init()
 
 # Window size
 WIDTH = 410
-HEIGHT = 620
+HEIGHT = 610
 
 # Create the window
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
 # Define the font
 gui_font = pygame.font.Font(None, 30)

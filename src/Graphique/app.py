@@ -157,8 +157,16 @@ class App:
         # Set the running flag to True
         self.running = True
 
+        # Set the desktop size
+        self.desktop_size = pygame.display.get_desktop_sizes()[0]
+
+        # Set part sizes
+        self.parts_width = 90
+        self.parts_height = 90
+        self.padding = 10
+
         # Create the text box
-        self.text_box = TextBox(self.screen, 10, 10, 390, 100, pygame.font.Font("C:\Windows\Fonts\micross.ttf", 50),
+        self.text_box = TextBox(self.screen, 0, 0, 0, 0, pygame.font.Font("C:\Windows\Fonts\micross.ttf", 50),
                                 (127, 127, 127), (0, 0, 0))
 
         # Creating buttons
@@ -166,20 +174,54 @@ class App:
             [("C", (255, 139, 61), (255, 157, 92)), ("(", (255, 139, 61), (255, 157, 92)),
              (")", (255, 139, 61), (255, 157, 92)), ("DEL", (255, 139, 61), (255, 157, 92))],
             [("7", (100, 100, 100), (127, 127, 127)), ("8", (100, 100, 100), (127, 127, 127)),
-                ("9", (100, 100, 100), (127, 127, 127)), ("^", (255, 139, 61), (255, 157, 92))],
+             ("9", (100, 100, 100), (127, 127, 127)), ("+", (255, 139, 61), (255, 157, 92))],
             [("4", (100, 100, 100), (127, 127, 127)), ("5", (100, 100, 100), (127, 127, 127)),
-                ("6", (100, 100, 100), (127, 127, 127)), ("-", (255, 139, 61), (255, 157, 92))],
+             ("6", (100, 100, 100), (127, 127, 127)), ("-", (255, 139, 61), (255, 157, 92))],
             [("1", (100, 100, 100), (127, 127, 127)), ("2", (100, 100, 100), (127, 127, 127)),
-                ("3", (100, 100, 100), (127, 127, 127)), ("*", (255, 139, 61), (255, 157, 92))],
+             ("3", (100, 100, 100), (127, 127, 127)), ("*", (255, 139, 61), (255, 157, 92))],
             [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
-                ("=", (255, 139, 61), (255, 157, 92)), ("/", (255, 139, 61), (255, 157, 92))]
+             ("=", (255, 139, 61), (255, 157, 92)), ("/", (255, 139, 61), (255, 157, 92))]
         ]
         gui_font = pygame.font.Font(None, 50)
         self.buttons: List[Button] = []
         for i, row in enumerate(buttons_mat):
-            for j, (value, bg, hover) in enumerate(row):
-                self.buttons.append(Button(10 + j * 100, 120 + i * 100, 90, 90, value, value, bg,
-                                           hover, (0, 0, 0), self.button_callback, self.screen, gui_font))
+            for j, (value, bg_color, hover_color) in enumerate(row):
+                self.buttons.append(
+                    Button(0, 0, 0, 0, value, value, bg_color, hover_color, (0, 0, 0), self.button_callback,
+                           self.screen, gui_font))
+        self.resize_parts()
+        # for i, row in enumerate(buttons_mat):
+        #     for j, (value, bg_color, hover_color) in enumerate(row):
+        #         self.buttons.append(
+        #             Button(self.padding + j * (self.parts_width + self.padding),
+        #                    self.parts_height + self.padding * 2 + i * (self.parts_height + self.padding),
+        #                    self.parts_width, self.parts_height, value, value, bg_color, hover_color, (0, 0, 0),
+        #                    self.button_callback, self.screen, gui_font))
+
+    @property
+    def screen_size(self):
+        """
+        Return the screen size
+        """
+        return self.screen.get_size()
+
+    def resize_parts(self, screen_size: Tuple[int, int] | None = None):
+        """
+        Resize the parts of the screen (buttons and text box)
+        """
+        screen_width, screen_height = self.screen_size if screen_size is None else self.screen_size
+        self.parts_width = screen_width // 4 - self.padding * 5 // 4
+        self.parts_height = (screen_height - self.padding * 6) // 6
+        for i, button in enumerate(self.buttons):
+            button.x = self.padding + i % 4 * (self.parts_width + self.padding)
+            button.y = self.text_box.height + self.padding * 2 + i // 4 * (self.parts_height + self.padding)
+            button.width = self.parts_width
+            button.height = self.parts_height
+            button.rect = pygame.Rect(button.x, button.y, button.width, button.height)
+        self.text_box.x = self.padding
+        self.text_box.y = self.padding
+        self.text_box.width = screen_width - self.padding * 2
+        self.text_box.height = self.parts_height
 
     def button_callback(self, button: Button):
         """
@@ -246,6 +288,8 @@ class App:
                             self.text_box.write_value(self.text_box.text + "/")
                         case pygame.K_KP_MULTIPLY:
                             self.text_box.write_value(self.text_box.text + "*")
+                elif event.type == pygame.VIDEORESIZE:
+                    self.resize_parts((event.w, event.h))
                 for button in self.buttons:
                     button.handle_event(event)
 
