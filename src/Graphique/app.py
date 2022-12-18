@@ -139,7 +139,7 @@ class App:
         self.running = True
 
         # Create the text box
-        self.text_box = TextBox(self.screen, 10, 10, 300, 100, pygame.font.Font("C:\Windows\Fonts\micross.ttf", 50),
+        self.text_box = TextBox(self.screen, 10, 10, 405, 100, pygame.font.Font("C:\Windows\Fonts\micross.ttf", 50),
                                 (127, 127, 127), (0, 0, 0))
 
         # Creating buttons
