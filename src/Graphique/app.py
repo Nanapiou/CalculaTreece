@@ -147,8 +147,8 @@ class App:
         self.buttons: List[Button] = []
         for i in range(10):
             self.buttons.append(
-                Button(10 + 50 * (i % 5), 120 + 50 * (i // 5), 40, 40, str(i), str(i), (127, 127, 127), (255, 255, 255),
-                       (0, 0, 0), self.button_callback, self.screen, gui_font))
+                Button(10 + 100 * (i % 3), 135 + 100 * (i // 3), 90, 75, str(i), str(i), (127, 127, 127),
+                       (255, 255, 255), (0, 0, 0), self.button_callback, self.screen, gui_font))
 
     def button_callback(self, button: Button):
         """
