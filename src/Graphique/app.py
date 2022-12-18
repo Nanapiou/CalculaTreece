@@ -17,8 +17,7 @@ class Button:
     """
 
     def __init__(self, x: int, y: int, width: int, height: int, text: str, value: str, box_color: Color,
-                 box_hover_color: Color, text_color: Color, callback: Callable, screen: pygame.Surface,
-                 font: pygame.font.Font):
+                 box_hover_color: Color, text_color: Color, callback: Callable, screen: pygame.Surface):
         self.x = x
         self.y = y
         self.width = width
@@ -30,7 +29,6 @@ class Button:
         self.text_color = text_color
         self.callback = callback
         self.screen = screen
-        self.font = font
         self.rect = pygame.Rect(x, y, width, height)
 
         self.clicked = False
@@ -38,6 +36,13 @@ class Button:
     def __repr__(self):
         return f"Button({self.x}, {self.y}, {self.width}, {self.height}, {self.text}, {self.value}, {self.box_color},\
          {self.box_hover_color}, {self.text_color}, {self.callback}, {self.screen}, {self.font})"
+
+    @property
+    def font(self):
+        """
+        Return the font of the button
+        """
+        return pygame.font.Font(None, self.height // 2)
 
     @property
     def mouse_hover(self) -> bool:
@@ -189,13 +194,12 @@ class App:
             [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
              ("=", (255, 139, 61), (255, 157, 92)), ("/", (255, 139, 61), (255, 157, 92))]
         ]
-        gui_font = pygame.font.Font(None, 50)
         self.buttons: List[Button] = []
         for i, row in enumerate(self.buttons_mat):
             for j, (value, bg_color, hover_color) in enumerate(row):
                 self.buttons.append(
                     Button(0, 0, 0, 0, value, value, bg_color, hover_color, (0, 0, 0), self.button_callback,
-                           self.screen, gui_font))
+                           self.screen))
         self.resize_parts()
 
     @property
