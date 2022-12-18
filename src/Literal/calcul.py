@@ -1,13 +1,13 @@
 import sympy as sp
+
 sp.init_printing(use_latex=True)
 
 
-class equation:
+class Equation:
 
     def __init__(self, equation):
         self.equation = equation
         self.x = sp.symbols(['x'])
-
 
     def __str__(self):
         return f'{self.x[0]} = {self.solution[0]}'
@@ -22,6 +22,3 @@ if __name__ == '__main__':
     equation1 = equation('2*(x+1) +2')
     print(equation1.solution())
     print(equation1)
-
-
-
