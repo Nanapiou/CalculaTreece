@@ -225,7 +225,7 @@ class App:
         # screen parts
         for i, button in enumerate(self.buttons):
             button.x = self.padding + i % 4 * (self.parts_width + self.padding)
-            button.y = self.text_box.height + self.padding * 2 + i // 4 * (self.parts_height + self.padding)
+            button.y = self.parts_height + self.padding * 2 + i // 4 * (self.parts_height + self.padding)
             button.width = self.parts_width
             button.height = self.parts_height
             button.rect = pygame.Rect(button.x, button.y, button.width, button.height)
