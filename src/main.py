@@ -7,8 +7,8 @@ from src.Graphique.app import App
 pygame.init()
 
 # Window size
-WIDTH = 410
-HEIGHT = 610
+WIDTH = 450
+HEIGHT = 670
 
 # Create the window
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)

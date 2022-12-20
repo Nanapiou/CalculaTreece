@@ -42,8 +42,8 @@ class App:
         self.default_size = screen.get_size()
 
         # Set part sizes
-        self.parts_width = 90
-        self.parts_height = 90
+        self.parts_width = 100
+        self.parts_height = 100
         self.padding = 10
 
         # Create the text box, at 0, 0, with a width and height of 0 (just to initialize it)
