@@ -201,7 +201,7 @@ class App:
                         case pygame.K_F11:
                             self.toggle_fullscreen()
                 elif event.type == pygame.VIDEORESIZE:
-                    self.resize_parts((event.w, event.h))
+                    self.resize_parts(event.size)
                 for button in self.buttons:
                     button.handle_event(event)
 
