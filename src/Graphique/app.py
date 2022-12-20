@@ -38,6 +38,9 @@ class App:
         # Set the desktop size
         self.desktop_size = pygame.display.get_desktop_sizes()[0]
 
+        # Set the default screen size
+        self.default_size = screen.get_size()
+
         # Set part sizes
         self.parts_width = 90
         self.parts_height = 90
@@ -83,6 +86,20 @@ class App:
         Return True if the app is fullscreen
         """
         return self.screen.get_flags() & pygame.FULLSCREEN or self.desktop_size == self.screen_size
+
+    def toggle_fullscreen(self):
+        """
+        Toggle the fullscreen mode
+        """
+        # If the app is fullscreen, set it to windowed mode
+        if self.is_fullscreen():
+            self.screen = pygame.display.set_mode(self.default_size, pygame.RESIZABLE)
+        # Otherwise, set it to fullscreen mode
+        else:
+            self.screen = pygame.display.set_mode(self.desktop_size, pygame.FULLSCREEN | pygame.RESIZABLE)
+
+        # Resize the parts of the screen
+        self.resize_parts()
 
     def resize_parts(self, screen_size: Tuple[int, int] | None = None):
         """
@@ -181,6 +198,8 @@ class App:
                             self.text_box.write_value(self.text_box.text + "/")
                         case pygame.K_KP_MULTIPLY:
                             self.text_box.write_value(self.text_box.text + "*")
+                        case pygame.K_F11:
+                            self.toggle_fullscreen()
                 elif event.type == pygame.VIDEORESIZE:
                     self.resize_parts((event.w, event.h))
                 for button in self.buttons:
