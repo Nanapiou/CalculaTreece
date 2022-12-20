@@ -85,7 +85,7 @@ class App:
         """
         Return True if the app is fullscreen
         """
-        return self.screen.get_flags() & pygame.FULLSCREEN or self.desktop_size == self.screen_size
+        return self.screen.get_flags() & pygame.FULLSCREEN
 
     def toggle_fullscreen(self):
         """
