@@ -63,10 +63,7 @@ class TextBox:
         self.text_rect = self.text_surf.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
         # if text is too long, cut it
 
-    def calculate(self):
-        """
-        Calculate the result of the expression
-        """
+    def calculate(self): # Fonction will calculate the result of the expression
         try:
             lis = infix_automaton.build(self.text)
             clean_list_to_infix(lis)

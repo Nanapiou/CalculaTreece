@@ -5,6 +5,7 @@ import pygame
 from typing import Tuple, List
 from src.Graphique.button import Button
 from src.Graphique.text_box import TextBox
+from src.Trees.trees import BinaryTree
 
 Color = Tuple[int, int, int] | str
 
@@ -62,8 +63,8 @@ class App:
              ("3", (100, 100, 100), (127, 127, 127)), ("*", (255, 139, 61), (255, 157, 92))],
             [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
              ("=", (255, 139, 61), (255, 157, 92)), ("/", (255, 139, 61), (255, 157, 92))],
+            [("Draw", (255, 255, 0), (255, 240, 150)), ("Fullscreen", (255, 255, 0), (255, 240, 150))],
             [("²", (255, 139, 61), (255, 157, 92)), ("√", (255, 139, 61), (255, 157, 92))],
-            # ["Draw Tree", (255, 139, 61), (255, 157, 92), "Fullscreen", (255, 139, 61), (255, 157, 92)]
         ]
         self.buttons: List[Button] = []
         for row in self.buttons_mat:
@@ -148,8 +149,31 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "=":
                 self.text_box.clean_write(self.text_box.calculate())
+            case "Draw":
+                self.draw_tree()
+            case "Fullscreen":
+                self.toggle_fullscreen()
             case _:
                 self.text_box.write_value(self.text_box.text + button.value)
+
+    @staticmethod
+    def convert_into_tree():
+        """
+        Convert the text box value into a infix expession then convert it into a tree
+        """
+        # Convert the text box value into a infix expession
+        pass
+
+        # Create the tree
+        tree = BinaryTree()
+        pass
+
+    def draw_tree(self):
+        """
+        Draw the tree
+        """
+        # Clear the screen
+        pass
 
     def run(self):
         """

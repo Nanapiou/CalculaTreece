@@ -295,10 +295,10 @@ class BinaryTree(RootedTree):
             yield from (br.value for br in self.get_branches_at_height(i))
 
 
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     branch = BinaryTree('*').set_branches(BinaryTree('-').set_branches(12, 2), BinaryTree('/').set_branches(30, 3))
     t = Turtle()
     t.penup()
     t.goto(0, 350)
     branch.draw(t)
-    done()
+    done()"""
