@@ -5,7 +5,8 @@ import pygame
 from typing import Tuple, List
 from src.Graphique.button import Button
 from src.Graphique.text_box import TextBox
-from src.Trees.trees import BinaryTree
+from src.Trees.trees import RootedTree
+from turtle import *
 
 Color = Tuple[int, int, int] | str
 
@@ -157,23 +158,88 @@ class App:
                 self.text_box.write_value(self.text_box.text + button.value)
 
     @staticmethod
-    def convert_into_tree():
-        """
-        Convert the text box value into a infix expession then convert it into a tree
-        """
-        # Convert the text box value into a infix expession
-        pass
+    def convert_into_tree(expression: str) -> RootedTree:
+        # Create a stack to store the tree nodes
+        stack = []
 
-        # Create the tree
-        tree = BinaryTree()
-        pass
+        # Counter for open parentheses
+        open_parens = 0
+
+        # Temporary variable to store multi-digit numbers
+        current_number = ""
+
+        # Iterate through the expression
+        for i, token in enumerate(expression):
+            if token in ["+", "-", "*", "/", "^"]:
+                # If the token is an operator, create a new tree node with the
+                # value of the operator and add it
+                tree = RootedTree(token)
+
+                # Pop the top two elements from the stack and add them as branches
+                # to the operator tree
+                r = stack.pop()
+                l = stack.pop()
+                tree.add_branches(l, r)
+
+                # Push the operator tree back onto the stack
+                stack.append(tree)
+            elif token == "(":
+                # If the token is an opening parenthesis, create a new tree node
+                # with value "(" and add it to the stack
+                tree = RootedTree("(")
+                stack.append(tree)
+                open_parens += 1
+            elif token == ")":
+                # If the token is a closing parenthesis, pop the top element from
+                # the stack and add it as a branch to
+                r = stack.pop()
+                l = stack.pop()
+
+                # Add the right tree as a branch to the left tree
+                stack[-1].add_branches(l, r)
+                open_parens -= 1
+            else:
+                # If the token is a number, add it to the current number
+                current_number += token
+                if i == len(expression) - 1:  # End of the expression
+                    # Create a new tree node with the value of the number and add it to the stack
+                    stack.append(RootedTree(int(current_number)))
+                elif not token.isdigit():  # Next token is not a digit, meaning current number is complete
+                    # Create a new tree node with the value of the number and add it to the stack
+                    stack.append(RootedTree(int(current_number)))
+                    current_number = ""  # Reset current number
+
+        # Return the last element in the stack
+        if open_parens != 0:
+            raise ValueError("Invalid expression: mismatched parentheses")
+        if not stack:
+            raise ValueError("Invalid expression")
+        return stack[-1]
 
     def draw_tree(self):
         """
-        Draw the tree
-        """
+            Draw the tree
+            """
         # Clear the screen
-        pass
+        self.screen.fill(self.bg_color)
+
+        # Get the expression from the text box
+        expression = self.text_box.text
+
+        # Convert the expression into a tree
+        tree = self.convert_into_tree(expression)
+
+        # Create a turtle to draw the tree
+        trtl = Turtle()
+
+        # Draw the tree
+        tree.draw(trtl)
+
+        # Update the screen
+        pygame.display.flip()
+
+        # Wait for the user to close the window
+        done()
 
     def run(self):
         """
