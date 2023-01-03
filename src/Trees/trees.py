@@ -113,10 +113,13 @@ class RootedTree:
         """
         trtl.speed(10)
         self._draw_getup(trtl, -radius)
-        value_str = str(self.value)
-        if value_str:
-            trtl.write(value_str, align='center', font=('', radius, ''))
+        if hasattr(self.value, '__call__'):
+            # It's a function, draw the name
+            trtl.write(self.value.__name__, align='center', font=('', radius, ''))
+        else:
+            trtl.write(self.value, align='center', font=('', radius, ''))
         trtl.circle(radius)
+
         # A strange working, ik...
         largest = 0
         for i in range(1, self.height + 1):
@@ -129,33 +132,46 @@ class RootedTree:
         branches_count = len(self.branches)
         height = 50
         if branches_count % 2 == 0:
-            for i in range(branches_count):
-                trtl.goto(x, y - height)
-                trtl.write(self.branches[i].value, align='center', font=('', radius, ''))
-                trtl.circle(radius)
-                self.branches[i].draw(trtl, radius)
+            for i in range(branches_count // 2):
+                trtl.goto(x - branches_count // 2 * length + i * length + length // 2, y - height)
+                self.branches[i].draw(trtl)
+                self._draw_getup(trtl, radius)
+                trtl.goto(x, y)
+            for j in range(branches_count // 2, branches_count):
+                trtl.goto(x + (j - branches_count // 2 + 1) * length - length // 2, y - height)
+                self.branches[j].draw(trtl)
+                self._draw_getup(trtl, radius)
                 trtl.goto(x, y)
         else:
-            for i in range(branches_count // 2 + 1):
-                trtl.goto(x, y - height)
-                trtl.write(self.branches[i].value, align='center', font=('', radius, ''))
-                trtl.circle(radius)
-                self.branches[i].draw(trtl, radius)
+            for i in range(branches_count // 2):
+                trtl.goto(x - (branches_count // 2 + i) * length, y - height)
+                self.branches[i].draw(trtl)
+                self._draw_getup(trtl, radius)
                 trtl.goto(x, y)
-
+            # Mid one
+            trtl.goto(x, y - height)
+            self.branches[branches_count // 2].draw(trtl)
+            trtl.goto(x, y)
+            for j in range(branches_count // 2 + 1, branches_count):
+                trtl.goto(x + (j - branches_count // 2) * length, y - height)
+                self.branches[j].draw(trtl)
+                self._draw_getup(trtl, radius)
+                trtl.goto(x, y)
         return trtl
 
     @staticmethod
     def _draw_getup(trtl: Turtle, radius: int):
         """
-            Just used in the draw method, so we can get upt easily without code duplication
+        Just used in the draw method, so we can get upt easily without code duplication
 
-            :param trtl: The turtle to use
-            :param radius:
-            :return:
+        :param trtl:
+        :param radius:
+        :return:
         """
         trtl.penup()
-        trtl.forward(radius)
+        trtl.setheading(90)
+        trtl.forward(radius * 2)
+        trtl.setheading(0)
         trtl.pendown()
 
 
@@ -279,10 +295,10 @@ class BinaryTree(RootedTree):
             yield from (br.value for br in self.get_branches_at_height(i))
 
 
-"""if __name__ == '__main__':
+if __name__ == '__main__':
     branch = BinaryTree('*').set_branches(BinaryTree('-').set_branches(12, 2), BinaryTree('/').set_branches(30, 3))
     t = Turtle()
     t.penup()
     t.goto(0, 350)
     branch.draw(t)
-    done()"""
+    done()
