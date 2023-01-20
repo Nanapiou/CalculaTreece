@@ -37,6 +37,8 @@ class App:
         # Set the running flag to True
         self.running = True
 
+        self.calculation = ""
+
         # Set the desktop size
         self.desktop_size = pygame.display.get_desktop_sizes()[0]
 
@@ -296,6 +298,8 @@ class App:
                     self.resize_parts(event.size)
                 for button in self.buttons:
                     button.handle_event(event)
+                    if button.value.isnumeric() or button.value in ["+", "-", "*", "/"]:
+                        self.calculation += button.value
 
             # Update the screen
             self.update()
