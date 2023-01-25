@@ -66,7 +66,7 @@ class App:
              ("3", (100, 100, 100), (127, 127, 127)), ("*", (255, 139, 61), (255, 157, 92))],
             [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
              ("=", (255, 139, 61), (255, 157, 92)), ("/", (255, 139, 61), (255, 157, 92))],
-            [("Draw", (255, 255, 0), (255, 240, 150)), ("Fullscreen", (255, 255, 0), (255, 240, 150))],
+            [("Draw", (255, 255, 0), (255, 240, 150)), ("Full", (255, 255, 0), (255, 240, 150))],
             [("²", (255, 139, 61), (255, 157, 92)), ("√", (255, 139, 61), (255, 157, 92))],
         ]
         self.buttons: List[Button] = []
@@ -116,7 +116,7 @@ class App:
         screen_width, screen_height = screen_size or self.screen_size
 
         # Calculate the number of rows and columns of buttons
-        height_part_count = len(self.buttons_mat) + 1
+        height_part_count = len(self.buttons_mat)
         width_part_count = len(self.buttons_mat[0])
 
         # Calculate the width and height of the buttons and there is no padding on the right and bottom
@@ -152,9 +152,13 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "=":
                 self.text_box.clean_write(self.text_box.calculate())
+            case "√":
+                self.text_box.write_value(self.text_box.text + 'sqrt')
+            case "²":
+                self.text_box.write_value(self.text_box.text + '**2')
             case "Draw":
                 self.draw_tree()
-            case "Fullscreen":
+            case "Full":
                 self.toggle_fullscreen()
             case _:
                 self.text_box.write_value(self.text_box.text + button.value)
