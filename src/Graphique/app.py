@@ -168,18 +168,18 @@ class App:
 
     def draw_tree(self):
         """
-        Draw the tree
-        """
+            Draw the tree
+            """
+        # Clear the screen
+        self.screen.fill(self.bg_color)
+
         # Get the expression from the text box
         expression = self.text_box.text
 
         # Convert the expression into a tree
-        try:
-            lis = infix_automaton.build(expression)
-            clean_list_to_infix(lis)
-            tree = infix_list_to_tree(lis)
-        except SyntaxError:
-            return self.text_box.write_value('Error')
+        lis = infix_automaton.build(expression)
+        clean_list_to_infix(lis)
+        tree = infix_list_to_tree(lis)
 
         # Then draw using the method
         tree.draw(Turtle())
