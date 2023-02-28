@@ -7,7 +7,7 @@ from src.Graphique.button import Button
 from src.Graphique.text_box import TextBox
 from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
 from src.Trees.automaton import infix_states, Automaton
-from turtle import Turtle, done
+from turtle import Turtle, done, screensize
 
 infix_automaton = Automaton(infix_states)
 
@@ -170,18 +170,22 @@ class App:
         """
             Draw the tree
             """
-        # Clear the screen
-        self.screen.fill(self.bg_color)
 
         # Get the expression from the text box
         expression = self.text_box.text
 
         # Convert the expression into a tree
-        lis = infix_automaton.build(expression)
-        clean_list_to_infix(lis)
-        tree = infix_list_to_tree(lis)
+        try:
+            lis = infix_automaton.build(expression)
+            clean_list_to_infix(lis)
+            tree = infix_list_to_tree(lis)
+        except SyntaxError:
+            return self.text_box.write_value('Error')
+
+        print(tree)
 
         # Then draw using the method
+        screensize(800, 800)
         tree.draw(Turtle())
 
         # Done
