@@ -48,7 +48,7 @@ def calculate_tree(tree: BinaryTree) -> Number:
                     return a // b
                 case '%':
                     return a % b
-                case '**' | '^':
+                case '²' | '^':
                     return a ** b
 
 

@@ -158,7 +158,7 @@ class App:
             case "√":
                 self.text_box.write_value(self.text_box.text + 'sqrt')
             case "²":
-                self.text_box.write_value(self.text_box.text + '**2')
+                self.text_box.write_value(self.text_box.text + '^2')
             case "Draw":
                 self.draw_tree()
             case "Full":
