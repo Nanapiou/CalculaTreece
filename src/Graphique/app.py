@@ -7,7 +7,7 @@ from src.Graphique.button import Button
 from src.Graphique.text_box import TextBox
 from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
 from src.Trees.automaton import infix_states, Automaton
-from turtle import Turtle, done, screensize
+import turtle
 
 infix_automaton = Automaton(infix_states)
 
@@ -187,11 +187,12 @@ class App:
         print(tree)
 
         # Then draw using the method
-        screensize(800, 800)
-        tree.draw(Turtle())
+        tree.draw(turtle.Turtle())
 
         # Done
-        done()
+        turtle.done()
+
+        turtle.TurtleScreen._RUNNING = True
 
     def run(self):
         """
