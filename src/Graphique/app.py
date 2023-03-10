@@ -82,6 +82,7 @@ class App:
 
         # Resize the parts of the screen
         self.resize_parts()
+        self.previous_calculation = ""
 
     @property
     def screen_size(self):
@@ -151,6 +152,7 @@ class App:
         match button.value:
             case "C":
                 self.text_box.write_value("")
+                self.text_box.previous_text = ""
             case "DEL":
                 self.text_box.write_value(self.text_box.text[:-1])
             case "=":

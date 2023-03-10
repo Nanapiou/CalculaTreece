@@ -28,7 +28,8 @@ class TextBox:
         self.text_color = text_color
         self.text = ''
         self.text_surf = self.font.render(self.text, True, self.text_color)
-        self.text_rect = self.text_surf.get_rect(center=(x + width // 2, y + height // 2))
+        self.text_rect = self.text_surf.get_rect(right=x + width - 10, centery=y + height // 2)
+        self.previous_text = ''
 
     def __repr__(self):
         return self.text
@@ -54,17 +55,27 @@ class TextBox:
         pygame.draw.rect(self.screen, self.bg_color, (self.x, self.y, self.width, self.height), 0, 2)
         self.screen.blit(self.text_surf, self.text_rect)
 
+        # Draw previous calculation if exists
+        if self.previous_text:
+            prev_font = pygame.font.Font(self.font_src, self.height // 3)
+            prev_surf = prev_font.render(self.previous_text, True, (200, 200, 200))
+            prev_rect = prev_surf.get_rect(right=self.text_rect.right, centery=self.text_rect.centery,
+                                           top=self.text_rect.top - 30)
+            self.screen.blit(prev_surf, prev_rect)
+
     def write_value(self, value):
         """
         Write the value on the screen
         """
         self.text = value
         self.text_surf = self.font.render(self.text, True, self.text_color)
-        self.text_rect = self.text_surf.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
+        self.text_rect = self.text_surf.get_rect(right=self.x + self.width - 8, centery=self.y + self.height // 2 + 20)
+
         # if text is too long, cut it
 
     def calculate(self): # Fonction will calculate the result of the expression
         try:
+            self.previous_text = self.text + " ="
             lis = infix_automaton.build(self.text)
             clean_list_to_infix(lis)
             tree = infix_list_to_tree(lis)
@@ -78,6 +89,7 @@ class TextBox:
         """
         Write the value on the screen
         """
+
         if isinstance(value, str):
             self.write_value(value)
         elif isinstance(value, float):
@@ -87,3 +99,4 @@ class TextBox:
                 self.write_value(str(value))
         else:
             self.write_value(str(value))
+

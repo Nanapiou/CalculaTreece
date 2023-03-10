@@ -8,7 +8,7 @@ pygame.init()
 
 # Window size
 WIDTH = 450
-HEIGHT = 670
+HEIGHT = 680
 
 # Create the window
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
