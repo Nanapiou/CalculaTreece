@@ -3,6 +3,7 @@ Functions used to transform thing to other things
 """
 # TODO Create verifications functions (in another file) so we can avoid dumb errors
 from typing import List
+from string import ascii_letters
 from src.Trees.trees import BinaryTree
 
 Number = int | float
@@ -17,12 +18,12 @@ def postfix_list_to_tree(lis: List[str | Number]) -> BinaryTree:
     """
     trees: List[BinaryTree] = list()
     for e in lis:
-        if isinstance(e, str):
+        if isinstance(e, Number) or e in ascii_letters:
+            trees.append(BinaryTree(e))
+        elif isinstance(e, str):
             trees.append(BinaryTree(e).add_branches(trees.pop(-2), trees.pop()))
         elif hasattr(e, '__call__'):
             trees.append(BinaryTree(e).add_branches(trees.pop()))
-        elif isinstance(e, Number):
-            trees.append(BinaryTree(e))
         else:
             raise TypeError(type(e))
     return trees[0]
@@ -53,7 +54,7 @@ def infix_list_to_tree(lis: List[str | Number | BinaryTree]) -> BinaryTree:
         if isinstance(e, list):
             branch = infix_list_to_tree(e)  # IDK what else to do for now...
             lis[i] = branch
-        elif isinstance(e, Number):
+        elif isinstance(e, Number) or e in ascii_letters:
             lis[i] = BinaryTree(e)
 
     # First priority operations
@@ -138,6 +139,11 @@ def clean_list_to_infix(lis: List[str | Number | List]) -> None:
 
 
 if __name__ == '__main__':
-    lis = ['(', 8, '*', '(', 5, '+', 2, ')', '+', 9]
+    from automaton import Automaton, infix_states
+    from turtle import Turtle, done
+    auto = Automaton(infix_states)
+    lis = auto.build('((5+2)*pi+9)')
     clean_list_to_infix(lis)
-    print(lis)
+    tree = infix_list_to_tree(lis)
+    tree.draw(Turtle())
+    done()

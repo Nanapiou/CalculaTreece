@@ -5,6 +5,7 @@ https://fr.wikipedia.org/wiki/Automate_fini_non_d%C3%A9terministe
 https://fr.wikipedia.org/wiki/Automate_pond%C3%A9r%C3%A9
 """
 from typing import Dict, List, Callable, Tuple
+from string import ascii_letters
 from copy import deepcopy
 from collections.abc import Iterable
 from math import sin, sqrt, pi, cos
@@ -145,14 +146,14 @@ infix_states: States = [
     },
     #  1
     {  # Numbers
-        '': (0, lambda old, _: (float(old), '*')),
-        '*': (2, lambda old, _: float(old)),
-        '/': (18, lambda old, _: float(old)),
-        '-': (6, lambda old, _: float(old)),
-        ':': (6, lambda old, _: float(old)),
-        '+': (6, lambda old, _: float(old)),
-        '^': (6, lambda old, _: float(old)),
-        ')': (4, lambda old, _: float(old)),
+        '': (0, lambda old, _: (float(old) if old.isdigit() else old, '*')),
+        '*': (2, lambda old, _: float(old) if old.isdigit() else old),
+        '/': (18, lambda old, _: float(old) if old.isdigit() else old),
+        '-': (6, lambda old, _: float(old) if old.isdigit() else old),
+        ':': (6, lambda old, _: float(old) if old.isdigit() else old),
+        '+': (6, lambda old, _: float(old) if old.isdigit() else old),
+        '^': (6, lambda old, _: float(old) if old.isdigit() else old),
+        ')': (4, lambda old, _: float(old) if old.isdigit() else old),
         '0': (1, None),
         '1': (1, None),
         '2': (1, None),
@@ -198,9 +199,9 @@ infix_states: States = [
     #  7
     {  # A
         'b': (8, None),  # abs
-        'c': (),  # acos
-        's': (),  # asin
-        't': (),  # atan
+        # 'c': (),  # acos
+        # 's': (),  # asin
+        # 't': (),  # atan
     },
     #  8
     {  # a-b
@@ -236,7 +237,7 @@ infix_states: States = [
         '': (0, lambda old, _: sqrt)
     },
     #  16
-    {  # P
+    {  # p
         'i': (17, None),
     },
     #  17
@@ -264,8 +265,20 @@ infix_states: States = [
     {  # co-s
         '': (0, lambda old, _: cos)
     }
-
 ]
+
+for letter in ascii_letters:
+    found, index = False, None
+    for i in range(len(infix_states)):
+        if letter in infix_states[i]:
+            found = True
+            index = infix_states[i][letter][0]
+            break
+    if not found:
+        infix_states[0][letter] = (1, letter)
+    else:
+        infix_states[index][''] = (1, letter)
+
 
 for e in infix_states:
     if '' in e:
@@ -342,5 +355,5 @@ for e in postfix_states:
 # ---
 
 if __name__ == '__main__':
-    math_auto = Automaton(postfix_states)
-    print(math_auto.build('8 5**6 4 3 2 1 + + + +'))
+    math_auto = Automaton(infix_states)
+    print(math_auto.build('8*p+2'))
