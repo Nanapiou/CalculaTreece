@@ -174,14 +174,15 @@ class App:
         """
             Draw the tree
             """
-
         # Get the expression from the text box
+        r = None
         if self.text_box.previous_text: # If there is a previous text, use it
             expression = self.text_box.previous_text.replace('=', '').rstrip() # Remove the '=' and the spaces at the end
             print(expression)
         else: # Otherwise, use the current text
             expression = self.text_box.text
-            print(expression)
+            r = self.text_box.calculate()
+            print(r)
 
         # Convert the expression into a tree
         try:
@@ -196,7 +197,17 @@ class App:
         # Then draw using the method
         tree.draw(turtle.Turtle()) # Draw the tree
         turtle.color("Red")
-        turtle.write(f"{self.text_box.text}", align="center", font=("Arial", 20, "normal")) # Write the expression
+        try: # If there is a result, write it
+            if r == int(r): # If the result is an integer, write it as an integer
+                turtle.write(f"{int(r)}", align="center", font=("Arial", 20, "normal"))  # Write the expression
+            else:
+                turtle.write(f"{r}", align="center", font=("Arial", 20, "normal"))
+        except: # If there is no result, write the expression
+            if int(self.text_box.text) == float(self.text_box.text): # If the result is an integer, write it as an integer
+                turtle.write(f"{int(self.text_box.text)}", align="center", font=("Arial", 20, "normal"))  # Write the expression
+            else:
+                print(self.text_box.text)
+                turtle.write(f"{self.text_box.text}", align="center", font=("Arial", 20, "normal"))  # Write the expression
 
         # Done
         turtle.hideturtle()
