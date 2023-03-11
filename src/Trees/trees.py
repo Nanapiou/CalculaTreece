@@ -157,6 +157,7 @@ class RootedTree:
                 self.branches[j].draw(trtl)
                 self._draw_getup(trtl, radius)
                 trtl.goto(x, y)
+        trtl.hideturtle()
         return trtl
 
     @staticmethod

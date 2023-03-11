@@ -194,9 +194,12 @@ class App:
         print(tree) # Print the tree
 
         # Then draw using the method
-        tree.draw(turtle.Turtle())  # Draw the tree
+        tree.draw(turtle.Turtle()) # Draw the tree
+        turtle.color("Red")
+        turtle.write(f"{self.text_box.text}", align="center", font=("Arial", 20, "normal")) # Write the expression
 
         # Done
+        turtle.hideturtle()
         turtle.done() #  Window won't close without this line
 
         turtle.TurtleScreen._RUNNING = True # This is a hack to make turtle work with pygame
