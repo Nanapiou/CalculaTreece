@@ -176,30 +176,30 @@ class App:
             """
 
         # Get the expression from the text box
-        if self.text_box.previous_text:
-            expression = self.text_box.previous_text.replace('=', '')
+        if self.text_box.previous_text: # If there is a previous text, use it
+            expression = self.text_box.previous_text.replace('=', '').rstrip() # Remove the '=' and the spaces at the end
             print(expression)
-        else:
+        else: # Otherwise, use the current text
             expression = self.text_box.text
-            print(type(expression))
+            print(expression)
 
         # Convert the expression into a tree
         try:
-            lis = infix_automaton.build(expression)
-            clean_list_to_infix(lis)
-            tree = infix_list_to_tree(lis)
+            lis = infix_automaton.build(expression) # Convert the expression to a list
+            clean_list_to_infix(lis) # Clean the list
+            tree = infix_list_to_tree(lis) # Convert the list to a tree
         except SyntaxError:
-            return self.text_box.write_value('Error')
+            return self.text_box.write_value('Error') # If there is an error, return"""
 
-        # print(tree)
+        print(tree) # Print the tree
 
         # Then draw using the method
-        tree.draw(turtle.Turtle())
+        tree.draw(turtle.Turtle())  # Draw the tree
 
         # Done
-        turtle.done()
+        turtle.done() #  Window won't close without this line
 
-        turtle.TurtleScreen._RUNNING = True
+        turtle.TurtleScreen._RUNNING = True # This is a hack to make turtle work with pygame
 
     def run(self):
         """
