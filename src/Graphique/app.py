@@ -166,6 +166,8 @@ class App:
             case "Full":
                 self.toggle_fullscreen()
             case _:
+                if self.text_box.text == "Error":
+                    self.text_box.write_value("")
                 self.text_box.write_value(self.text_box.text + button.value)
 
     def draw_tree(self):
@@ -174,7 +176,12 @@ class App:
             """
 
         # Get the expression from the text box
-        expression = self.text_box.text
+        if self.text_box.previous_text:
+            expression = self.text_box.previous_text.replace('=', '')
+            print(expression)
+        else:
+            expression = self.text_box.text
+            print(type(expression))
 
         # Convert the expression into a tree
         try:
@@ -184,7 +191,7 @@ class App:
         except SyntaxError:
             return self.text_box.write_value('Error')
 
-        print(tree)
+        # print(tree)
 
         # Then draw using the method
         tree.draw(turtle.Turtle())
