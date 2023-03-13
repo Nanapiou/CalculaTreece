@@ -307,3 +307,20 @@ class TextBox:
 pygame.init()
 gui_font = pygame.font.Font(None, 50)
 mode_font = pygame.font.Font("C:\Windows\Fonts\micross.ttf", 50)
+
+if __name__ == '__main__':
+    pygame.init()
+
+    # Window size
+    WIDTH = 450
+    HEIGHT = 680
+
+    # Create the window
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+
+    # Create the app
+    app = App(screen)
+    app.run()  # Launch a loop
+
+    # Quit pygame
+    pygame.quit()

@@ -141,6 +141,7 @@ class App:
         self.text_box.y = self.padding
         self.text_box.width = screen_width - self.padding * 2
         self.text_box.height = self.parts_height
+        self.text_box.draw()
 
         # Rewrite the text box value
         self.text_box.rewrite_text()
