@@ -104,6 +104,17 @@ def gentle_assign(dic1: Dict, dic2: Dict) -> None:
         if k not in dic1:
             dic1[k] = dic2[k]
 
+def is_float(string: str) -> bool:
+    """
+    Return wether the procided string looks like a float or not
+
+    """
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+
 
 """
 Automatons structure:
@@ -146,14 +157,14 @@ infix_states: States = [
     },
     #  1
     {  # Numbers
-        '': (0, lambda old, _: (float(old) if old.isdigit() else old, '*')),
-        '*': (2, lambda old, _: float(old) if old.isdigit() else old),
-        '/': (18, lambda old, _: float(old) if old.isdigit() else old),
-        '-': (6, lambda old, _: float(old) if old.isdigit() else old),
-        ':': (6, lambda old, _: float(old) if old.isdigit() else old),
-        '+': (6, lambda old, _: float(old) if old.isdigit() else old),
-        '^': (6, lambda old, _: float(old) if old.isdigit() else old),
-        ')': (4, lambda old, _: float(old) if old.isdigit() else old),
+        '': (0, lambda old, _: (int(old) if old.isdigit() else float(old) if is_float(old) else old, '*')),
+        '*': (2, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        '/': (18, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        '-': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        ':': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        '+': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        '^': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        ')': (4, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         '0': (1, None),
         '1': (1, None),
         '2': (1, None),
@@ -166,7 +177,7 @@ infix_states: States = [
         '9': (1, None),
         '.': (1, None),  # For float
         #  Hard coding pi...
-        'end': lambda old: pi if old == 'pi' else float(old)
+        'end': lambda old: pi if old == 'pi' else int(old) if old.isdigit() else float(old) if is_float(old) else old
     },
     #  2
     {  # *
@@ -356,4 +367,4 @@ for e in postfix_states:
 
 if __name__ == '__main__':
     math_auto = Automaton(infix_states)
-    print(math_auto.build('8*p+2'))
+    print(math_auto.build('5.2*3'))
