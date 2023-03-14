@@ -182,10 +182,10 @@ class App:
         except ValueError:  # Then use the current expression if previous didn't work
             expression = self.text_box.text
         r = calculate_infix(expression) # Calculate the result
-        try:
-            r = int(r)
-        except ValueError:
-            pass
+
+        # If the result is an integer, convert it to an integer
+        str(int(r) if r == int(r) else r)
+
 
 
         # Convert the expression into a tree

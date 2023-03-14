@@ -96,7 +96,7 @@ if __name__ == '__main__':
     t = Turtle()
     t.penup()
     t.goto(0, 300)
-    tree.draw(t, 20)
+    tree.draw(t, 50)
     t.penup()
     t.setheading(90)
     t.forward(50)
