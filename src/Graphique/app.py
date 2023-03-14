@@ -7,6 +7,7 @@ from src.Graphique.button import Button
 from src.Graphique.text_box import TextBox
 from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
 from src.Trees.automaton import infix_states, Automaton
+from src.Trees.calculator import calculate_infix
 import turtle
 
 infix_automaton = Automaton(infix_states)
@@ -173,17 +174,16 @@ class App:
 
     def draw_tree(self):
         """
-            Draw the tree
-            """
+        Draw the tree
+        """
         # Get the expression from the text box
-        r = None
-        if self.text_box.previous_text: # If there is a previous text, use it
-            expression = self.text_box.previous_text.replace('=', '').rstrip() # Remove the '=' and the spaces at the end
-            print(expression)
-        else: # Otherwise, use the current text
+        try:  # If there is a result, use the old expression
+            float(self.text_box.text)
+            expression = self.text_box.previous_text[:-2] # Remove the '=' and the spaces at the end
+        except ValueError:  # Then use the current expression if previous didn't work
             expression = self.text_box.text
-            r = self.text_box.calculate()
-            print(r)
+        r = calculate_infix(expression) # Calculate the result
+
 
         # Convert the expression into a tree
         try:
@@ -191,27 +191,25 @@ class App:
             clean_list_to_infix(lis) # Clean the list
             tree = infix_list_to_tree(lis) # Convert the list to a tree
         except SyntaxError:
-            return self.text_box.write_value('Error') # If there is an error, return"""
+            return self.text_box.write_value('Error') # If there is an error, return
 
         print(tree) # Print the tree
 
         # Then draw using the method
-        tree.draw(turtle.Turtle()) # Draw the tree
-        turtle.color("Red")
-        try: # If there is a result, write it
-            if r == int(r): # If the result is an integer, write it as an integer
-                turtle.write(f"{int(r)}", align="center", font=("Arial", 20, "normal"))  # Write the expression
-            else:
-                turtle.write(f"{r}", align="center", font=("Arial", 20, "normal"))
-        except: # If there is no result, write the expression
-            if int(self.text_box.text) == float(self.text_box.text): # If the result is an integer, write it as an integer
-                turtle.write(f"{int(self.text_box.text)}", align="center", font=("Arial", 20, "normal"))  # Write the expression
-            else:
-                print(self.text_box.text)
-                turtle.write(f"{self.text_box.text}", align="center", font=("Arial", 20, "normal"))  # Write the expression
+        t = turtle.Turtle()
+        t.hideturtle()
+        t.penup()
+        t.goto(0, 300)
+        t.pendown()
+        tree.draw(t) # Draw the tree
+        t.penup()
+        t.setheading(90)
+        t.forward(50)
+        t.pendown()
+        t.color("Red")
+        t.write(str(int(r) if r.is_integer() else r), align="center", font=("Arial", 20, "normal"))  # Write the result
 
         # Done
-        turtle.hideturtle()
         turtle.done() #  Window won't close without this line
 
         turtle.TurtleScreen._RUNNING = True # This is a hack to make turtle work with pygame

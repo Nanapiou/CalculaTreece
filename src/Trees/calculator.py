@@ -76,6 +76,18 @@ def infix_iter_with_parentheses(tree: BinaryTree) -> Generator[str | Number | Ca
             yield ')'
 
 
+def calculate_infix(string: str) -> Number:
+    """
+    Return the result of the expression (or throw a syntax error)
+
+    :param string:
+    """
+    lis = infix_automaton.build(string)
+    clean_list_to_infix(lis)
+    tree = infix_list_to_tree(lis)
+    return calculate_tree(tree)
+
+
 if __name__ == '__main__':
     lis = infix_automaton.build(input('Give me an infix expression :\n'))
     clean_list_to_infix(lis)
@@ -84,7 +96,7 @@ if __name__ == '__main__':
     t = Turtle()
     t.penup()
     t.goto(0, 300)
-    tree.draw(t, 20)
+    tree.draw(t, 50)
     t.penup()
     t.setheading(90)
     t.forward(50)

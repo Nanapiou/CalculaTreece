@@ -4,9 +4,8 @@ Text box class, used to display text in pygame
 
 import pygame
 from typing import Tuple
-from src.Trees.transformations import infix_list_to_tree, clean_list_to_infix
 from src.Trees.automaton import Automaton, infix_states
-from src.Trees.calculator import calculate_tree
+from src.Trees.calculator import calculate_infix
 
 infix_automaton = Automaton(infix_states)
 
@@ -74,12 +73,12 @@ class TextBox:
         # if text is too long, cut it
 
     def calculate(self): # Fonction will calculate the result of the expression
+        """
+        Calculate the result of the expression
+        """
         try:
             self.previous_text = self.text + " ="
-            lis = infix_automaton.build(self.text)
-            clean_list_to_infix(lis)
-            tree = infix_list_to_tree(lis)
-            return calculate_tree(tree)
+            return calculate_infix(self.text)
         except (SyntaxError, TypeError) as e:
             print('-' * 20)
             print(e)
