@@ -48,7 +48,7 @@ def calculate_tree(tree: BinaryTree) -> Number:
                     return a // b
                 case '%':
                     return a % b
-                case '²' | '^':
+                case '**' | '^':
                     return a ** b
 
 
@@ -89,16 +89,4 @@ def calculate_infix(string: str) -> Number:
 
 
 if __name__ == '__main__':
-    lis = infix_automaton.build(input('Give me an infix expression :\n'))
-    clean_list_to_infix(lis)
-    tree = infix_list_to_tree(lis)
-
-    t = Turtle()
-    t.penup()
-    t.goto(0, 300)
-    tree.draw(t, 50)
-    t.penup()
-    t.setheading(90)
-    t.forward(50)
-    t.write(str(calculate_tree(tree)), align='center', font=('', 20, ''))
-    done()
+    print(calculate_infix('2**5'))
