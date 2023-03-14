@@ -233,26 +233,31 @@ class App:
                             self.text_box.clean_write(self.text_box.calculate())
                         case pygame.K_c:
                             self.text_box.write_value("")
-                        case pygame.K_0 | pygame.K_KP0:
+                            self.text_box.previous_text = ""
+                        case pygame.K_KP0:
                             self.text_box.write_value(self.text_box.text + "0")
-                        case pygame.K_1 | pygame.K_KP1:
+                        case pygame.K_KP1:
                             self.text_box.write_value(self.text_box.text + "1")
-                        case pygame.K_2 | pygame.K_KP2:
+                        case pygame.K_KP2:
                             self.text_box.write_value(self.text_box.text + "2")
-                        case pygame.K_3 | pygame.K_KP3:
+                        case pygame.K_KP3:
                             self.text_box.write_value(self.text_box.text + "3")
-                        case pygame.K_4 | pygame.K_KP4:
+                        case pygame.K_KP4:
                             self.text_box.write_value(self.text_box.text + "4")
-                        case pygame.K_5 | pygame.K_KP5:
+                        case pygame.K_KP5:
                             self.text_box.write_value(self.text_box.text + "5")
-                        case pygame.K_6 | pygame.K_KP6:
+                        case pygame.K_KP6:
                             self.text_box.write_value(self.text_box.text + "6")
-                        case pygame.K_7 | pygame.K_KP7:
+                        case pygame.K_KP7:
                             self.text_box.write_value(self.text_box.text + "7")
-                        case pygame.K_8 | pygame.K_KP8:
+                        case pygame.K_KP8:
                             self.text_box.write_value(self.text_box.text + "8")
-                        case pygame.K_9 | pygame.K_KP9:
+                        case pygame.K_KP9:
                             self.text_box.write_value(self.text_box.text + "9")
+                        case pygame.K_5:
+                            self.text_box.write_value(self.text_box.text + "(")
+                        case 41:  # Closed parenthesis, didn't find in pygame props
+                            self.text_box.write_value(self.text_box.text + ")")
                         case pygame.K_KP_PERIOD:
                             self.text_box.write_value(self.text_box.text + ".")
                         case pygame.K_KP_PLUS:
@@ -265,6 +270,12 @@ class App:
                             self.text_box.write_value(self.text_box.text + "*")
                         case pygame.K_F11:
                             self.toggle_fullscreen()
+                        case 178:  # Square, didn't find in pygame props
+                            self.text_box.write_value(self.text_box.text + "**2")
+                        case _:  # If the key is not handled, try each letter
+                            for letter_key in range(pygame.K_a, pygame.K_z + 1):
+                                if event.key == letter_key:
+                                    self.text_box.write_value(self.text_box.text + chr(letter_key))
                 elif event.type == pygame.VIDEORESIZE:
                     self.resize_parts(event.size)
                 for button in self.buttons:
