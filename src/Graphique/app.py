@@ -173,8 +173,8 @@ class App:
 
     def draw_tree(self):
         """
-            Draw the tree
-            """
+        Draw the tree
+        """
         # Get the expression from the text box
         try:  # If there is a result, use the old expression
             float(self.text_box.text)
@@ -183,10 +183,6 @@ class App:
             expression = self.text_box.text
         r = calculate_infix(expression) # Calculate the result
 
-        # If the result is an integer, convert it to an integer
-        str(int(r) if r == int(r) else r)
-
-
 
         # Convert the expression into a tree
         try:
@@ -194,7 +190,7 @@ class App:
             clean_list_to_infix(lis) # Clean the list
             tree = infix_list_to_tree(lis) # Convert the list to a tree
         except SyntaxError:
-            return self.text_box.write_value('Error') # If there is an error, return"""
+            return self.text_box.write_value('Error') # If there is an error, return
 
         print(tree) # Print the tree
 
@@ -210,7 +206,7 @@ class App:
         t.forward(50)
         t.pendown()
         t.color("Red")
-        t.write(str(r), align="center", font=("Arial", 20, "normal"))  # Write the result
+        t.write(str(int(r) if r.is_integer() else r), align="center", font=("Arial", 20, "normal"))  # Write the result
 
         # Done
         turtle.done() #  Window won't close without this line
