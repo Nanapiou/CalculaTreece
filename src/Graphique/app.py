@@ -216,10 +216,7 @@ class App:
         t.penup()
 
         # Go to in function of the length of the result
-        if len(str(int(r))) > 6:
-            t.goto(-40, 300)
-        else:
-            t.goto(-20, 300)
+        t.goto((-len(str(int(r))) * 10 // 2) - 8, 300)
 
         t.write(str(int(r) if type(r) == float and r.is_integer() else r), font=("Arial", 20, "normal")) # Write the result
 
