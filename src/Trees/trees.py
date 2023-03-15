@@ -111,7 +111,6 @@ class RootedTree:
         :param radius: The radius of each value
         :return: The turtle used
         """
-        trtl.speed(0)
         self._draw_getup(trtl, -radius)
         if hasattr(self.value, '__call__'):
             # It's a function, draw the name
@@ -157,7 +156,6 @@ class RootedTree:
                 self.branches[j].draw(trtl)
                 self._draw_getup(trtl, radius)
                 trtl.goto(x, y)
-        trtl.hideturtle()
         return trtl
 
     @staticmethod
