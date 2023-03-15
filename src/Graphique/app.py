@@ -35,7 +35,7 @@ class App:
         pygame.display.set_caption(self.title)
 
         # Set the icon
-        self.icon = pygame.image.load("Graphique/Assets/treeIcon2.png")
+        self.icon = pygame.image.load("./src/Graphique/Assets/treeIcon2.png")
         pygame.display.set_icon(self.icon)
 
         # Set the running flag to True
