@@ -207,7 +207,15 @@ class App:
         t.forward(50)
         t.pendown()
         t.color("Red")
-        t.write(str(int(r) if r.is_integer() else r), align="center", font=("Arial", 20, "normal"))  # Write the result
+        t.penup()
+
+        # Go to in function of the length of the result
+        if len(str(int(r))) > 6:
+            t.goto(-40, 300)
+        else:
+            t.goto(-20, 300)
+
+        t.write(str(int(r) if r == int(r) else r), font=("Arial", 20, "normal")) # Write the result
 
         # Done
         turtle.done() #  Window won't close without this line
