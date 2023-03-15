@@ -221,7 +221,7 @@ class App:
         else:
             t.goto(-20, 300)
 
-        t.write(str(int(r) if r == int(r) else r), font=("Arial", 20, "normal")) # Write the result
+        t.write(str(int(r) if type(r) == float and r.is_integer() else r), font=("Arial", 20, "normal")) # Write the result
 
         # Done
         turtle.done() #  Window won't close without this line
