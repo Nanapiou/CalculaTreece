@@ -1,4 +1,3 @@
-# TODO Create automaton using:
 """
 https://fr.wikipedia.org/wiki/Automate_fini
 https://fr.wikipedia.org/wiki/Automate_fini_non_d%C3%A9terministe
@@ -69,11 +68,12 @@ class Automaton:
             if new is not None:
                 if hasattr(new, '__call__'):
                     new = new(current_str, elt)
-                if isinstance(new, str):
+                if isinstance(new, str):  # Because a str is an iterable
                     result.append(new)
                 elif isinstance(new, Iterable):  # Or hasattr(new, '__iter__')
                     for new_elt in new:
-                        result.append(new_elt)
+                        if e != '':  # To avoid empty strings, happens with letters in state 1 for infix for example
+                            result.append(new_elt)
                 else:
                     result.append(new)
                 current_str = ''
@@ -104,6 +104,7 @@ def gentle_assign(dic1: Dict, dic2: Dict) -> None:
         if k not in dic1:
             dic1[k] = dic2[k]
 
+
 def is_float(string: str) -> bool:
     """
     Return wether the procided string looks like a float or not
@@ -129,8 +130,8 @@ Iterate over a word, and changing the state depending on:
             Use it as: function / str / Iterable
             to create a new element of the list
         Add the element to old
-    
-    
+
+
 [{ 'letter': (new_state, fn/new_piece/new_pieces, clearOld?)}]
 """
 
@@ -278,18 +279,15 @@ infix_states: States = [
     }
 ]
 
+# TODO The abc case (should make a*b*c, not throw an error because it fells in abs)
 for letter in ascii_letters:
-    found, index = False, None
-    for i in range(len(infix_states)):
-        if letter in infix_states[i]:
-            found = True
-            index = infix_states[i][letter][0]
-            break
-    if not found:
-        infix_states[0][letter] = (1, letter)
+    index = None
+    if letter in infix_states[0]:
+        index = infix_states[0][letter][0]
+    if index is None:
+        infix_states[0][letter] = (1, letter, True)
     else:
-        infix_states[index][''] = (1, letter)
-
+        infix_states[index][''] = (1, (letter, '*'), True)
 
 for e in infix_states:
     if '' in e:
@@ -366,5 +364,9 @@ for e in postfix_states:
 # ---
 
 if __name__ == '__main__':
+    from src.Trees.transformations import clean_list_to_infix
+
     math_auto = Automaton(infix_states)
-    print(math_auto.build('5.2*3'))
+    lis = math_auto.build('acdefg')
+    clean_list_to_infix(lis)
+    print(lis)
