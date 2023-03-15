@@ -159,14 +159,13 @@ infix_states: States = [
     #  1
     {  # Numbers
         '': (0, lambda old, _: (int(old) if old.isdigit() else float(old) if is_float(old) else old, '*')),
-        '×': (2, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
-        '÷': (18, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        '*': (2, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        '/': (18, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         '-': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         ':': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         '+': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         '^': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         ')': (4, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
-        'sqrt': (8, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         '0': (1, None),
         '1': (1, None),
         '2': (1, None),
