@@ -26,6 +26,16 @@ class RootedTree:
         for br in self.branches:
             yield from br
 
+    def iter_branches(self) -> Generator:
+        """
+        Iterate over the branches
+
+        :return:
+        """
+        for e in self.branches:
+            yield e
+            yield from e.iter_branches()
+
     def deepdict(self) -> Dict[str, Dict]:
         """
         Create a dict representing the tree, doesn't work for cyclic trees
