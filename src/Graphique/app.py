@@ -314,30 +314,4 @@ class App:
 
         # Update the display
         pygame.display.update()
-
-
-def display_popup(screen, message, font_size=32, font_color=(0, 0, 0), background_color=(255, 255, 255)):
-    """
-    Display a popup message on the screen
-    """
-    # Get the screen dimensions
-    screen_width, screen_height = screen.get_size()
-
-    # Create a font object
-    font = pygame.font.Font(None, font_size)
-
-    # Render the message text
-    message_text = font.render(message, True, font_color, background_color)
-
-    # Get the dimensions of the message text
-    message_width, message_height = message_text.get_size()
-
-    # Calculate the coordinates for the top-left corner of the message text
-    message_x = (screen_width - message_width) // 2
-    message_y = (screen_height - message_height) // 2
-
-    # Blit the message text onto the screen
-    screen.blit(message_text, (message_x, message_y))
-
-    # Update the display
-    pygame.display.update()
+        
