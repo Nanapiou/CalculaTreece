@@ -77,13 +77,14 @@ class RootedTree:
     @property
     def height(self) -> int:
         """
-        The height of the tree
+        Returns the height of the tree.
 
-        :return:
+        :return: The height of the tree.
         """
         if self.is_leaf():
             return 1
-        return max(e.height for e in self.branches) + 1
+        else:
+            return 1 + max([child.height for child in self.branches])
 
     @property
     def size(self):

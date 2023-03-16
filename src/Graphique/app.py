@@ -202,26 +202,27 @@ class App:
         t.hideturtle()
         t.speed(0)
         t.penup()
+
+        # Move the turtle to the root position
         t.goto(0, 300)
         t.pendown()
 
         tree.draw(t)  # Draw the tree
 
-        t.penup()
-        t.setheading(90)
-        t.forward(50)
-        t.pendown()
-
         t.color("Red")
         t.penup()
 
-        var = (-len(str(int(r))) * 10 // 2)
-        # Go to in function of the length of the result
-        t.goto(var - var % 10, 300)
-        print((var - var % 10))
+        # Calculate the position of the result
+        result_width = len(str(int(r))) * 10 if type(r) == int else 70  # increase the result_width to accommodate decimal points
+        result_x = (0 - result_width / 2) - 5  # Calculate the x position of the result
 
-        t.write(str(int(r) if type(r) == float and r.is_integer() else r),
-                font=("Arial", 20, "normal"))  # Write the result
+        print(result_x, result_width, tree.height)
+
+        # Move the turtle to the result position and write the result
+        t.penup()
+        t.goto(result_x, 300)
+        t.write(str(int(r) if type(r) == float and r.is_integer() else round(r, 4)), # Round the result to 4 decimal places
+                font=("Arial", 20, "normal"))
 
         # Done
         turtle.done()  # Window won't close without this line
@@ -317,4 +318,3 @@ class App:
 
         # Update the display
         pygame.display.update()
-        
