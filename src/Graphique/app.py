@@ -71,7 +71,7 @@ class App:
             [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
              ("√", (255, 139, 61), (255, 157, 92)), ("+", (255, 139, 61), (255, 157, 92))],
             [("Draw", (255, 255, 0), (255, 240, 150)), ("Full", (255, 255, 0), (255, 240, 150))],
-            [("²", (255, 139, 61), (255, 157, 92)), ("=", (174, 181, 187), (146, 153, 158))],
+            [("²", (255, 139, 61), (255, 157, 92)), ("EXE", (174, 181, 187), (146, 153, 158))],
         ]
         self.buttons: List[Button] = []
         for row in self.buttons_mat:
@@ -157,12 +157,12 @@ class App:
                 self.text_box.previous_text = ""
             case "DEL":
                 self.text_box.write_value(self.text_box.text[:-1])
-            case "=":
+            case "EXE":
                 self.text_box.clean_write(self.text_box.calculate())
             case "√":
                 self.text_box.write_value(self.text_box.text + 'sqrt')
             case "²":
-                self.text_box.write_value(self.text_box.text + '**2')
+                self.text_box.write_value(self.text_box.text + '^2')
             case "Draw":
                 self.draw_tree()
             case "Full":
@@ -200,6 +200,7 @@ class App:
         turtle.bgcolor("#6F8391")  # Set the background color
 
         t.hideturtle()
+        t.speed(0)
         t.penup()
         t.goto(0, 300)
         t.pendown()
@@ -214,8 +215,10 @@ class App:
         t.color("Red")
         t.penup()
 
+        var = (-len(str(int(r))) * 10 // 2)
         # Go to in function of the length of the result
-        t.goto((-len(str(int(r))) * 10 // 2) - 8, 300)
+        t.goto(var - var % 10, 300)
+        print((var - var % 10))
 
         t.write(str(int(r) if type(r) == float and r.is_integer() else r),
                 font=("Arial", 20, "normal"))  # Write the result
