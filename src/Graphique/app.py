@@ -65,13 +65,13 @@ class App:
             [("7", (100, 100, 100), (127, 127, 127)), ("8", (100, 100, 100), (127, 127, 127)),
              ("9", (100, 100, 100), (127, 127, 127)), ("÷", (255, 139, 61), (255, 157, 92))],
             [("4", (100, 100, 100), (127, 127, 127)), ("5", (100, 100, 100), (127, 127, 127)),
-             ("6", (100, 100, 100), (127, 127, 127)),  ("×", (255, 139, 61), (255, 157, 92))],
+             ("6", (100, 100, 100), (127, 127, 127)), ("×", (255, 139, 61), (255, 157, 92))],
             [("1", (100, 100, 100), (127, 127, 127)), ("2", (100, 100, 100), (127, 127, 127)),
-             ("3", (100, 100, 100), (127, 127, 127)), ("-", (255, 139, 61), (255, 157, 92)) ],
+             ("3", (100, 100, 100), (127, 127, 127)), ("-", (255, 139, 61), (255, 157, 92))],
             [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
-             ("√", (255, 139, 61), (255, 157, 92)), ("+", (255, 139, 61), (255, 157, 92)) ],
+             ("√", (255, 139, 61), (255, 157, 92)), ("+", (255, 139, 61), (255, 157, 92))],
             [("Draw", (255, 255, 0), (255, 240, 150)), ("Full", (255, 255, 0), (255, 240, 150))],
-            [("²", (255, 139, 61), (255, 157, 92)), ("=", (174, 181, 187), (146, 153, 158)) ],
+            [("²", (255, 139, 61), (255, 157, 92)), ("=", (174, 181, 187), (146, 153, 158))],
         ]
         self.buttons: List[Button] = []
         for row in self.buttons_mat:
@@ -179,33 +179,32 @@ class App:
         # Get the expression from the text box
         try:  # If there is a result, use the old expression
             float(self.text_box.text)
-            expression = self.text_box.previous_text[:-2] # Remove the '=' and the spaces at the end
+            expression = self.text_box.previous_text[:-2]  # Remove the '=' and the spaces at the end
         except ValueError:  # Then use the current expression if previous didn't work
             expression = self.text_box.text
-        r = calculate_infix(expression) # Calculate the result
-
+        r = calculate_infix(expression)  # Calculate the result
 
         # Convert the expression into a tree
         try:
-            lis = infix_automaton.build(expression) # Convert the expression to a list
-            clean_list_to_infix(lis) # Clean the list
-            tree = infix_list_to_tree(lis) # Convert the list to a tree
+            lis = infix_automaton.build(expression)  # Convert the expression to a list
+            clean_list_to_infix(lis)  # Clean the list
+            tree = infix_list_to_tree(lis)  # Convert the list to a tree
         except SyntaxError:
-            return self.text_box.write_value('Error') # If there is an error, return
+            return self.text_box.write_value('Error')  # If there is an error, return
 
-        print(tree) # Print the tree
+        print(tree)  # Print the tree
 
         # Then draw using the method
-        t = turtle.Turtle() # Create a turtle
+        t = turtle.Turtle()  # Create a turtle
 
-        turtle.bgcolor("#6F8391") # Set the background color
+        turtle.bgcolor("#6F8391")  # Set the background color
 
         t.hideturtle()
         t.penup()
         t.goto(0, 300)
         t.pendown()
 
-        tree.draw(t) # Draw the tree
+        tree.draw(t)  # Draw the tree
 
         t.penup()
         t.setheading(90)
@@ -218,12 +217,13 @@ class App:
         # Go to in function of the length of the result
         t.goto((-len(str(int(r))) * 10 // 2) - 8, 300)
 
-        t.write(str(int(r) if type(r) == float and r.is_integer() else r), font=("Arial", 20, "normal")) # Write the result
+        t.write(str(int(r) if type(r) == float and r.is_integer() else r),
+                font=("Arial", 20, "normal"))  # Write the result
 
         # Done
-        turtle.done() #  Window won't close without this line
+        turtle.done()  # Window won't close without this line
 
-        turtle.TurtleScreen._RUNNING = True # This is a hack to make turtle work with pygame
+        turtle.TurtleScreen._RUNNING = True  # This is a hack to make turtle work with pygame
 
     def run(self):
         """
@@ -276,13 +276,13 @@ class App:
                         case pygame.K_KP_MINUS:
                             self.text_box.write_value(self.text_box.text + "-")
                         case pygame.K_KP_DIVIDE:
-                            self.text_box.write_value(self.text_box.text + "/")
+                            self.text_box.write_value(self.text_box.text + "÷")
                         case pygame.K_KP_MULTIPLY:
-                            self.text_box.write_value(self.text_box.text + "*")
+                            self.text_box.write_value(self.text_box.text + "×")
                         case pygame.K_F11:
                             self.toggle_fullscreen()
                         case 178:  # Square, didn't find in pygame props
-                            self.text_box.write_value(self.text_box.text + "**2")
+                            self.text_box.write_value(self.text_box.text + "^2")
                         case _:  # If the key is not handled, try each letter
                             for letter_key in range(pygame.K_a, pygame.K_z + 1):
                                 if event.key == letter_key:
