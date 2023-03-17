@@ -35,11 +35,16 @@ class Equation:
         # init the check (niveau 1)
         check = 1
 
-        # check if the equation is simple ('+' or '-' or '*') and add the unknowns
+        multi = []
+
+        # check if the equation is simple ('+' or '-' or '*' or '/') and add the unknowns
         for side in [left, right]:
             for branch in side.iter_branches():
+
                 if branch.value == self.unknown:
                     all_x += 1 if side == left else -1
+                    branch.value = 0
+
                 elif branch.value == '*':
                     if branch.left.value == self.unknown:
                         all_x += branch.right.value if side == left else -branch.right.value
@@ -47,15 +52,23 @@ class Equation:
                     elif branch.right.value == self.unknown:
                         all_x += branch.left.value if side == left else -branch.left.value
                         branch.right.value = 0
-                elif not isinstance(branch.value, (int, float)) and branch.value not in ['+', '-','*', self.unknown]:
+
+                elif branch.value == '/':
+                    if branch.left.value == self.unknown:
+                        multi.append(branch.right.value)
+                    elif branch.right.value == self.unknown:
+                        branch.right.value = 1
+                        all_x += 1 if side == left else -1
+
+                elif not isinstance(branch.value, (int, float)) and branch.value not in ['+', '-', '*', self.unknown]:
                     check = 2
 
         if check == 1:
-            result = self.niveau_1(left, right, all_x)
+            result = self.niveau_1(left, right, all_x, multi)
 
         return result
 
-    def niveau_1(self, left: BinaryTree, right: BinaryTree, all_x: int) -> list:
+    def niveau_1(self, left: BinaryTree, right: BinaryTree, all_x: int, multi: list) -> list:
         """
         Solve the equation if it is simple
         """
@@ -65,14 +78,13 @@ class Equation:
 
         solutions = []
 
-        # replace the unknown variable by 0
-        self.__replace(left, self.unknown, 0)
-        self.__replace(right, self.unknown, 0)
-
         # calculate the result
         result_left = -calculate_tree(left)
         result_right = calculate_tree(right)
-        result = result_left + result_right
+        result = result_right + result_left
+
+        for i in multi:
+            result *= i
 
         # verify if is unknown is negative
         if all_x < 0:
@@ -80,6 +92,7 @@ class Equation:
             all_x = -all_x
 
         result /= all_x
+
 
         # add the result to the list
         solutions.append(result)
@@ -116,17 +129,15 @@ class Equation:
 
 
 if __name__ == '__main__':
-    branch_left = BinaryTree('+').set_branches(BinaryTree('*').set_branches(4, 'x'), BinaryTree('-').set_branches(3, 6))
-    branch_right = BinaryTree('+').set_branches('x', 1)
-    print("left tree : ", branch_left)
-    print("right tree :", branch_right)
-
     eq = Equation('x')
-    print("solution(s):", eq.resolve(branch_left, branch_right))
 
-    # branch_right
-    t = Turtle()
-    t.penup()
-    t.goto(0, 350)
-    branch_right.draw(t)
-    done()
+    assert eq.resolve(
+        BinaryTree('+').set_branches(BinaryTree('+').set_branches('x', 'x'), BinaryTree('+').set_branches('x', 5)),
+        BinaryTree('-').set_branches('x', BinaryTree('+').set_branches(5, 2))) == [-6.0], 'Error with - and +'
+
+    assert eq.resolve(BinaryTree('+').set_branches(BinaryTree('*').set_branches(2, 'x'), 5),
+                      BinaryTree('+').set_branches(BinaryTree('*').set_branches(4, 'x'), 3)) == [1.0], 'Error with *'
+
+    assert eq.resolve(
+        BinaryTree('+').set_branches(BinaryTree('/').set_branches('x', 4), BinaryTree('-').set_branches(3, 6)),
+        BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)) == [-16.0], 'Error with /'
