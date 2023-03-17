@@ -70,8 +70,10 @@ class App:
              ("3", (100, 100, 100), (127, 127, 127)), ("-", (255, 139, 61), (255, 157, 92))],
             [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
              ("√", (255, 139, 61), (255, 157, 92)), ("+", (255, 139, 61), (255, 157, 92))],
+            [("None", (255, 139, 61), (255, 157, 92)), ("None", (255, 139, 61), (255, 157, 92)),
+             ("x", (255, 139, 61), (255, 157, 92)), ("²", (255, 139, 61), (255, 157, 92))],
             [("Draw", (255, 255, 0), (255, 240, 150)), ("Full", (255, 255, 0), (255, 240, 150))],
-            [("²", (255, 139, 61), (255, 157, 92)), ("EXE", (174, 181, 187), (146, 153, 158))],
+            [("=", (255, 139, 61), (255, 157, 92)), ("EXE", (174, 181, 187), (146, 153, 158))],
         ]
         self.buttons: List[Button] = []
         for row in self.buttons_mat:
@@ -152,6 +154,11 @@ class App:
         Handle button clicks
         """
         match button.value:
+            case "=":
+                if "=" in self.text_box.text:
+                    pass
+                else:
+                    self.text_box.write_value(self.text_box.text + "=")
             case "C":
                 self.text_box.write_value("")
                 self.text_box.previous_text = ""
@@ -213,7 +220,8 @@ class App:
         t.penup()
 
         # Calculate the position of the result
-        result_width = len(str(int(r))) * 10 if type(r) == int else 70  # increase the result_width to accommodate decimal points
+        result_width = len(str(int(r))) * 10 if type(
+            r) == int else 70  # increase the result_width to accommodate decimal points
         result_x = (0 - result_width / 2) - 5  # Calculate the x position of the result
 
         print(result_x, result_width, tree.height)
@@ -221,7 +229,8 @@ class App:
         # Move the turtle to the result position and write the result
         t.penup()
         t.goto(result_x, 300)
-        t.write(str(int(r) if type(r) == float and r.is_integer() else round(r, 4)), # Round the result to 4 decimal places
+        t.write(str(int(r) if type(r) == float and r.is_integer() else round(r, 4)),
+                # Round the result to 4 decimal places
                 font=("Arial", 20, "normal"))
 
         # Done

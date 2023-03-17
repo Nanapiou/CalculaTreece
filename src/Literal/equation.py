@@ -3,16 +3,18 @@ from src.Trees.trees import BinaryTree
 from src.Trees.calculator import calculate_tree
 from turtle import Turtle, done
 
+
 class Equation:
     """
     Class to solve an equation
     """
 
-    #init the equation
+    # init the equation
     def __init__(self, x):
         self.unknown = x
 
-    def resolve(self, left: BinaryTree, right: BinaryTree) -> list:
+    def resolve(self, left: BinaryTree, right: BinaryTree = 0) -> list:
+
         """
         Resolve the equation
 
@@ -23,6 +25,7 @@ class Equation:
         result (list): solution(s) of the equation
         """
         assert self.__verif(left, right), 'Tree is empty'
+
 
         # init all unknowns in the equation
         all_x = 0
@@ -115,12 +118,7 @@ if __name__ == '__main__':
     eq = Equation('x')
     print("solution(s):", eq.resolve(branch_left, branch_right))
 
-    # branch_left
-    t = Turtle()
-    t.penup()
-    t.goto(0, 350)
-    branch_left.draw(t)
-    done()
+
 
     # branch_right
     t = Turtle()

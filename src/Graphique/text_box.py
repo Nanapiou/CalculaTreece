@@ -5,7 +5,9 @@ Text box class, used to display text in pygame
 import pygame
 from typing import Tuple
 from src.Trees.automaton import Automaton, infix_states
+from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
 from src.Trees.calculator import calculate_infix
+from src.Literal.equation import Equation
 
 infix_automaton = Automaton(infix_states)
 
@@ -72,13 +74,39 @@ class TextBox:
 
         # if text is too long, cut it
 
-    def calculate(self): # Fonction will calculate the result of the expression
+    def calculate(self):  # Fonction will calculate the result of the expression
         """
         Calculate the result of the expression
         """
         try:
-            self.previous_text = self.text + " ="
-            return calculate_infix(self.text)
+            if '=' in self.text:
+                auto = Automaton(infix_states)
+                list_equation = self.text.split('=')
+
+                lis_left = auto.build(list_equation[0])
+                lis_right = auto.build(list_equation[1])
+
+                print('---------------------------')
+                print('Erreur Nael avec automate, espace en trop: ')
+                print(lis_left)
+                print(lis_right)
+
+                lis_left = [i for i in lis_left if i != '']
+                lis_right = [i for i in lis_right if i != '']
+
+                clean_list_to_infix(lis_left)
+                clean_list_to_infix(lis_right)
+
+                left = infix_list_to_tree(lis_left)
+                right = infix_list_to_tree(lis_right)
+
+                eq = Equation('x')
+                result = eq.resolve(left, right)
+                return str(result[0])
+
+            else:
+                self.previous_text = self.text + " ="
+                return calculate_infix(self.text)
         except (SyntaxError, TypeError) as e:
             print('-' * 20)
             print(e)
@@ -98,4 +126,3 @@ class TextBox:
                 self.write_value(str(value))
         else:
             self.write_value(str(value))
-
