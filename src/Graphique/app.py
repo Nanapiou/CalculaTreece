@@ -70,7 +70,7 @@ class App:
              ("3", (100, 100, 100), (127, 127, 127)), ("-", (255, 139, 61), (255, 157, 92))],
             [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
              ("√", (255, 139, 61), (255, 157, 92)), ("+", (255, 139, 61), (255, 157, 92))],
-            [("None", (255, 139, 61), (255, 157, 92)), ("None", (255, 139, 61), (255, 157, 92)),
+            [("None", (255, 139, 61), (255, 157, 92)), ("x^n", (255, 139, 61), (255, 157, 92)),
              ("x", (255, 139, 61), (255, 157, 92)), ("²", (255, 139, 61), (255, 157, 92))],
             [("Draw", (255, 255, 0), (255, 240, 150)), ("Full", (255, 255, 0), (255, 240, 150))],
             [("=", (255, 139, 61), (255, 157, 92)), ("EXE", (174, 181, 187), (146, 153, 158))],
@@ -165,11 +165,18 @@ class App:
             case "DEL":
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
-                self.text_box.clean_write(self.text_box.calculate())
+                if len(str(self.text_box.calculate())) > 12:
+                    self.text_box.clean_write(str(self.text_box.calculate())[0] + "." + str(self.text_box.calculate())[1:10]
+                                              + " e+" + str(len(str(self.text_box.calculate())) - 1))
+
+                else:
+                    self.text_box.clean_write(self.text_box.calculate())
             case "√":
                 self.text_box.write_value(self.text_box.text + 'sqrt')
             case "²":
                 self.text_box.write_value(self.text_box.text + '^2')
+            case "x^n":
+                self.text_box.write_value(self.text_box.text + '^')
             case "Draw":
                 self.draw_tree()
             case "Full":
@@ -204,7 +211,9 @@ class App:
         # Then draw using the method
         t = turtle.Turtle()  # Create a turtle
 
-        turtle.bgcolor("#6F8391")  # Set the background color
+
+        # Set the background color to white
+        turtle.bgcolor("#FFFFFF")
 
         t.hideturtle()
         t.speed(0)
