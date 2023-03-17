@@ -216,22 +216,18 @@ class App:
 
         tree.draw(t)  # Draw the tree
 
-        t.color("Red")
         t.penup()
-
-        # Calculate the position of the result
-        result_width = len(str(int(r))) * 10 if type(
-            r) == int else 70  # increase the result_width to accommodate decimal points
-        result_x = (0 - result_width / 2) - 5  # Calculate the x position of the result
-
-        print(result_x, result_width, tree.height)
-
-        # Move the turtle to the result position and write the result
-        t.penup()
-        t.goto(result_x, 300)
-        t.write(str(int(r) if type(r) == float and r.is_integer() else round(r, 4)),
-                # Round the result to 4 decimal places
-                font=("Arial", 20, "normal"))
+        t.color("#F68120")
+        style = ("Verdana", 20, "italic")
+        result = str(int(r) if type(r) == float and r.is_integer() else round(r, 4))
+        print(result)
+        t.goto(0, 300)
+        if len(result) > 7:
+            # round the number to the x.xxxxxx e+xx format
+            result = result[0] + "." + result[1:7] + " e+" + str(len(result) - 1)
+            t.write(result, align="center", font=style)
+        else:
+            t.write(result, align="center", font=style)
 
         # Done
         turtle.done()  # Window won't close without this line
