@@ -26,7 +26,6 @@ class Equation:
         """
         assert self.__verif(left, right), 'Tree is empty'
 
-
         # init all unknowns in the equation
         all_x = 0
 
@@ -36,18 +35,20 @@ class Equation:
         # init the check (niveau 1)
         check = 1
 
-        # check if the equation is simple ('+' or '-') and add the unknowns
-        for i in left:
-            if i == self.unknown:
-                all_x += 1
-            if not (i in ['+', '-', self.unknown] or isinstance(i, int | float)):
-                check = 2
-
-        for i in right:
-            if i == self.unknown:
-                all_x -= 1
-            if not (i in ['+', '-', self.unknown] or isinstance(i, int | float)):
-                check = 2
+        # check if the equation is simple ('+' or '-' or '*') and add the unknowns
+        for side in [left, right]:
+            for branch in side.iter_branches():
+                if branch.value == self.unknown:
+                    all_x += 1 if side == left else -1
+                elif branch.value == '*':
+                    if branch.left.value == self.unknown:
+                        all_x += branch.right.value if side == left else -branch.right.value
+                        branch.left.value = 0
+                    elif branch.right.value == self.unknown:
+                        all_x += branch.left.value if side == left else -branch.left.value
+                        branch.right.value = 0
+                elif not isinstance(branch.value, (int, float)) and branch.value not in ['+', '-','*', self.unknown]:
+                    check = 2
 
         if check == 1:
             result = self.niveau_1(left, right, all_x)
@@ -85,10 +86,16 @@ class Equation:
 
         return solutions
 
-    def __find_x(self, arbre: BinaryTree) -> list:
+    def __find_x(self, arbre: BinaryTree, v: int = 1) -> list:
+        """
+        Find the unknown variable in the equation
+        """
+        k = 1
         for i in arbre.iter_branches():
             if not i.is_leaf() and i.left.value == self.unknown or i.right.value == self.unknown:
-                return i
+                if k == v:
+                    return i
+                k += 1
 
     def __replace(self, arbre: BinaryTree, x, y):
         """
@@ -109,16 +116,13 @@ class Equation:
 
 
 if __name__ == '__main__':
-    branch_left = BinaryTree('+').set_branches(BinaryTree('-').set_branches('x', 3), BinaryTree('+').set_branches(2, 1))
-    branch_right = BinaryTree('+').set_branches(BinaryTree('-').set_branches('x', 1),
-                                                BinaryTree('+').set_branches(3, 'x'))
+    branch_left = BinaryTree('+').set_branches(BinaryTree('*').set_branches(4, 'x'), BinaryTree('-').set_branches(3, 6))
+    branch_right = BinaryTree('+').set_branches('x', 1)
     print("left tree : ", branch_left)
     print("right tree :", branch_right)
 
     eq = Equation('x')
     print("solution(s):", eq.resolve(branch_left, branch_right))
-
-
 
     # branch_right
     t = Turtle()
