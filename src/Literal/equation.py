@@ -57,11 +57,13 @@ class Equation:
                     if branch.left.value == self.unknown:
                         multi.append(branch.right.value)
                     elif branch.right.value == self.unknown:
-                        branch.right.value = 1
                         all_x += 1 if side == left else -1
+                        branch.right.value = 1
 
-                elif not isinstance(branch.value, (int, float)) and branch.value not in ['+', '-', '*', self.unknown]:
+                elif not isinstance(branch.value, (int, float)) and branch.value not in ['+', '-', '*', '/',
+                                                                                         self.unknown]:
                     check = 2
+
 
         if check == 1:
             result = self.niveau_1(left, right, all_x, multi)
@@ -92,7 +94,6 @@ class Equation:
             all_x = -all_x
 
         result /= all_x
-
 
         # add the result to the list
         solutions.append(result)
@@ -140,4 +141,8 @@ if __name__ == '__main__':
 
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('/').set_branches('x', 4), BinaryTree('-').set_branches(3, 6)),
-        BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)) == [-16.0], 'Error with /'
+        BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)) == [-16.0], 'Error with / (x/n)'
+
+    assert eq.resolve(
+        BinaryTree('+').set_branches(BinaryTree('/').set_branches(4, 'x'), BinaryTree('-').set_branches('x', 1)),
+        BinaryTree('+').set_branches('x', 3)) == [0.0], 'Error with / (n/x)'
