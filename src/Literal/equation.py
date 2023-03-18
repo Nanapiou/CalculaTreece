@@ -1,35 +1,38 @@
-# import library
+"""
+Module to solve an equation
+"""
+from math import sqrt
 from src.Trees.trees import BinaryTree
 from src.Trees.calculator import calculate_tree
-from turtle import Turtle, done
 
 
 class Equation:
     """
-    Class to solve an equation
+    params:
+    x (str): The unknown of the equation
+
+    methods:
+        resolve(left: BinaryTree, right: BinaryTree = 0) -> list: Resolve the equation
+        level_1(left: BinaryTree, right: BinaryTree) -> list: Solve the equation if it is simple ('+' or '-' or '*' or '/')
+        level_2(left: BinaryTree, right: BinaryTree) -> list: Solve the equation if type ax² + bx+ c = 0
+
+    result (list): solution(s) of the equation
     """
 
-    # init the equation
     def __init__(self, x):
         self.unknown = x
-
 
     def eval_level(self, left: BinaryTree, right: BinaryTree) -> int:
         level = 0
         for side in [left, right]:
-            if side.value == '**' and isinstance(side.right.value, (int, float)):
-                level = 1
-            elif not isinstance(side.value, (int, float)) and side.value not in ['+', '-', '*', '/', self.unknown]:
-                level = 2
             for branch in side.iter_branches():
-                if branch.value == '**' and isinstance(branch.right.value, (int, float)):
-                    level = 2
-                elif not isinstance(branch.value, (int, float)) and branch.value not in ['+', '-', '*', '/',
-                                                                                         self.unknown]:
+                if branch.value == '**' and branch.right.value == 2:
+                    level = 1
+                elif not (isinstance(branch.value, (int, float)) or branch.value in ['+', '-', '*', '/', self.unknown]):
                     level = 2
         return level
 
-    def resolve(self, left: BinaryTree, right: BinaryTree = 0) -> list:
+    def resolve(self, left: BinaryTree, right: BinaryTree = BinaryTree(0)) -> list:
 
         """
         Resolve the equation
@@ -42,11 +45,16 @@ class Equation:
         """
         assert self.__verif(left, right), 'Tree is empty'
 
-        level_list = [self.level_1(left, right), self.level_2(left, right)]
-
         level = self.eval_level(left, right)
+        print(f'level: {level}')
 
-        result = level_list[level]
+        match level:
+            case 0:
+                result = self.level_1(left, right)
+            case 1:
+                result = self.level_2(left, right)
+            case 2:
+                pass
 
         return result
 
@@ -108,7 +116,86 @@ class Equation:
         return solutions
 
     def level_2(self, left: BinaryTree, right: BinaryTree) -> list:
-        pass
+        """
+        Solve the equation if type ax² + bx+ c = 0
+        """
+        a = 0  # x²
+        b = 0  # x
+
+        # for division
+        multi = []
+
+        for side in [left, right]:
+            for branch in side.iter_branches():
+
+                if branch.value == '-':
+
+                    if branch.left.value == self.unknown:
+                        b += 1 if side == left else -1
+                        branch.left.value = 0
+                    elif branch.right.value == self.unknown:
+                        b += -1 if side == left else 1
+                        branch.right.value = 0
+
+                elif branch.value == self.unknown:
+                    b += 1 if side == left else -1
+                    branch.value = 0
+
+                elif branch.right == '**' and branch.right.value == 2:
+                    a += 1 if side == left else -1
+                    branch.left.value = 0
+
+                elif branch.value == '*':
+                    if branch.right.value == '**' and branch.right.right.value == 2:
+                        a += branch.left.value if side == left else -branch.left.value
+                        branch.right.left.value = 0
+
+                    elif branch.left.value == self.unknown:
+                        b += branch.right.value if side == left else -branch.right.value
+                        branch.left.value = 0
+                    elif branch.right.value == self.unknown:
+                        b += branch.left.value if side == left else -branch.left.value
+                        branch.right.value = 0
+
+                elif branch.value == '/':
+                    if branch.left.value == self.unknown:
+                        multi.append(branch.right.value)
+                    elif branch.right.value == self.unknown:
+                        b += 1 if side == left else -1
+                        branch.right.value = 1
+
+        # calculate the result
+        result_left = -calculate_tree(left)
+        result_right = calculate_tree(right)
+        c = result_right + result_left
+
+        if a == 0:
+            raise Exception('The equation is not a quadratic equation')
+
+        for i in multi:
+            c *= i
+
+        print(f'a: {a}, b: {b}, c: {c}')
+
+        delta = b ** 2 - 4 * a * c
+
+        print(f'delta: {delta}')
+
+        solutions = []
+
+        if delta < 0:
+            pass
+
+        elif delta == 0:
+            solutions.append(-b / (2 * a))
+
+        else:
+            solutions.append((-b + sqrt(delta)) / (2 * a))
+            solutions.append((-b - sqrt(delta)) / (2 * a))
+
+        print(f'solutions: {solutions} ')
+
+        return solutions
 
     def __find_x(self, arbre: BinaryTree, v: int = 1) -> list:
         """
@@ -159,6 +246,12 @@ if __name__ == '__main__':
         BinaryTree('+').set_branches(BinaryTree('/').set_branches(4, 'x'), BinaryTree('-').set_branches('x', 1)),
         BinaryTree('+').set_branches('x', 3)) == [0.0], 'Error with / (n/x)'
     print('/ test passed')
+
+    tree = BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
+                                        BinaryTree('-').set_branches(BinaryTree('-').set_branches(0, 'x'), 6))
+
+    assert eq.resolve(tree, BinaryTree('-').set_branches(0, 0)) == [2.0, -1.5], 'Error with **'
+    print('** test passed')
 
     print('---------------------------------------------------------------')
     print('All tests passed')
