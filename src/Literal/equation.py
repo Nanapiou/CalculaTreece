@@ -13,6 +13,22 @@ class Equation:
     def __init__(self, x):
         self.unknown = x
 
+
+    def eval_level(self, left: BinaryTree, right: BinaryTree) -> int:
+        level = 0
+        for side in [left, right]:
+            if side.value == '**' and isinstance(side.right.value, (int, float)):
+                level = 1
+            elif not isinstance(side.value, (int, float)) and side.value not in ['+', '-', '*', '/', self.unknown]:
+                level = 2
+            for branch in side.iter_branches():
+                if branch.value == '**' and isinstance(branch.right.value, (int, float)):
+                    level = 2
+                elif not isinstance(branch.value, (int, float)) and branch.value not in ['+', '-', '*', '/',
+                                                                                         self.unknown]:
+                    level = 2
+        return level
+
     def resolve(self, left: BinaryTree, right: BinaryTree = 0) -> list:
 
         """
@@ -26,18 +42,24 @@ class Equation:
         """
         assert self.__verif(left, right), 'Tree is empty'
 
-        # init all unknowns in the equation
+        level_list = [self.level_1(left, right), self.level_2(left, right)]
+
+        level = self.eval_level(left, right)
+
+        result = level_list[level]
+
+        return result
+
+    def level_1(self, left: BinaryTree, right: BinaryTree) -> list:
+        """
+        Solve the equation if it is simple ('+' or '-' or '*' or '/')
+        """
+
         all_x = 0
 
-        # init the result
-        result = None
-
-        # init the check (niveau 1)
-        check = 1
-
+        # for division
         multi = []
 
-        # check if the equation is simple ('+' or '-' or '*' or '/') and add the unknowns
         for side in [left, right]:
             for branch in side.iter_branches():
 
@@ -60,20 +82,6 @@ class Equation:
                         all_x += 1 if side == left else -1
                         branch.right.value = 1
 
-                elif not isinstance(branch.value, (int, float)) and branch.value not in ['+', '-', '*', '/',
-                                                                                         self.unknown]:
-                    check = 2
-
-
-        if check == 1:
-            result = self.niveau_1(left, right, all_x, multi)
-
-        return result
-
-    def niveau_1(self, left: BinaryTree, right: BinaryTree, all_x: int, multi: list) -> list:
-        """
-        Solve the equation if it is simple
-        """
         if all_x == 0:
             raise Exception(f'No {self.unknown} in the equation or {self.unknown} cancels out')
 
@@ -98,6 +106,9 @@ class Equation:
         solutions.append(result)
 
         return solutions
+
+    def level_2(self, left: BinaryTree, right: BinaryTree) -> list:
+        pass
 
     def __find_x(self, arbre: BinaryTree, v: int = 1) -> list:
         """
