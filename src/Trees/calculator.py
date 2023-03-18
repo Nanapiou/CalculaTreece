@@ -3,7 +3,6 @@ Calculation.
 """
 from src.Trees.transformations import infix_list_to_tree, clean_list_to_infix
 from src.Trees.trees import BinaryTree
-from turtle import Turtle, done
 from src.Trees.automaton import Automaton, infix_states, postfix_states
 from typing import Generator, Callable
 
@@ -89,4 +88,10 @@ def calculate_infix(string: str) -> Number:
 
 
 if __name__ == '__main__':
-    print(calculate_infix('2**5'))
+    from turtle import Turtle, done
+    lis = infix_automaton.build('sqrt(8x+3)')
+    clean_list_to_infix(lis)
+    print(lis)
+    # tree = infix_list_to_tree(lis)
+    # tree.draw(Turtle())
+    # done()

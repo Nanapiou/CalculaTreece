@@ -52,9 +52,8 @@ def infix_list_to_tree(lis: List[str | Number | BinaryTree]) -> BinaryTree:
     for i in range(len(lis)):
         e = lis[i]
         if isinstance(e, list):
-            branch = infix_list_to_tree(e)  # IDK what else to do for now...
-            lis[i] = branch
-        elif isinstance(e, Number) or e in ascii_letters:
+            lis[i] = infix_list_to_tree(e)  # IDK what else to do for now...
+        elif not hasattr(e, '__call__') and (isinstance(e, Number) or e in ascii_letters):
             lis[i] = BinaryTree(e)
 
     # First priority operations
@@ -142,8 +141,10 @@ if __name__ == '__main__':
     from automaton import Automaton, infix_states
     from turtle import Turtle, done
     auto = Automaton(infix_states)
-    lis = auto.build('((5+2)*pi+9)')
+    lis = auto.build('(5x^2+3x+2)//sqrt(x+1)')
     clean_list_to_infix(lis)
     tree = infix_list_to_tree(lis)
-    tree.draw(Turtle())
+    t = Turtle()
+    t.speed(0)
+    tree.draw(t)
     done()

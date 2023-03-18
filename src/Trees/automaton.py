@@ -195,7 +195,7 @@ infix_states: States = [
     {  # Closed parentheses
         ')': (4, ')'),
         '*': (2, ')'),
-        '/': (3, ')'),
+        '/': (18, ')'),
         '-': (0, (')', '-')),
         ':': (0, (')', ':')),
         '+': (0, (')', '+')),
@@ -369,6 +369,6 @@ if __name__ == '__main__':
     from src.Trees.transformations import clean_list_to_infix
 
     math_auto = Automaton(infix_states)
-    lis = math_auto.build('x×x')
+    lis = math_auto.build('(5x)/sqrt(x+1)')
     clean_list_to_infix(lis)
     print(lis)
