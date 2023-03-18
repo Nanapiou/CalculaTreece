@@ -68,7 +68,7 @@ class Automaton:
             if new is not None:
                 if hasattr(new, '__call__'):
                     new = new(current_str, elt)
-                if isinstance(new, str):  # Because a str is an iterable
+                if isinstance(new, str) and new != '':  # Because a str is an iterable
                     result.append(new)
                 elif isinstance(new, Iterable):  # Or hasattr(new, '__iter__')
                     for new_elt in new:
@@ -161,11 +161,12 @@ infix_states: States = [
         '': (0, lambda old, _: (int(old) if old.isdigit() else float(old) if is_float(old) else old, '*')),
         '×': (2, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         '÷': (18, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        '*': (2, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        '/': (18, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
+        ':': (18, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         '-': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
-        ':': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         '+': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         '^': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
-        '××': (6, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         ')': (4, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old),
         '0': (1, None),
         '1': (1, None),
@@ -368,6 +369,6 @@ if __name__ == '__main__':
     from src.Trees.transformations import clean_list_to_infix
 
     math_auto = Automaton(infix_states)
-    lis = math_auto.build('acdefg')
+    lis = math_auto.build('x×x')
     clean_list_to_infix(lis)
     print(lis)
