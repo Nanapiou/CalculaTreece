@@ -86,14 +86,6 @@ class TextBox:
                 lis_left = auto.build(list_equation[0])
                 lis_right = auto.build(list_equation[1])
 
-                print('---------------------------')
-                print('Erreur Nael avec automate, espace en trop: ')
-                print(lis_left)
-                print(lis_right)
-
-                lis_left = [i for i in lis_left if i != '']
-                lis_right = [i for i in lis_right if i != '']
-
                 clean_list_to_infix(lis_left)
                 clean_list_to_infix(lis_right)
 
