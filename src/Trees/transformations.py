@@ -162,7 +162,7 @@ def tree_to_infix_list(tree: BinaryTree) -> List[str | Number]:
             raise ValueError('Invalid tree')
     return result
 
-def stringify_postfix(lis: List[str | Number]) -> str:
+def stringify_infix_list(lis: List[str | Number]) -> str:
     """
     Transform a list in postfix syntax to a string
 
@@ -173,7 +173,7 @@ def stringify_postfix(lis: List[str | Number]) -> str:
     for i in range(len(lis)):
         e = new[i]
         if isinstance(e, list):
-            new[i] = stringify_postfix(e)
+            new[i] = stringify_infix_list(e)
         elif hasattr(e, '__call__'):
             new[i] = e.__name__
     return ' '.join(map(str, new)) if len(lis) < 2 else ('(' + ' '.join(map(str, new)) + ')')
@@ -186,4 +186,4 @@ if __name__ == '__main__':
     clean_list_to_infix(lis)
     tree = infix_list_to_tree(lis)
     lis_bis = tree_to_infix_list(tree)
-    print(stringify_postfix(lis_bis))
+    print(stringify_infix_list(lis_bis))

@@ -5,9 +5,10 @@ import pygame
 from typing import Tuple, List
 from src.Graphique.button import Button
 from src.Graphique.text_box import TextBox
-from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
+from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree, tree_to_infix_list, stringify_infix_list
 from src.Trees.automaton import infix_states, Automaton
 from src.Trees.calculator import calculate_infix
+from src.Literal.derivation import derive, simplify
 import turtle
 
 infix_automaton = Automaton(infix_states)
@@ -70,7 +71,7 @@ class App:
              ("3", (100, 100, 100), (127, 127, 127)), ("-", (255, 139, 61), (255, 157, 92))],
             [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
              ("√", (255, 139, 61), (255, 157, 92)), ("+", (255, 139, 61), (255, 157, 92))],
-            [("None", (255, 139, 61), (255, 157, 92)), ("x^n", (255, 139, 61), (255, 157, 92)),
+            [("d/dx", (255, 139, 61), (255, 157, 92)), ("x^n", (255, 139, 61), (255, 157, 92)),
              ("x", (255, 139, 61), (255, 157, 92)), ("²", (255, 139, 61), (255, 157, 92))],
             [("Draw", (255, 255, 0), (255, 240, 150)), ("Full", (255, 255, 0), (255, 240, 150))],
             [("=", (255, 139, 61), (255, 157, 92)), ("EXE", (174, 181, 187), (146, 153, 158))],
@@ -181,6 +182,8 @@ class App:
                 self.draw_tree()
             case "Full":
                 self.toggle_fullscreen()
+            case "d/dx":
+                self.derive()
             case _:
                 if self.text_box.text == "Error":
                     self.text_box.write_value("")
@@ -240,7 +243,27 @@ class App:
 
         # Done
         turtle.done()  # Window won't close without this line
+        turtle.TurtleScreen._RUNNING = True  # This is a hack to make turtle work with pygame
+        
+    def derive(self):
+        """
+        Derive the current expression, and draw the tree
+        """
+        lis = infix_automaton.build(self.text_box.text)  # Convert the expression to a list
+        clean_list_to_infix(lis)  # Clean the list
+        tree = infix_list_to_tree(lis)  # Convert the list to a tree
+        tree_d = simplify(derive(tree, 'x'))  # Derive the tree and simplify it
+        new = stringify_infix_list(tree_to_infix_list(tree_d))
+        self.text_box.write_value(new)
 
+        t = turtle.Turtle()  # Create a turtle
+        t.speed(0)
+        t.penup()
+        t.goto(0, 300)
+        t.pendown()
+        tree_d.draw(t)  # Draw the tree
+
+        turtle.done()
         turtle.TurtleScreen._RUNNING = True  # This is a hack to make turtle work with pygame
 
     def run(self):
