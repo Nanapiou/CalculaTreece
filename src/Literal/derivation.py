@@ -4,6 +4,8 @@ Used to derive trees.
 from src.Trees.trees import BinaryTree
 from math import sqrt, cos, sin
 
+Number = int | float
+
 def derive(tree: BinaryTree, variable: str) -> BinaryTree:
     """
     Derive the tree with respect to the variable
@@ -63,17 +65,17 @@ def simplify(tree: BinaryTree) -> BinaryTree:
             if hasattr(tree.value, '__call__'):
                 match tree.value.__name__:
                     case 'sqrt':
-                        if isinstance(a.value, int) and a.value >= 0:
+                        if isinstance(a.value, Number) and a.value >= 0:
                             return BinaryTree(sqrt(a.value))
                         else:
                             return BinaryTree(sqrt).add_branches(a)
                     case 'sin':
-                        if isinstance(a.value, int):
+                        if isinstance(a.value, Number):
                             return BinaryTree(sin(a.value))
                         else:
                             return BinaryTree(sin).add_branches(a)
                     case 'cos':
-                        if isinstance(a.value, int):
+                        if isinstance(a.value, Number):
                             return BinaryTree(cos(a.value))
                         else:
                             return BinaryTree(cos).add_branches(a)
@@ -87,64 +89,64 @@ def simplify(tree: BinaryTree) -> BinaryTree:
             b = simplify(v)
             match tree.value:
                 case '*':
-                    if isinstance(a.value, int) and isinstance(b.value, int):
+                    if isinstance(a.value, Number) and isinstance(b.value, Number):
                         return BinaryTree(a.value * b.value)
-                    elif isinstance(a.value, int) and a.value == 0:
+                    elif isinstance(a.value, Number) and a.value == 0:
                         return BinaryTree(0)
-                    elif isinstance(b.value, int) and b.value == 0:
+                    elif isinstance(b.value, Number) and b.value == 0:
                         return BinaryTree(0)
-                    elif isinstance(a.value, int) and a.value == 1:
+                    elif isinstance(a.value, Number) and a.value == 1:
                         return b
-                    elif isinstance(b.value, int) and b.value == 1:
+                    elif isinstance(b.value, Number) and b.value == 1:
                         return a
                     else:
                         return BinaryTree('*').add_branches(a, b)
                 case '+':
-                    if isinstance(a.value, int) and isinstance(b.value, int):
+                    if isinstance(a.value, Number) and isinstance(b.value, Number):
                         return BinaryTree(a.value + b.value)
-                    elif isinstance(a.value, int) and a.value == 0:
+                    elif isinstance(a.value, Number) and a.value == 0:
                         return b
-                    elif isinstance(b.value, int) and b.value == 0:
+                    elif isinstance(b.value, Number) and b.value == 0:
                         return a
                     else:
                         return BinaryTree('+').add_branches(a, b)
                 case '-':
-                    if isinstance(a.value, int) and isinstance(b.value, int):
+                    if isinstance(a.value, Number) and isinstance(b.value, Number):
                         return BinaryTree(a.value - b.value)
-                    elif isinstance(a.value, int) and a.value == 0:
+                    elif isinstance(a.value, Number) and a.value == 0:
                         return BinaryTree('-').add_branches(b)
-                    elif isinstance(b.value, int) and b.value == 0:
+                    elif isinstance(b.value, Number) and b.value == 0:
                         return a
                     else:
                         return BinaryTree('-').add_branches(a, b)
                 case '/' | '//':
-                    if isinstance(a.value, int) and isinstance(b.value, int):
+                    if isinstance(a.value, Number) and isinstance(b.value, Number):
                         return BinaryTree(a.value / b.value)
-                    elif isinstance(a.value, int) and a.value == 0:
+                    elif isinstance(a.value, Number) and a.value == 0:
                         return BinaryTree(0)
-                    elif isinstance(b.value, int) and b.value == 1:
+                    elif isinstance(b.value, Number) and b.value == 1:
                         return a
                     else:
                         return BinaryTree(tree.value).add_branches(a, b)
                 case '%':
-                    if isinstance(a.value, int) and isinstance(b.value, int):
+                    if isinstance(a.value, Number) and isinstance(b.value, Number):
                         return BinaryTree(a.value % b.value)
-                    elif isinstance(a.value, int) and a.value == 0:
+                    elif isinstance(a.value, Number) and a.value == 0:
                         return BinaryTree(0)
-                    elif isinstance(b.value, int) and b.value == 1:
+                    elif isinstance(b.value, Number) and b.value == 1:
                         return BinaryTree(0)
                     else:
                         return BinaryTree(tree.value).add_branches(a, b)
                 case '**' | '^':
-                    if isinstance(a.value, int) and isinstance(b.value, int):
+                    if isinstance(a.value, Number) and isinstance(b.value, Number):
                         return BinaryTree(a.value ** b.value)
-                    elif isinstance(a.value, int) and a.value == 0:
+                    elif isinstance(a.value, Number) and a.value == 0:
                         return BinaryTree(0)
-                    elif isinstance(b.value, int) and b.value == 0:
+                    elif isinstance(b.value, Number) and b.value == 0:
                         return BinaryTree(1)
-                    elif isinstance(b.value, int) and b.value == 1:
+                    elif isinstance(b.value, Number) and b.value == 1:
                         return a
-                    elif hasattr(a.value, '__call__') and a.value.__name__ == 'sqrt' and isinstance(b.value, int) and b.value == 2:
+                    elif hasattr(a.value, '__call__') and a.value.__name__ == 'sqrt' and isinstance(b.value, Number) and b.value == 2:
                         return a.branches[0]
                     else:
                         return BinaryTree(tree.value).add_branches(a, b)
