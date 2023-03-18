@@ -144,6 +144,8 @@ def simplify(tree: BinaryTree) -> BinaryTree:
                         return BinaryTree(1)
                     elif isinstance(b.value, int) and b.value == 1:
                         return a
+                    elif hasattr(a.value, '__call__') and a.value.__name__ == 'sqrt' and isinstance(b.value, int) and b.value == 2:
+                        return a.branches[0]
                     else:
                         return BinaryTree(tree.value).add_branches(a, b)
 
@@ -154,7 +156,7 @@ if __name__ == '__main__':
     from src.Trees.transformations import infix_list_to_tree, clean_list_to_infix
     from turtle import Turtle, done
     auto = Automaton(infix_states)
-    lis = auto.build('x^2+2x+1')
+    lis = auto.build('(x^2+2x+1)/sqrt(x^2+1)')
     clean_list_to_infix(lis)
     tree = infix_list_to_tree(lis)
     tree_d = derive(tree, 'x')
