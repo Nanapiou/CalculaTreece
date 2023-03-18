@@ -5,6 +5,7 @@ Functions used to transform thing to other things
 from typing import List
 from string import ascii_letters
 from src.Trees.trees import BinaryTree
+from copy import deepcopy
 
 Number = int | float
 
@@ -137,14 +138,52 @@ def clean_list_to_infix(lis: List[str | Number | List]) -> None:
         raise SyntaxError('Too many ' + ('closed' if pad < -1 else 'opened') + ' parentheses')
 
 
+def tree_to_infix_list(tree: BinaryTree) -> List[str | Number]:
+    """
+    Create a tree from the list, wrote in infix syntax, and respect priority
+    A little overkill, but it's the only way I found to do it
+
+    :param tree:
+    :return:
+    """
+    branches = tree.branches
+    result = list()
+    if tree.is_leaf():
+        result.append(tree.value)
+    else:
+        if len(branches) == 1:
+            result.append(tree.value)
+            result.append(tree_to_infix_list(branches[0]))
+        elif len(branches) == 2:
+            result.append(tree_to_infix_list(branches[0]))
+            result.append(tree.value)
+            result.append(tree_to_infix_list(branches[1]))
+        else:
+            raise ValueError('Invalid tree')
+    return result
+
+def stringify_postfix(lis: List[str | Number]) -> str:
+    """
+    Transform a list in postfix syntax to a string
+
+    :param lis:
+    :return:
+    """
+    new = deepcopy(lis)
+    for i in range(len(lis)):
+        e = new[i]
+        if isinstance(e, list):
+            new[i] = stringify_postfix(e)
+        elif hasattr(e, '__call__'):
+            new[i] = e.__name__
+    return ' '.join(map(str, new)) if len(lis) < 2 else ('(' + ' '.join(map(str, new)) + ')')
+
+
 if __name__ == '__main__':
     from automaton import Automaton, infix_states
-    from turtle import Turtle, done
     auto = Automaton(infix_states)
     lis = auto.build('(5x^2+3x+2)//sqrt(x+1)')
     clean_list_to_infix(lis)
     tree = infix_list_to_tree(lis)
-    t = Turtle()
-    t.speed(0)
-    tree.draw(t)
-    done()
+    lis_bis = tree_to_infix_list(tree)
+    print(stringify_postfix(lis_bis))
