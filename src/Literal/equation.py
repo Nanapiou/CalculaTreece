@@ -74,7 +74,6 @@ class Equation:
         """
         Solve the equation if it is simple
         """
-        print('niveau 1')
         if all_x == 0:
             raise Exception(f'No {self.unknown} in the equation or {self.unknown} cancels out')
 
@@ -135,9 +134,11 @@ if __name__ == '__main__':
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('+').set_branches('x', 'x'), BinaryTree('+').set_branches('x', 5)),
         BinaryTree('-').set_branches('x', BinaryTree('+').set_branches(5, 2))) == [-6.0], 'Error with - and +'
+    print('(+ and -) test passed')
 
     assert eq.resolve(BinaryTree('+').set_branches(BinaryTree('*').set_branches(2, 'x'), 5),
                       BinaryTree('+').set_branches(BinaryTree('*').set_branches(4, 'x'), 3)) == [1.0], 'Error with *'
+    print('* test passed')
 
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('/').set_branches('x', 4), BinaryTree('-').set_branches(3, 6)),
@@ -146,3 +147,7 @@ if __name__ == '__main__':
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('/').set_branches(4, 'x'), BinaryTree('-').set_branches('x', 1)),
         BinaryTree('+').set_branches('x', 3)) == [0.0], 'Error with / (n/x)'
+    print('/ test passed')
+
+    print('---------------------------------------------------------------')
+    print('All tests passed')
