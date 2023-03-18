@@ -54,6 +54,8 @@ class Automaton:
         current_state = 0
         current_str = ''  # Used to build elements of multiple characters
         for elt in string:
+            if elt == '+':
+                False
             error_tracing += elt
             dic = self.base[current_state]
             if elt not in dic:
@@ -155,6 +157,7 @@ infix_states: States = [
         's': (10, None),
         'p': (16, None),
         'c': (20, None),
+        ' ': (0, None, False),
     },
     #  1
     {  # Numbers
@@ -179,6 +182,7 @@ infix_states: States = [
         '8': (1, None),
         '9': (1, None),
         '.': (1, None),  # For float
+        ' ': (1, lambda old, _: int(old) if old.isdigit() else float(old) if is_float(old) else old, True),
         #  Hard coding pi...
         'end': lambda old: pi if old == 'pi' else int(old) if old.isdigit() else float(old) if is_float(old) else old
     },
@@ -196,11 +200,12 @@ infix_states: States = [
         ')': (4, ')'),
         '*': (2, ')'),
         '/': (18, ')'),
-        '-': (0, (')', '-')),
-        ':': (0, (')', ':')),
-        '+': (0, (')', '+')),
-        '^': (0, (')', '**')),
-        '': (0, (')', '*'))
+        '-': (0, (')', '-'), True),
+        ':': (0, (')', ':'), True),
+        '+': (0, (')', '+'), True),
+        '^': (0, (')', '**'), True),
+        '': (0, (')', '*'), True),
+        ' ': (4, None, False),
     },
     #  5
     {  # Opened parentheses
@@ -369,6 +374,7 @@ if __name__ == '__main__':
     from src.Trees.transformations import clean_list_to_infix
 
     math_auto = Automaton(infix_states)
-    lis = math_auto.build('(5x)/sqrt(x+1)')
+    lis = math_auto.build('((5 * (x * 2)) + 8)')
+    print(lis)
     clean_list_to_infix(lis)
     print(lis)
