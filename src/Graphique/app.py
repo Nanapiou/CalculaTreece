@@ -8,6 +8,7 @@ from src.Graphique.text_box import TextBox
 from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree, tree_to_infix_list, stringify_infix_list
 from src.Trees.automaton import infix_states, Automaton
 from src.Trees.calculator import calculate_infix
+from src.Trees.trees import BinaryTree
 from src.Literal.derivation import derive, simplify
 import turtle
 
@@ -23,40 +24,40 @@ class App:
 
     def __init__(self, screen: pygame.Surface):
         # Set the screen
-        self.screen = screen
+        self.screen: pygame.Surface = screen
 
         # Set the background color
-        self.bg_color = (49, 58, 66)  # White
+        self.bg_color: Color = (49, 58, 66)  # White
 
         # Set the clock
-        self.clock = pygame.time.Clock()
+        self.clock: pygame.time.Clock = pygame.time.Clock()
 
         # Set the title
-        self.title = "CalculaTreece"
+        self.title: str = "CalculaTreece"
         pygame.display.set_caption(self.title)
 
         # Set the icon
-        self.icon = pygame.image.load("./src/Graphique/Assets/treeIcon2.png")
+        self.icon: pygame.Surface = pygame.image.load("./src/Graphique/Assets/treeIcon2.png")
         pygame.display.set_icon(self.icon)
 
         # Set the running flag to True
-        self.running = True
+        self.running: bool = True
 
-        self.calculation = ""
+        self.calculation: str = ""
 
         # Set the desktop size
-        self.desktop_size = pygame.display.get_desktop_sizes()[0]
+        self.desktop_size: Tuple[int, int] = pygame.display.get_desktop_sizes()[0]
 
         # Set the default screen size
-        self.default_size = screen.get_size()
+        self.default_size: Tuple[int, int] = screen.get_size()
 
         # Set part sizes
-        self.parts_width = None  # Will be set in the resize_parts method
-        self.parts_height = None  # Will be set in the resize_parts method
-        self.padding = 10
+        self.parts_width: int | None = None  # Will be set in the resize_parts method
+        self.parts_height: int | None = None  # Will be set in the resize_parts method
+        self.padding: int = 10
 
         # Create the text box, at 0, 0, with a width and height of 0 (just to initialize it)
-        self.text_box = TextBox(self.screen, 0, 0, 0, 0, "C:\Windows\Fonts\micross.ttf", (127, 127, 127), (0, 0, 0))
+        self.text_box: TextBox = TextBox(self.screen, 0, 0, 0, 0, "C:\Windows\Fonts\micross.ttf", (127, 127, 127), (0, 0, 0))
 
         # Creating buttons
         # Structure of each tuple: (text/value, bg_color, bg_hover_color)
@@ -86,7 +87,7 @@ class App:
 
         # Resize the parts of the screen
         self.resize_parts()
-        self.previous_calculation = ""
+        self.previous_calculation: str = ""
 
     @property
     def screen_size(self):
@@ -156,9 +157,7 @@ class App:
         """
         match button.value:
             case "=":
-                if "=" in self.text_box.text:
-                    pass
-                else:
+                if "=" not in self.text_box.text:
                     self.text_box.write_value(self.text_box.text + "=")
             case "C":
                 self.text_box.write_value("")
@@ -196,16 +195,16 @@ class App:
         # Get the expression from the text box
         try:  # If there is a result, use the old expression
             float(self.text_box.text)
-            expression = self.text_box.previous_text[:-2]  # Remove the '=' and the spaces at the end
+            expression: str = self.text_box.previous_text[:-2]  # Remove the '=' and the spaces at the end
         except ValueError:  # Then use the current expression if previous didn't work
-            expression = self.text_box.text
-        r = calculate_infix(expression)  # Calculate the result
+            expression: str = self.text_box.text
+        r: int | float = calculate_infix(expression)  # Calculate the result
 
         # Convert the expression into a tree
         try:
-            lis = infix_automaton.build(expression)  # Convert the expression to a list
+            lis: List[int | float | str | list] = infix_automaton.build(expression)  # Convert the expression to a list
             clean_list_to_infix(lis)  # Clean the list
-            tree = infix_list_to_tree(lis)  # Convert the list to a tree
+            tree: BinaryTree = infix_list_to_tree(lis)  # Convert the list to a tree
         except SyntaxError:
             return self.text_box.write_value('Error')  # If there is an error, return
 
@@ -250,13 +249,13 @@ class App:
         Derive the current expression, and draw the tree
         """
         try:
-            lis = infix_automaton.build(self.text_box.text)  # Convert the expression to a list
+            lis: List[str | int | float |list] = infix_automaton.build(self.text_box.text)  # Convert the expression to a list
             clean_list_to_infix(lis)  # Clean the list
-            tree = infix_list_to_tree(lis)  # Convert the list to a tree
+            tree: BinaryTree = infix_list_to_tree(lis)  # Convert the list to a tree
         except SyntaxError:
             return self.text_box.write_value('Error')
-        tree_d = simplify(derive(tree, 'x'))  # Derive the tree and simplify it
-        new = stringify_infix_list(tree_to_infix_list(tree_d))
+        tree_d: BinaryTree = simplify(derive(tree, 'x'))  # Derive the tree and simplify it
+        new: str = stringify_infix_list(tree_to_infix_list(tree_d))
         self.text_box.write_value(new)
 
         t = turtle.Turtle()  # Create a turtle
@@ -331,7 +330,7 @@ class App:
                             for letter_key in range(pygame.K_a, pygame.K_z + 1):
                                 if event.key == letter_key:
                                     self.text_box.write_value(self.text_box.text + chr(letter_key))
-                elif event.type == pygame.VIDEORESIZE:
+                elif event.type == pygame.VIDEORESIZE:  # Resize parts of the app (buttons, textbox, etc.)
                     self.resize_parts(event.size)
                 for button in self.buttons:
                     button.handle_event(event)
