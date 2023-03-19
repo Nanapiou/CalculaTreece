@@ -249,9 +249,12 @@ class App:
         """
         Derive the current expression, and draw the tree
         """
-        lis = infix_automaton.build(self.text_box.text)  # Convert the expression to a list
-        clean_list_to_infix(lis)  # Clean the list
-        tree = infix_list_to_tree(lis)  # Convert the list to a tree
+        try:
+            lis = infix_automaton.build(self.text_box.text)  # Convert the expression to a list
+            clean_list_to_infix(lis)  # Clean the list
+            tree = infix_list_to_tree(lis)  # Convert the list to a tree
+        except SyntaxError:
+            return self.text_box.write_value('Error')
         tree_d = simplify(derive(tree, 'x'))  # Derive the tree and simplify it
         new = stringify_infix_list(tree_to_infix_list(tree_d))
         self.text_box.write_value(new)
