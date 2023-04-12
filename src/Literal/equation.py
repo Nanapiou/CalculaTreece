@@ -26,7 +26,7 @@ class Equation:
         level = 0
         for side in [left, right]:
             for branch in side.iter_branches():
-                if branch.value == '**' and branch.right.value == 2:
+                if branch.value == '**' or branch.value == '^' and branch.right.value == 2:
                     level = 1
                 elif not (isinstance(branch.value, (int, float)) or branch.value in ['+', '-', '*', '/', self.unknown]):
                     level = 2
@@ -70,7 +70,6 @@ class Equation:
 
         for side in [left, right]:
             for branch in side.iter_branches():
-
                 if branch.value == self.unknown:
                     all_x += 1 if side == left else -1
                     branch.value = 0
@@ -141,7 +140,7 @@ class Equation:
                     b += 1 if side == left else -1
                     branch.value = 0
 
-                elif branch.right == '**' and branch.right.value == 2:
+                elif (branch.right == '**' or branch.right == '^') and branch.right.value == 2:
                     a += 1 if side == left else -1
                     branch.left.value = 0
 
@@ -169,13 +168,15 @@ class Equation:
         result_right = calculate_tree(right)
         c = result_right + result_left
 
+
+        print(f'a: {a}, b: {b}, c: {c}')
+
         if a == 0:
             raise Exception('The equation is not a quadratic equation')
 
         for i in multi:
             c *= i
 
-        print(f'a: {a}, b: {b}, c: {c}')
 
         delta = b ** 2 - 4 * a * c
 

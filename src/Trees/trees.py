@@ -32,6 +32,7 @@ class RootedTree:
 
         :return:
         """
+        yield self
         for e in self.branches:
             yield e
             yield from e.iter_branches()
