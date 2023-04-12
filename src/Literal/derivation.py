@@ -155,18 +155,19 @@ def simplify(tree: BinaryTree) -> BinaryTree:
 
 if __name__ == '__main__':
     from src.Trees.automaton import Automaton, infix_states
-    from src.Trees.transformations import infix_list_to_tree, clean_list_to_infix
+    from src.Trees.transformations import infix_list_to_tree, clean_list_to_infix, stringify_infix_list, tree_to_infix_list
     from turtle import Turtle, done
     auto = Automaton(infix_states)
-    lis = auto.build('(x^2+2x+1)/sqrt(x^2+1)')
+    lis = auto.build('((a * (x * 2)) + b)')
     clean_list_to_infix(lis)
     tree = infix_list_to_tree(lis)
-    tree_d = derive(tree, 'x')
-    tree_d_s = simplify(tree_d)
+
+    # tree_d = simplify(derive(tree, 'x'))
+    # print(stringify_infix_list(tree_to_infix_list(tree_d)))
     t = Turtle()
     t.speed(0)
     t.penup()
     t.goto(0, 300)
     t.pendown()
-    tree_d_s.draw(t)
+    tree.draw(t)
     done()

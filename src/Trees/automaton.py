@@ -201,7 +201,8 @@ infix_states: States = [
         '*': (2, ')'),
         '/': (18, ')'),
         '-': (0, (')', '-'), True),
-        ':': (0, (')', ':'), True),
+        ':': (0, (')', '/'), True),
+        '÷': (0, (')', '/'), True),
         '+': (0, (')', '+'), True),
         '^': (0, (')', '**'), True),
         '': (0, (')', '*'), True),
@@ -294,6 +295,7 @@ for letter in ascii_letters:
     if index is None:
         infix_states[0][letter] = (1, letter, True)
     else:
+        infix_states[index][' '] = (1, letter, True)
         infix_states[index][''] = (1, (letter, '*'), True)
 
 for e in infix_states:
@@ -374,7 +376,7 @@ if __name__ == '__main__':
     from src.Trees.transformations import clean_list_to_infix
 
     math_auto = Automaton(infix_states)
-    lis = math_auto.build('((5 * (x * 2)) + 8)')
+    lis = math_auto.build('((a * (x * 2)) + b)')
     print(lis)
     clean_list_to_infix(lis)
     print(lis)

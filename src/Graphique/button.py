@@ -13,21 +13,21 @@ class Button:
     """
 
     def __init__(self, x: int, y: int, width: int, height: int, text: str, value: str, box_color: Color,
-                 box_hover_color: Color, text_color: Color, callback: Callable, screen: pygame.Surface):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.text = text
-        self.value = value
-        self.box_color = box_color
-        self.box_hover_color = box_hover_color
-        self.text_color = text_color
-        self.callback = callback
-        self.screen = screen
-        self.rect = pygame.Rect(x, y, width, height)
+                 box_hover_color: Color, text_color: Color, callback: Callable[[pygame.event.Event], None], screen: pygame.Surface):
+        self.x: int = x
+        self.y: int = y
+        self.width: int = width
+        self.height: int = height
+        self.text: str = text
+        self.value: str = value
+        self.box_color: Color = box_color
+        self.box_hover_color: Color = box_hover_color
+        self.text_color: Color = text_color
+        self.callback: Callable[[pygame.event.Event], None] = callback
+        self.screen: pygame.Surface = screen
+        self.rect: pygame.Rect = pygame.Rect(x, y, width, height)
 
-        self.clicked = False
+        self.clicked: bool = False
 
     def __repr__(self):
         return f"Button({self.x}, {self.y}, {self.width}, {self.height}, {self.text}, {self.value}, {self.box_color},\

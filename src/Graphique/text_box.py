@@ -10,6 +10,7 @@ from src.Trees.calculator import calculate_infix
 from src.Literal.equation import Equation
 
 infix_automaton = Automaton(infix_states)
+Color = Tuple[int, int, int] | str
 
 
 class TextBox:
@@ -18,21 +19,21 @@ class TextBox:
     """
 
     def __init__(self, screen: pygame.Surface, x: int, y: int, width: int, height: int, font_src: str,
-                 bg_color: Tuple[int, int, int], text_color: Tuple[int, int, int]):
-        self.screen = screen
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.font_src = font_src
-        self.bg_color = bg_color
-        self.text_color = text_color
-        self.text = ''
-        self.text_surf = self.font.render(self.text, True, self.text_color)
-        self.text_rect = self.text_surf.get_rect(right=x + width - 10, centery=y + height // 2)
-        self.previous_text = ''
+                 bg_color: Color, text_color: Color):
+        self.screen: pygame.Surface = screen
+        self.x: int = x
+        self.y: int = y
+        self.width: int = width
+        self.height: int = height
+        self.font_src: str = font_src
+        self.bg_color: Color = bg_color
+        self.text_color: Color = text_color
+        self.text: str = ''
+        self.text_surf: pygame.Surface = self.font.render(self.text, True, self.text_color)
+        self.text_rect: pygame.Rect = self.text_surf.get_rect(right=x + width - 10, centery=y + height // 2)
+        self.previous_text: str = ''
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.text
 
     @property
@@ -80,11 +81,10 @@ class TextBox:
         """
         try:
             if '=' in self.text:
-                auto = Automaton(infix_states)
                 list_equation = self.text.split('=')
 
-                lis_left = auto.build(list_equation[0])
-                lis_right = auto.build(list_equation[1])
+                lis_left = infix_automaton.build(list_equation[0])
+                lis_right = infix_automaton.build(list_equation[1])
 
                 clean_list_to_infix(lis_left)
                 clean_list_to_infix(lis_right)
