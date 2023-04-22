@@ -13,7 +13,7 @@ class Button:
     """
 
     def __init__(self, x: int, y: int, width: int, height: int, text: str, value: str, box_color: Color,
-                 box_hover_color: Color, text_color: Color, callback: Callable[[pygame.event.Event], None], screen: pygame.Surface):
+                 box_hover_color: Color, text_color: Color, callback: Callable[[any], None], screen: pygame.Surface):
         self.x: int = x
         self.y: int = y
         self.width: int = width
