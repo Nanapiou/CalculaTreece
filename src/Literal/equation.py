@@ -90,7 +90,7 @@ class Equation:
                         branch.right.value = 1
 
         if all_x == 0:
-            raise Exception(f'No {self.unknown} in the equation or {self.unknown} cancels out')
+            raise SyntaxError(f'No {self.unknown} in the equation or {self.unknown} cancels out')
 
         solutions = []
 
@@ -172,7 +172,7 @@ class Equation:
         print(f'a: {a}, b: {b}, c: {c}')
 
         if a == 0:
-            raise Exception('The equation is not a quadratic equation')
+            raise SyntaxError('The equation is not a quadratic equation')
 
         for i in multi:
             c *= i
