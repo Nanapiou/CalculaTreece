@@ -166,11 +166,14 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
                 result = self.text_box.calculate()
-                if len(str(result)) > 12:
-                    self.text_box.clean_write(str(result)[0] + "." + str(result)[1:10]
-                                              + " e+" + str(len(str(result)) - 1))
-                else:
-                    self.text_box.clean_write(self.text_box.calculate())
+                self.text_box.clean_write(result)
+
+                # e notation, but broken for now
+                # if len(str(result)) > 12:
+                #     self.text_box.clean_write(str(result)[0] + "." + str(result)[1:10]
+                #                               + " e+" + str(len(str(result)) - 1))
+                # else:
+                #     self.text_box.clean_write(result)
             case "√":
                 self.text_box.write_value(self.text_box.text + 'sqrt')
             case "²":
