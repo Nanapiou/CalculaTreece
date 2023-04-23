@@ -165,10 +165,10 @@ class App:
             case "DEL":
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
-                if len(str(self.text_box.calculate())) > 12:
-                    self.text_box.clean_write(str(self.text_box.calculate())[0] + "." + str(self.text_box.calculate())[1:10]
-                                              + " e+" + str(len(str(self.text_box.calculate())) - 1))
-
+                result = self.text_box.calculate()
+                if len(str(result)) > 12:
+                    self.text_box.clean_write(str(result)[0] + "." + str(result)[1:10]
+                                              + " e+" + str(len(str(result)) - 1))
                 else:
                     self.text_box.clean_write(self.text_box.calculate())
             case "√":
