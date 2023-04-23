@@ -46,7 +46,7 @@ class Equation:
         assert self.__verif(left, right), 'Tree is empty'
 
         level = self.eval_level(left, right)
-        print(f'level: {level}')
+        # print(f'level: {level}')
 
         match level:
             case 0:
