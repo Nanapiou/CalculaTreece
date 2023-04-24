@@ -48,7 +48,7 @@ class Equation:
         assert self.__verif(left, right), 'Tree is empty'
 
         level = self.eval_level(left, right)
-        print(f'level: {level}')
+        # print(f'level: {level}')
 
         match level:
             case 0:
@@ -93,7 +93,7 @@ class Equation:
                         branch.right.value = 1
 
         if all_x == 0:
-            raise Exception(f'No {self.unknown} in the equation or {self.unknown} cancels out')
+            raise SyntaxError(f'No {self.unknown} in the equation or {self.unknown} cancels out')
 
         solutions = []
         # calculate the result
@@ -174,7 +174,7 @@ class Equation:
         print(f'a: {a}, b: {b}, c: {c}')
 
         if a == 0:
-            raise Exception('The equation is not a quadratic equation')
+            raise SyntaxError('The equation is not a quadratic equation')
 
         for i in multi:
             c *= i

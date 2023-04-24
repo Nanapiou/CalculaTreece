@@ -7,7 +7,7 @@ from src.Graphique.button import Button
 from src.Graphique.text_box import TextBox
 from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree, tree_to_infix_list, stringify_infix_list
 from src.Trees.automaton import infix_states, Automaton
-from src.Trees.calculator import calculate_infix
+from src.Trees.calculator import calculate_tree
 from src.Trees.trees import BinaryTree
 from src.Literal.derivation import derive, simplify
 import turtle
@@ -165,12 +165,15 @@ class App:
             case "DEL":
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
-                if len(str(self.text_box.calculate())) > 12:
-                    self.text_box.clean_write(str(self.text_box.calculate())[0] + "." + str(self.text_box.calculate())[1:10]
-                                              + " e+" + str(len(str(self.text_box.calculate())) - 1))
+                result = self.text_box.calculate()
+                self.text_box.clean_write(result)
 
-                else:
-                    self.text_box.clean_write(self.text_box.calculate())
+                # e notation, but broken for now
+                # if len(str(result)) > 12:
+                #     self.text_box.clean_write(str(result)[0] + "." + str(result)[1:10]
+                #                               + " e+" + str(len(str(result)) - 1))
+                # else:
+                #     self.text_box.clean_write(result)
             case "√":
                 self.text_box.write_value(self.text_box.text + 'sqrt')
             case "²":
@@ -198,17 +201,15 @@ class App:
             expression: str = self.text_box.previous_text[:-2]  # Remove the '=' and the spaces at the end
         except ValueError:  # Then use the current expression if previous didn't work
             expression: str = self.text_box.text
-        r: int | float = calculate_infix(expression)  # Calculate the result
 
         # Convert the expression into a tree
         try:
             lis: List[int | float | str | list] = infix_automaton.build(expression)  # Convert the expression to a list
             clean_list_to_infix(lis)  # Clean the list
             tree: BinaryTree = infix_list_to_tree(lis)  # Convert the list to a tree
+            r: int | float = calculate_tree(tree) # Calculate the result
         except SyntaxError:
             return self.text_box.write_value('Error')  # If there is an error, return
-
-        print(tree)  # Print the tree
 
         # Then draw using the method
         t = turtle.Turtle()  # Create a turtle
@@ -231,7 +232,6 @@ class App:
         t.color("#F68120")
         style = ("Verdana", 20, "italic")
         result = str(int(r) if type(r) == float and r.is_integer() else round(r, 4))
-        print(result)
         t.goto(0, 300)
         if len(result) > 7:
             # round the number to the x.xxxxxx e+xx format
