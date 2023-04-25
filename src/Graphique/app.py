@@ -78,6 +78,8 @@ class App:
             [("Draw", (255, 255, 0), (255, 240, 150)), ("Hist.", (255, 255, 0), (255, 240, 150))],
             [("=", (255, 139, 61), (255, 157, 92)), ("EXE", (174, 181, 187), (146, 153, 158))],
         ]
+        self.height_part_count: int = len(self.buttons_mat)
+        self.width_part_count: int = len(self.buttons_mat[0])
         self.buttons: List[Button] = []
         for row in self.buttons_mat:
             for value, bg_color, hover_color in row:
@@ -96,8 +98,7 @@ class App:
 
         # Previous result
         self.previous_result: str = ""
-
-        self.historique_calculs = ["test", "test2", "test3", "test4", "test5", "test6", "test7", "test8", "test9"]
+        self.historique_calculs: List[str] = ["test", "test2", "test3", "test4", "test5", "test6", "test7", "test8", "test9"]
 
     @property
     def screen_size(self):
@@ -137,8 +138,8 @@ class App:
         screen_width, screen_height = screen_size or self.screen_size
 
         # Calculate the number of rows and columns of buttons
-        height_part_count = len(self.buttons_mat)
-        width_part_count = len(self.buttons_mat[0])
+        height_part_count = self.height_part_count
+        width_part_count = self.width_part_count
 
         # Calculate the width and height of the buttons and there is no padding on the right and bottom
         self.parts_width = (screen_width - self.padding * (width_part_count + 1)) / width_part_count
@@ -393,7 +394,6 @@ class App:
         """
         Affiche l'historique des calculs
         """
-        check = True
         if len(self.buttons) == len(self.buttons_save):
             new = []
             for i in self.buttons:
@@ -402,5 +402,4 @@ class App:
             self.buttons = new
         else:
             self.buttons = self.buttons_save
-            check = False
 
