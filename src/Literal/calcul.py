@@ -1,3 +1,7 @@
+""""
+prototype of equation calculation with the module sympy
+"""
+
 import sympy as sp
 
 sp.init_printing(use_latex=True)

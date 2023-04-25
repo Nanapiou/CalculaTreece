@@ -94,9 +94,15 @@ class TextBox:
                 eq = Equation('x')
 
                 result = eq.resolve(left, right)
+
                 round_result = []
+                len_floats = 0
                 for i in result:
-                    round_result.append(round(i, len(result) *3))
+                    len_floats += len(str(i))
+                if len_floats > 20:
+                    for i in result:
+                        round_result.append(i, 20 // len(result))
+
                 values = ', '.join(str(v) for v in round_result)
                 return values
 

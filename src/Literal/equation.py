@@ -113,7 +113,6 @@ class Equation:
         for i in multi:
             result *= i
 
-
         # verify if is unknown is negative
         if all_x < 0:
             result = -result
@@ -196,7 +195,7 @@ class Equation:
         result_right = -calculate_tree(right)
         c = result_left + result_right
 
-        #print(f'a: {a}, b: {b}, c: {c}')
+        # print(f'a: {a}, b: {b}, c: {c}')
 
         if a == 0:
             raise SyntaxError('The equation is not a quadratic equation')
@@ -206,7 +205,7 @@ class Equation:
 
         delta = b ** 2 - 4 * a * c
 
-        #print(f'delta: {delta}')
+        # print(f'delta: {delta}')
 
         solutions = []
 
@@ -219,7 +218,6 @@ class Equation:
         else:
             solutions.append((-b + sqrt(delta)) / (2 * a))
             solutions.append((-b - sqrt(delta)) / (2 * a))
-
 
         return solutions
 
@@ -264,9 +262,10 @@ class Equation:
 
 
 if __name__ == '__main__':
-    '''
+    """
     Unit test
-    '''
+    """
+
     eq = Equation('x')
 
     assert eq.resolve(
@@ -280,7 +279,8 @@ if __name__ == '__main__':
 
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('/').set_branches('x', 4), BinaryTree('-').set_branches(3, 6)),
-        BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)) == [-2.285714286], 'Error with / (x/n)' #not working
+        BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)) == [
+               -2.285714286], 'Error with / (x/n)'  # not working
 
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('/').set_branches(4, 'x'), BinaryTree('-').set_branches('x', 1)),
@@ -294,10 +294,10 @@ if __name__ == '__main__':
     branch.draw(t)
     done()
 
-    tree = BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
-                                        BinaryTree('-').set_branches(BinaryTree('-').set_branches(0, 'x'), 6))
-
-    assert eq.resolve(tree, BinaryTree('-').set_branches(0, 0)) == [1.356107225224513, -1.106107225224513], 'Error with ax² + bx + c'
+    assert eq.resolve(
+        BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
+                                     BinaryTree('-').set_branches(BinaryTree('-').set_branches(0, 'x'), 6)),
+        BinaryTree('-').set_branches(0, 0)) == [1.356107225224513, -1.106107225224513], 'Error with ax² + bx + c'
     print('** test passed')
 
     print('---------------------------------------------------------------')
