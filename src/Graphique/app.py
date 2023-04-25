@@ -287,8 +287,10 @@ class App:
                             self.running = False
                         case pygame.K_BACKSPACE:
                             self.text_box.write_value(self.text_box.text[:-1])
-                        case pygame.K_RETURN | pygame.K_KP_ENTER | pygame.K_KP_EQUALS | pygame.K_EQUALS:
+                        case pygame.K_RETURN | pygame.K_KP_ENTER:
                             self.text_box.clean_write(self.text_box.calculate())
+                        case pygame.K_KP_EQUALS | pygame.K_EQUALS:
+                            self.text_box.write_value(self.text_box.text + "=")
                         case pygame.K_c:
                             self.text_box.write_value("")
                             self.text_box.previous_text = ""

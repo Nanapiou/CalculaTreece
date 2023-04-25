@@ -21,6 +21,7 @@ A calculator, linked to trees
 
 - Calculate the value of an expression, you can for example calculate the value of `5(8-2)` without any problem
 - Solve basic equations, for example `4x-2=10` will be solved to `3`
+    - Only developed equations are supported, for example `x(x+1)=4` will give the wrong result, may be fixed later
 - Derive expressions, for example `sqrt(x)` will be derived to `1/2sqrt(x)`
 - And the coolest feature, you can draw your expressions, here is the result of `5(3+18)/6^2*9`:
 

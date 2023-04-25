@@ -89,7 +89,7 @@ class Automaton:
                     return result
                 result.append(self.base[current_state]['end'](current_str))
             else:
-                print(f"Warning: State {current_state}, left '{current_str}' as old, adding it itself")
+                # print(f"Warning: State {current_state}, left '{current_str}' as old, adding it itself")
                 result.append(current_str)
         return result
 
