@@ -106,6 +106,9 @@ class TextBox:
 
                 result = eq.resolve(left, right)
 
+                if result is None:
+                    return "Not supported"
+
                 round_result = []
                 len_floats = 0
                 for i in result:
@@ -113,6 +116,8 @@ class TextBox:
                 if len_floats > 20:
                     for i in result:
                         round_result.append(round(i, 17 // len(result)))
+                else:
+                    round_result = result
 
                 values = ', '.join(str(v) for v in round_result)
                 return values

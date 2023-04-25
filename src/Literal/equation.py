@@ -32,11 +32,16 @@ class Equation:
         :param right: The right part of the equation
         """
         level = 0
+        operator = ['+', '-', '*', '/', self.unknown]
         for side in [left, right]:
             for branch in side.iter_branches():
-                if branch.value == '**' or branch.value == '^' and branch.right.value == 2:
+                if branch.value == '*' and( branch.left.value in operator or branch.right.value in operator):
+                    level = 2
+                if branch.value == self.unknown and not branch.is_leaf():
+                    level = 2
+                elif branch.value == '**' or branch.value == '^' and branch.right.value == 2:
                     level = 1
-                elif not (isinstance(branch.value, (int, float)) or branch.value in ['+', '-', '*', '/', self.unknown]):
+                elif not (isinstance(branch.value, (int, float)) or branch.value in operator):
                     level = 2
         return level
 
@@ -54,19 +59,19 @@ class Equation:
         assert self.__verif(left, right), 'Tree is empty'
 
         level = self.eval_level(left, right)
-        # print(f'level: {level}')
+        #print(f'level: {level}')
 
         match level:
             case 0:
-                result = self.level_1(left, right)
+                result = self.level_0(left, right)
             case 1:
-                result = self.level_2(left, right)
+                result = self.level_1(left, right)
             case 2:
-                pass
+                result = None
 
         return result
 
-    def level_1(self, left: BinaryTree, right: BinaryTree) -> list:
+    def level_0(self, left: BinaryTree, right: BinaryTree) -> list:
         """
         Solve the equation if it is simple ('+' or '-' or '*' or '/')
 
@@ -123,9 +128,11 @@ class Equation:
         # add the result to the list
         solutions.append(result)
 
+        print(f'solutions: {solutions}')
+
         return solutions
 
-    def level_2(self, left: BinaryTree, right: BinaryTree) -> list:
+    def level_1(self, left: BinaryTree, right: BinaryTree) -> list:
         """
         Solve the equation if type ax² + bx+ c = 0
 
