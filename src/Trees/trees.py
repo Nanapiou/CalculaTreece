@@ -116,74 +116,33 @@ class RootedTree:
 
     # TODO Maybe use smt else than trtl
     def draw(self, trtl: Turtle, radius: int = 20) -> Turtle:
-        """
-        Draw the tree with the turtle module
+        def draw_text_and_circle(text: str, font_size: int) -> None:
+            trtl.write(text, align='center', font=('', font_size, ''))
+            trtl.circle(radius)
 
-        :param trtl: The turtle to use, required
-        :param radius: The radius of each value
-        :return: The turtle used
-        """
         self._draw_getup(trtl, -radius)
-        if hasattr(self.value, '__call__'):
-            # It's a function, draw the name
-            text = self.value.__name__
-        else:
-            text = str(self.value)
+        text = self.value.__name__ if hasattr(self.value, '__call__') else str(self.value)
+        font_size = radius - max(0, (len(text) - 4) * 2)
+        draw_text_and_circle(text, font_size)
 
-        # Calculate the text length
-        text_length = len(text)
-
-        # Adjust font size based on the text length
-        font_size = radius
-        if text_length > 4:
-            font_size = radius - (text_length - 4) * 2
-
-        trtl.write(text, align='center', font=('', font_size, ''))
-        trtl.circle(radius)
-        # A strange working, ik...
-        largest = 0
-        for i in range(1, self.height + 1):
-            ln = len(self.get_branches_at_height(i))
-            if ln > largest:
-                largest = ln
+        largest = max(len(self.get_branches_at_height(i)) for i in range(1, self.height + 1))
         length = largest * 3 * radius - 2 * radius
 
         x, y = trtl.pos()
         branches_count = len(self.branches)
         height = 50
 
-        branch_length = 50 * (self.height + 1)
+        for i in range(branches_count):
+            if branches_count % 2 == 0:
+                offset = x - (branches_count // 2 - 0.5) * length + i * length
+            else:
+                offset = x + (i - branches_count // 2) * length
 
-        if branches_count == 1:
-            trtl.goto(x, y - branch_length)
-            self.branches[0].draw(trtl)
+            trtl.goto(offset, y - height)
+            self.branches[i].draw(trtl)
+            self._draw_getup(trtl, radius)
             trtl.goto(x, y)
-        elif branches_count % 2 == 0:
-            for i in range(branches_count // 2):
-                trtl.goto(x - branches_count // 2 * length + i * length + length // 2, y - height)
-                self.branches[i].draw(trtl)
-                self._draw_getup(trtl, radius)
-                trtl.goto(x, y)
-            for j in range(branches_count // 2, branches_count):
-                trtl.goto(x + (j - branches_count // 2 + 1) * length - length // 2, y - height)
-                self.branches[j].draw(trtl)
-                self._draw_getup(trtl, radius)
-                trtl.goto(x, y)
-        else:
-            for i in range(branches_count // 2):
-                trtl.goto(x - (branches_count // 2 + i) * length, y - height)
-                self.branches[i].draw(trtl)
-                self._draw_getup(trtl, radius)
-                trtl.goto(x, y)
-            # Mid one
-            trtl.goto(x, y - height)
-            self.branches[branches_count // 2].draw(trtl)
-            trtl.goto(x, y)
-            for j in range(branches_count // 2 + 1, branches_count):
-                trtl.goto(x + (j - branches_count // 2) * length, y - height)
-                self.branches[j].draw(trtl)
-                self._draw_getup(trtl, radius)
-                trtl.goto(x, y)
+
         return trtl
 
     @staticmethod
