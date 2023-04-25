@@ -197,7 +197,7 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
                 result = self.text_box.calculate()
-                value = str(result)
+                value = self.text_box.text + "=" + str(result)
                 self.buttons_history.insert(1,
                     Button(0, 0, 0, 0, value, value, (100, 100, 100), (127, 127, 127), (0, 0, 0), self.button_callback,
                            self.screen))
