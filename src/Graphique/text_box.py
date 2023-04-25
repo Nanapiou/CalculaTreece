@@ -47,7 +47,7 @@ class TextBox:
         Rewrite the text on the screen
         """
         self.text_surf = self.font.render(self.text, True, self.text_color)
-        self.text_rect = self.text_surf.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
+        self.text_rect = self.text_surf.get_rect(right=self.x + self.width - 8, centery=self.y + self.height // 2 + 20)
 
     def draw(self):
         """
