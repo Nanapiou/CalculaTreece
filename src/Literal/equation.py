@@ -65,13 +65,6 @@ class Equation:
         level = self.eval_level(left, right)
         # print(f'level: {level}')
 
-        # branch = left
-        # t = Turtle()
-        # t.penup()
-        # t.goto(0, 350)
-        # branch.draw(t)
-        # done()
-
         match level:
             case 0:
                 result = self.level_0(left, right)
@@ -139,8 +132,6 @@ class Equation:
 
         # add the result to the list
         solutions.append(result)
-
-        #(f'solutions: {solutions}')
 
         return solutions
 
@@ -213,8 +204,6 @@ class Equation:
         result_right = -calculate_tree(right)
         c = result_left + result_right
 
-        # print(f'a: {a}, b: {b}, c: {c}')
-
         if a == 0:
             raise SyntaxError('The equation is not a quadratic equation')
 
@@ -222,8 +211,6 @@ class Equation:
             c *= i
 
         delta = b ** 2 - 4 * a * c
-
-        # print(f'delta: {delta}')
 
         solutions = []
 
