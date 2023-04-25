@@ -57,7 +57,8 @@ class App:
         self.padding: int = 10
 
         # Create the text box, at 0, 0, with a width and height of 0 (just to initialize it)
-        self.text_box: TextBox = TextBox(self.screen, 0, 0, 0, 0, "C:\Windows\Fonts\micross.ttf", (127, 127, 127), (0, 0, 0))
+        self.text_box: TextBox = TextBox(self.screen, 0, 0, 0, 0, "C:\Windows\Fonts\micross.ttf", (127, 127, 127),
+                                         (0, 0, 0))
 
         # Creating buttons
         # Structure of each tuple: (text/value, bg_color, bg_hover_color)
@@ -84,6 +85,7 @@ class App:
                 self.buttons.append(
                     Button(0, 0, 0, 0, value, value, bg_color, hover_color, (0, 0, 0), self.button_callback,
                            self.screen))
+        self.buttons_save: List[Button] = []
 
         # Resize the parts of the screen
         self.resize_parts()
@@ -95,7 +97,7 @@ class App:
         # Previous result
         self.previous_result: str = ""
 
-        self.historique_calculs = []
+        self.historique_calculs = ["test", "test2", "test3", "test4", "test5", "test6", "test7", "test8", "test9"]
 
     @property
     def screen_size(self):
@@ -188,7 +190,7 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
                 result = self.text_box.calculate()
-                self.historique.append(self.text_box.text + "=" + result)
+                self.historique_calculs.append(self.text_box.text + "=" + result)
                 self.text_box.clean_write(result)
                 self.executed = True
 
@@ -233,13 +235,12 @@ class App:
             lis: List[int | float | str | list] = infix_automaton.build(expression)  # Convert the expression to a list
             clean_list_to_infix(lis)  # Clean the list
             tree: BinaryTree = infix_list_to_tree(lis)  # Convert the list to a tree
-            r: int | float = calculate_tree(tree) # Calculate the result
+            r: int | float = calculate_tree(tree)  # Calculate the result
         except SyntaxError:
             return self.text_box.write_value('Error')  # If there is an error, return
 
         # Then draw using the method
         t = turtle.Turtle()  # Create a turtle
-
 
         # Set the background color to white
         turtle.bgcolor("#FFFFFF")
@@ -269,13 +270,14 @@ class App:
         # Done
         turtle.done()  # Window won't close without this line
         turtle.TurtleScreen._RUNNING = True  # This is a hack to make turtle work with pygame
-        
+
     def derive(self):
         """
         Derive the current expression, and draw the tree
         """
         try:
-            lis: List[str | int | float |list] = infix_automaton.build(self.text_box.text)  # Convert the expression to a list
+            lis: List[str | int | float | list] = infix_automaton.build(
+                self.text_box.text)  # Convert the expression to a list
             clean_list_to_infix(lis)  # Clean the list
             tree: BinaryTree = infix_list_to_tree(lis)  # Convert the list to a tree
         except SyntaxError:
@@ -298,6 +300,7 @@ class App:
         """
         Run the app
         """
+        self.buttons_save = self.buttons.copy()
         while self.running:
             # Handle events
             for event in pygame.event.get():
@@ -386,11 +389,18 @@ class App:
         # Update the display
         pygame.display.update()
 
-
     def historique(self):
         """
         Affiche l'historique des calculs
         """
-
-
+        check = True
+        if len(self.buttons) == len(self.buttons_save):
+            new = []
+            for i in self.buttons:
+                if i.value == 'historique':
+                    new.append(i)
+            self.buttons = new
+        else:
+            self.buttons = self.buttons_save
+            check = False
 
