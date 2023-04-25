@@ -89,6 +89,9 @@ class App:
         self.resize_parts()
         self.previous_calculation: str = ""
 
+        # Executed
+        self.executed: bool = False
+
     @property
     def screen_size(self):
         """
@@ -159,6 +162,11 @@ class App:
 
         :param button: The button that was clicked
         """
+
+        if self.executed and button.value.isdigit():
+            self.text_box.write_value("")
+            self.executed = False
+
         match button.value:
             case "=":
                 if "=" not in self.text_box.text:
@@ -171,6 +179,7 @@ class App:
             case "EXE":
                 result = self.text_box.calculate()
                 self.text_box.clean_write(result)
+                self.executed = True
 
                 # e notation, but broken for now
                 # if len(str(result)) > 12:
