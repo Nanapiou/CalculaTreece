@@ -74,7 +74,7 @@ class Automaton:
                     result.append(new)
                 elif isinstance(new, Iterable):  # Or hasattr(new, '__iter__')
                     for new_elt in new:
-                        if e != '':  # To avoid empty strings, happens with letters in state 1 for infix for example
+                        if new_elt != '':  # To avoid empty strings, happens with letters in state 1 for infix for example
                             result.append(new_elt)
                 else:
                     result.append(new)
@@ -109,7 +109,7 @@ def gentle_assign(dic1: Dict, dic2: Dict) -> None:
 
 def is_float(string: str) -> bool:
     """
-    Return wether the procided string looks like a float or not
+    Return whether the provided string looks like a float or not
 
     """
     try:
@@ -376,7 +376,7 @@ if __name__ == '__main__':
     from src.Trees.transformations import clean_list_to_infix
 
     math_auto = Automaton(infix_states)
-    lis = math_auto.build('((a * (x * 2)) + b)')
+    lis = math_auto.build('x(x+1)')
     print(lis)
     clean_list_to_infix(lis)
     print(lis)
