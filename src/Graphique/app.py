@@ -75,7 +75,7 @@ class App:
              ("√", (255, 139, 61), (255, 157, 92)), ("+", (255, 139, 61), (255, 157, 92))],
             [("d/dx", (255, 139, 61), (255, 157, 92)), ("x^n", (255, 139, 61), (255, 157, 92)),
              ("x", (255, 139, 61), (255, 157, 92)), ("²", (255, 139, 61), (255, 157, 92))],
-            [("Draw", (255, 255, 0), (255, 240, 150)), ("historique", (255, 255, 0), (255, 240, 150))],
+            [("Draw", (255, 255, 0), (255, 240, 150)), ("Hist.", (255, 255, 0), (255, 240, 150))],
             [("=", (255, 139, 61), (255, 157, 92)), ("EXE", (174, 181, 187), (146, 153, 158))],
         ]
         self.buttons: List[Button] = []
@@ -178,7 +178,7 @@ class App:
             self.executed = False
 
         match button.value:
-            case "historique":
+            case "Hist.":
                 self.historique()
             case "=":
                 if "=" not in self.text_box.text:
@@ -397,7 +397,7 @@ class App:
         if len(self.buttons) == len(self.buttons_save):
             new = []
             for i in self.buttons:
-                if i.value == 'historique':
+                if i.value == "Hist.":
                     new.append(i)
             self.buttons = new
         else:
