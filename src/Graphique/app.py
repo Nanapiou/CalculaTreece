@@ -194,13 +194,6 @@ class App:
                 self.historique_calculs.append(self.text_box.text + "=" + str(result))
                 self.text_box.clean_write(result)
                 self.executed = True
-
-                # e notation, but broken for now
-                # if len(str(result)) > 12:
-                #     self.text_box.clean_write(str(result)[0] + "." + str(result)[1:10]
-                #                               + " e+" + str(len(str(result)) - 1))
-                # else:
-                #     self.text_box.clean_write(result)
             case "√":
                 self.text_box.write_value(self.text_box.text + 'sqrt')
             case "²":
