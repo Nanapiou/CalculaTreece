@@ -1,7 +1,6 @@
 """
 Text box class, used to display text in pygame
 """
-
 import pygame
 from typing import Tuple
 from src.Trees.automaton import Automaton, infix_states
@@ -93,8 +92,13 @@ class TextBox:
                 right = infix_list_to_tree(lis_right)
 
                 eq = Equation('x')
+
                 result = eq.resolve(left, right)
-                return str('|'.join(result) if result else str('No solution'))
+                round_result = []
+                for i in result:
+                    round_result.append(round(i, len(result) *3))
+                values = ', '.join(str(v) for v in round_result)
+                return values
 
             else:
                 self.previous_text = self.text + " ="

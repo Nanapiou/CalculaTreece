@@ -151,11 +151,19 @@ class Equation:
                         b += -1 if side is left else 1
                         branch.right.value = 0
 
+                    elif branch.right.value == '*':
+                        if branch.right.left.value == self.unknown:
+                            b += -branch.right.right.value if side is left else branch.right.right.value
+                            branch.right.left.value = 0
+                        elif branch.right.right.value == self.unknown:
+                            b += -branch.right.left.value if side is left else branch.right.left.value
+                            branch.right.right.value = 0
+
                 elif branch.value == self.unknown:
                     b += 1 if side is left else -1
                     branch.value = 0
 
-                elif (branch.right == '**' or branch.right == '^') and branch.right.value == 2:
+                elif (branch.value == '**' or branch.value == '^') and branch.right.value == 2:
                     a += 1 if side is left else -1
                     branch.left.value = 0
 
@@ -164,10 +172,15 @@ class Equation:
                         a += branch.left.value if side is left else -branch.left.value
                         branch.right.left.value = 0
 
+                    elif branch.left.value == '**' and branch.left.right.value == 2:
+                        a += branch.right.value if side is left else -branch.right.value
+                        branch.left.left.value = 0
+
                     elif branch.left.value == self.unknown:
                         b += branch.right.value if side is left else -branch.right.value
                         branch.left.value = 0
                     elif branch.right.value == self.unknown:
+                        print(branch.left.value)
                         b += branch.left.value if side is left else -branch.left.value
                         branch.right.value = 0
 
@@ -179,11 +192,11 @@ class Equation:
                         branch.right.value = 1
 
         # calculate the result
-        result_left = -calculate_tree(left)
-        result_right = calculate_tree(right)
-        c = result_right + result_left
+        result_left = calculate_tree(left)
+        result_right = -calculate_tree(right)
+        c = result_left + result_right
 
-        print(f'a: {a}, b: {b}, c: {c}')
+        #print(f'a: {a}, b: {b}, c: {c}')
 
         if a == 0:
             raise SyntaxError('The equation is not a quadratic equation')
@@ -193,7 +206,7 @@ class Equation:
 
         delta = b ** 2 - 4 * a * c
 
-        print(f'delta: {delta}')
+        #print(f'delta: {delta}')
 
         solutions = []
 
@@ -207,7 +220,6 @@ class Equation:
             solutions.append((-b + sqrt(delta)) / (2 * a))
             solutions.append((-b - sqrt(delta)) / (2 * a))
 
-        print(f'solutions: {solutions} ')
 
         return solutions
 
@@ -252,6 +264,9 @@ class Equation:
 
 
 if __name__ == '__main__':
+    '''
+    Unit test
+    '''
     eq = Equation('x')
 
     assert eq.resolve(
