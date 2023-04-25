@@ -32,7 +32,7 @@ class Equation:
         :param right: The right part of the equation
         """
         level = 0
-        operator = ['+', '-', '*', '/', self.unknown]
+        operator = ['+', '-', '*', '/']
         for side in [left, right]:
             for branch in side.iter_branches():
                 if branch.value == '/' and branch.left.value == self.unknown:
@@ -45,7 +45,7 @@ class Equation:
                     level = 1
                 elif (branch.value == '**' or branch.value == '^') and branch.right.value != 2:
                     level = 2
-                elif not (isinstance(branch.value, (int, float)) or branch.value in operator):
+                elif not (isinstance(branch.value, (int, float)) or branch.value in operator or branch.value == self.unknown):
                     level = 2
         return level
 
@@ -64,6 +64,13 @@ class Equation:
 
         level = self.eval_level(left, right)
         # print(f'level: {level}')
+
+        # branch = left
+        # t = Turtle()
+        # t.penup()
+        # t.goto(0, 350)
+        # branch.draw(t)
+        # done()
 
         match level:
             case 0:
