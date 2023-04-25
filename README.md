@@ -20,8 +20,8 @@ A calculator, linked to trees
 ## Calculator features
 
 - Calculate the value of an expression, you can for example calculate the value of `5(8-2)` without any problem
-- Solve basic equations, for example `4x-2=10` will be solved to `2`
-- Derive expressions, for example `sqrt(x)` will be derived to `-1/x^2`
+- Solve basic equations, for example `4x-2=10` will be solved to `3`
+- Derive expressions, for example `sqrt(x)` will be derived to `1/2sqrt(x)`
 - And the coolest feature, you can draw your expressions, here is the result of `5(3+18)/6^2*9`:
 
 ![image.png](./examples/tree_expression.png)
