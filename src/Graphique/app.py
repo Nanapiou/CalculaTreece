@@ -99,7 +99,7 @@ class App:
         # Previous result
         self.previous_result: str = ""
 
-        self.buttons_history: List[Button] = [Button(0, 0, 0, 0, "Hist.", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback, self.screen)]
+        self.buttons_history: List[Button] = [Button(0, 0, 0, 0, "Return to calculator", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback, self.screen)]
         self.len_history: int = 0
         self.is_not_in_history: bool = True
         self.max_history: int = 4
@@ -229,53 +229,61 @@ class App:
         """
         Draw the tree
         """
-        # Get the expression from the text box
-        try:  # If there is a result, use the old expression
-            float(self.text_box.text)
-            expression: str = self.text_box.previous_text[:-2]  # Remove the '=' and the spaces at the end
-        except ValueError:  # Then use the current expression if previous didn't work
-            expression: str = self.text_box.text
+        expression = self.get_expression()
+        tree, result = self.build_tree_and_calculate_result(expression)
 
-        # Convert the expression into a tree
+        if tree is not None:
+            self.draw_tree_with_turtle(tree, result)
+        else:
+            self.text_box.write_value("Error")
+
+    def get_expression(self):
         try:
-            lis: List[int | float | str | list] = infix_automaton.build(expression)  # Convert the expression to a list
-            clean_list_to_infix(lis)  # Clean the list
-            tree: BinaryTree = infix_list_to_tree(lis)  # Convert the list to a tree
-            r: int | float = calculate_tree(tree)  # Calculate the result
+            float(self.text_box.text)
+            return self.text_box.previous_text[:-2]
+        except ValueError:
+            return self.text_box.text
+
+    @staticmethod
+    def build_tree_and_calculate_result(expression):
+        try:
+            lis = infix_automaton.build(expression)
+            clean_list_to_infix(lis)
+            tree = infix_list_to_tree(lis)
+            result = calculate_tree(tree)
+            return tree, result
         except SyntaxError:
-            return self.text_box.write_value('Error')  # If there is an error, return
+            return None, None
 
-        # Then draw using the method
-        t = turtle.Turtle()  # Create a turtle
+    @staticmethod
+    def draw_tree_with_turtle(tree, result):
+        t = turtle.Turtle()
 
-        # Set the background color to white
         turtle.bgcolor("#FFFFFF")
 
         t.hideturtle()
         t.speed(0)
         t.penup()
 
-        # Move the turtle to the root position
         t.goto(0, 300)
         t.pendown()
 
-        tree.draw(t)  # Draw the tree
+        tree.draw(t)
 
         t.penup()
-        t.color("#F68120")
+        t.color("Red")
         style = ("Verdana", 20, "italic")
-        result = str(int(r) if type(r) == float and r.is_integer() else round(r, 4))
+        result_str = str(int(result) if isinstance(result, float) and result.is_integer() else round(result, 4))
         t.goto(0, 300)
-        if len(result) > 7:
-            # round the number to the x.xxxxxx e+xx format
-            result = result[0] + "." + result[1:7] + " e+" + str(len(result) - 1)
-            t.write(result, align="center", font=style)
-        else:
-            t.write(result, align="center", font=style)
 
-        # Done
-        turtle.done()  # Window won't close without this line
-        turtle.TurtleScreen._RUNNING = True  # This is a hack to make turtle work with pygame
+        if len(result_str) > 7:
+            result_str = result_str[0] + "." + result_str[1:7] + " e+" + str(len(result_str) - 1)
+            t.write(result_str, align="center", font=style)
+        else:
+            t.write(result_str, align="center", font=style)
+
+        turtle.done()
+        turtle.TurtleScreen._RUNNING = True
 
     def derive(self):
         """

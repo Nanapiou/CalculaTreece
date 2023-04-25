@@ -126,11 +126,20 @@ class RootedTree:
         self._draw_getup(trtl, -radius)
         if hasattr(self.value, '__call__'):
             # It's a function, draw the name
-            trtl.write(self.value.__name__, align='center', font=('', radius, ''))
+            text = self.value.__name__
         else:
-            trtl.write(self.value, align='center', font=('', radius, ''))
-        trtl.circle(radius)
+            text = str(self.value)
 
+        # Calculate the text length
+        text_length = len(text)
+
+        # Adjust font size based on the text length
+        font_size = radius
+        if text_length > 4:
+            font_size = radius - (text_length - 4) * 2
+
+        trtl.write(text, align='center', font=('', font_size, ''))
+        trtl.circle(radius)
         # A strange working, ik...
         largest = 0
         for i in range(1, self.height + 1):
@@ -142,7 +151,14 @@ class RootedTree:
         x, y = trtl.pos()
         branches_count = len(self.branches)
         height = 50
-        if branches_count % 2 == 0:
+
+        branch_length = 50 * (self.height + 1)
+
+        if branches_count == 1:
+            trtl.goto(x, y - branch_length)
+            self.branches[0].draw(trtl)
+            trtl.goto(x, y)
+        elif branches_count % 2 == 0:
             for i in range(branches_count // 2):
                 trtl.goto(x - branches_count // 2 * length + i * length + length // 2, y - height)
                 self.branches[i].draw(trtl)
