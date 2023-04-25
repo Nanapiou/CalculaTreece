@@ -99,10 +99,11 @@ class App:
         # Previous result
         self.previous_result: str = ""
 
+        # History
         self.buttons_history: List[Button] = [Button(0, 0, 0, 0, "Return to calculator", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback, self.screen)]
         self.len_history: int = 0
         self.is_not_in_history: bool = True
-        self.max_history: int = 4
+        self.max_history: int = 5
 
     @property
     def screen_size(self):
@@ -200,7 +201,7 @@ class App:
                 self.buttons_history.insert(1,
                     Button(0, 0, 0, 0, value, value, (100, 100, 100), (127, 127, 127), (0, 0, 0), self.button_callback,
                            self.screen))
-                if self.len_history <= self.max_history -1:
+                if self.len_history < self.max_history:
                     self.len_history += 1
                 else:
                     del self.buttons_history[-1]
@@ -417,5 +418,5 @@ class App:
         else:
             self.buttons = self.buttons_history
             self.width_part_count = 1
-            self.height_part_count = 6
+            self.height_part_count = 7
             self.resize_parts()
