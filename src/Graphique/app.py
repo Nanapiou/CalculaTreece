@@ -99,7 +99,7 @@ class App:
         # Previous result
         self.previous_result: str = ""
 
-        self.buttons_history: List[List[Tuple[str, Color, Color]]] = [Button(0, 0, 0, 0, "Hist.", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback, self.screen)]
+        self.buttons_history: List[Button] = [Button(0, 0, 0, 0, "Hist.", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback, self.screen)]
         self.len_history: int = 0
         self.is_not_in_history: bool = True
         self.max_history: int = 4
