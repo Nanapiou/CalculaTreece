@@ -100,14 +100,14 @@ class TextBox:
                             break
 
                 if unknown is None:
-                    return "Error"
+                    raise SyntaxError("No unknown found")
 
                 eq = Equation(unknown)
 
                 result = eq.resolve(left, right)
 
                 if result is None:
-                    return "Not supported"
+                    raise SyntaxError("Quadratics equations are not supported yet")
 
                 round_result = []
                 len_floats = 0
