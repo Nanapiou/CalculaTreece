@@ -74,7 +74,7 @@ class App:
              ("√", (255, 139, 61), (255, 157, 92)), ("+", (255, 139, 61), (255, 157, 92))],
             [("d/dx", (255, 139, 61), (255, 157, 92)), ("x^n", (255, 139, 61), (255, 157, 92)),
              ("x", (255, 139, 61), (255, 157, 92)), ("²", (255, 139, 61), (255, 157, 92))],
-            [("Draw", (255, 255, 0), (255, 240, 150)), ("Full", (255, 255, 0), (255, 240, 150))],
+            [("Draw", (255, 255, 0), (255, 240, 150)), ("Ans", (255, 255, 0), (255, 240, 150))],
             [("=", (255, 139, 61), (255, 157, 92)), ("EXE", (174, 181, 187), (146, 153, 158))],
         ]
         self.buttons: List[Button] = []
@@ -91,6 +91,9 @@ class App:
 
         # Executed
         self.executed: bool = False
+
+        # Previous result
+        self.previous_result: str = ""
 
     @property
     def screen_size(self):
@@ -198,14 +201,16 @@ class App:
                 self.text_box.write_value(self.text_box.text + '^')
             case "Draw":
                 self.draw_tree()
-            case "Full":
-                self.toggle_fullscreen()
+            case "Ans":
+                if self.executed:
+                    self.text_box.write_value(self.previous_calculation)
             case "d/dx":
                 self.derive()
             case _:
-                if self.text_box.text == "Error":
+                if self.executed and button.value.isdigit():
                     self.text_box.write_value("")
                 self.text_box.write_value(self.text_box.text + button.value)
+                self.executed = False
 
     def draw_tree(self):
         """
