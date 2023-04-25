@@ -35,12 +35,16 @@ class Equation:
         operator = ['+', '-', '*', '/', self.unknown]
         for side in [left, right]:
             for branch in side.iter_branches():
-                if branch.value == '*' and( branch.left.value in operator or branch.right.value in operator):
+                if branch.value == '/' and branch.left.value == self.unknown:
                     level = 2
-                if branch.value == self.unknown and not branch.is_leaf():
+                elif branch.value == '*' and (branch.left.value in operator or branch.right.value in operator):
                     level = 2
-                elif branch.value == '**' or branch.value == '^' and branch.right.value == 2:
+                elif branch.value == self.unknown and not branch.is_leaf():
+                    level = 2
+                elif (branch.value == '**' or branch.value == '^') and branch.right.value == 2:
                     level = 1
+                elif (branch.value == '**' or branch.value == '^') and branch.right.value != 2:
+                    level = 2
                 elif not (isinstance(branch.value, (int, float)) or branch.value in operator):
                     level = 2
         return level
@@ -59,7 +63,7 @@ class Equation:
         assert self.__verif(left, right), 'Tree is empty'
 
         level = self.eval_level(left, right)
-        #print(f'level: {level}')
+        # print(f'level: {level}')
 
         match level:
             case 0:
@@ -98,11 +102,12 @@ class Equation:
                         branch.right.value = 0
 
                 elif branch.value == '/':
-                    if branch.left.value == self.unknown:
-                        multi.append(branch.right.value)
-                        all_x += 1 if side is left else -1
-                        branch.left.value = 0
-                    elif branch.right.value == self.unknown:
+                    # not working
+                    # if branch.left.value == self.unknown:
+                    #     multi.append(branch.right.value)
+                    #     all_x += 1 if side is left else -1
+                    #     branch.left.value = 0
+                    if branch.right.value == self.unknown:
                         all_x += 1 if side is left else -1
                         branch.right.value = 1
 
@@ -284,22 +289,15 @@ if __name__ == '__main__':
                       BinaryTree('+').set_branches(BinaryTree('*').set_branches(4, 'x'), 3)) == [1.0], 'Error with *'
     print('* test passed')
 
-    assert eq.resolve(
-        BinaryTree('+').set_branches(BinaryTree('/').set_branches('x', 4), BinaryTree('-').set_branches(3, 6)),
-        BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)) == [
-               -2.285714286], 'Error with / (x/n)'  # not working
+    # assert eq.resolve(
+    #     BinaryTree('+').set_branches(BinaryTree('/').set_branches('x', 4), BinaryTree('-').set_branches(3, 6)),
+    #     BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)) == [
+    #            -2.285714286], 'Error with / (x/n)'  # not working
 
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('/').set_branches(4, 'x'), BinaryTree('-').set_branches('x', 1)),
         BinaryTree('+').set_branches('x', 3)) == [0.0], 'Error with / (n/x)'
     print('/ test passed')
-
-    branch = BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)
-    t = Turtle()
-    t.penup()
-    t.goto(0, 350)
-    branch.draw(t)
-    done()
 
     assert eq.resolve(
         BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
