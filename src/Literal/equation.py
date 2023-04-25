@@ -81,24 +81,24 @@ class Equation:
         for side in [left, right]:
             for branch in side.iter_branches():
                 if branch.value == self.unknown:
-                    all_x += 1 if side == left else -1
+                    all_x += 1 if side is left else -1
                     branch.value = 0
 
                 elif branch.value == '*':
                     if branch.left.value == self.unknown:
-                        all_x += branch.right.value if side == left else -branch.right.value
+                        all_x += branch.right.value if side is left else -branch.right.value
                         branch.left.value = 0
                     elif branch.right.value == self.unknown:
-                        all_x += branch.left.value if side == left else -branch.left.value
+                        all_x += branch.left.value if side is left else -branch.left.value
                         branch.right.value = 0
 
                 elif branch.value == '/':
                     if branch.left.value == self.unknown:
                         multi.append(branch.right.value)
-                        all_x += 1 if side == left else -1
+                        all_x += 1 if side is left else -1
                         branch.left.value = 0
                     elif branch.right.value == self.unknown:
-                        all_x += 1 if side == left else -1
+                        all_x += 1 if side is left else -1
                         branch.right.value = 1
 
         if all_x == 0:
@@ -145,37 +145,37 @@ class Equation:
                 if branch.value == '-':
 
                     if branch.left.value == self.unknown:
-                        b += 1 if side == left else -1
+                        b += 1 if side is left else -1
                         branch.left.value = 0
                     elif branch.right.value == self.unknown:
-                        b += -1 if side == left else 1
+                        b += -1 if side is left else 1
                         branch.right.value = 0
 
                 elif branch.value == self.unknown:
-                    b += 1 if side == left else -1
+                    b += 1 if side is left else -1
                     branch.value = 0
 
                 elif (branch.right == '**' or branch.right == '^') and branch.right.value == 2:
-                    a += 1 if side == left else -1
+                    a += 1 if side is left else -1
                     branch.left.value = 0
 
                 elif branch.value == '*':
                     if branch.right.value == '**' and branch.right.right.value == 2:
-                        a += branch.left.value if side == left else -branch.left.value
+                        a += branch.left.value if side is left else -branch.left.value
                         branch.right.left.value = 0
 
                     elif branch.left.value == self.unknown:
-                        b += branch.right.value if side == left else -branch.right.value
+                        b += branch.right.value if side is left else -branch.right.value
                         branch.left.value = 0
                     elif branch.right.value == self.unknown:
-                        b += branch.left.value if side == left else -branch.left.value
+                        b += branch.left.value if side is left else -branch.left.value
                         branch.right.value = 0
 
                 elif branch.value == '/':
                     if branch.left.value == self.unknown:
                         multi.append(branch.right.value)
                     elif branch.right.value == self.unknown:
-                        b += 1 if side == left else -1
+                        b += 1 if side is left else -1
                         branch.right.value = 1
 
         # calculate the result

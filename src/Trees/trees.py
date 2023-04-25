@@ -308,8 +308,10 @@ class BinaryTree(RootedTree):
 
 if __name__ == '__main__':
     branch = BinaryTree('*').set_branches(BinaryTree('-').set_branches(12, 2), BinaryTree('/').set_branches(30, 3))
-    t = Turtle()
-    t.penup()
-    t.goto(0, 350)
-    branch.draw(t)
-    done()
+    b = branch
+    print(branch == b, b is branch)
+    # t = Turtle()
+    # t.penup()
+    # t.goto(0, 350)
+    # branch.draw(t)
+    # done()
