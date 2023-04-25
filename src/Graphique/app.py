@@ -98,12 +98,11 @@ class App:
 
         # Previous result
         self.previous_result: str = ""
-        self.historique_calculs: List[str] = []
 
-        self.buttons_history: List[List[Tuple[str, Color, Color]]] = []
-        self.buttons_calculs: List[List[Tuple[str, Color, Color]]] = []
+        self.buttons_history: List[List[Tuple[str, Color, Color]]] = [Button(0, 0, 0, 0, "Hist.", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback, self.screen)]
+        self.len_history: int = 0
         self.is_not_in_history: bool = True
-        self.max_historique: int = 4
+        self.max_history: int = 4
 
     @property
     def screen_size(self):
@@ -197,11 +196,14 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
                 result = self.text_box.calculate()
-                if len(self.historique_calculs) <= self.max_historique:
-                    self.historique_calculs.append(self.text_box.text + "=" + str(result))
+                value = str(result)
+                self.buttons_history.insert(1,
+                    Button(0, 0, 0, 0, value, value, (100, 100, 100), (127, 127, 127), (0, 0, 0), self.button_callback,
+                           self.screen))
+                if self.len_history <= self.max_history -1:
+                    self.len_history += 1
                 else:
-                    self.historique_calculs = self.historique_calculs[1:]
-                    self.historique_calculs.append(self.text_box.text + "=" + str(result))
+                    del self.buttons_history[-1]
                 self.text_box.clean_write(result)
                 self.executed = True
             case "√":
@@ -404,20 +406,8 @@ class App:
             self.width_part_count = len(self.buttons_mat[0])
             self.height_part_count = len(self.buttons_mat)
             self.resize_parts()
-
         else:
-            new = [Button(0, 0, 0, 0, "Hist.", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback,
-                          self.screen)]
-            value_list = []
-            for i in self.historique_calculs:
-                value_list.append((i, (100, 100, 100), (127, 127, 127)))
-
-            for value, bg_color, hover_color in value_list:
-                new.append(
-                    Button(0, 0, 0, 0, value, value, bg_color, hover_color, (0, 0, 0), self.button_callback,
-                           self.screen))
-
-            self.buttons = new
+            self.buttons = self.buttons_history
             self.width_part_count = 1
             self.height_part_count = 6
             self.resize_parts()
