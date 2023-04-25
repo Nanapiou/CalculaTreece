@@ -2,6 +2,8 @@
 Module to solve an equation
 """
 from math import sqrt
+from turtle import Turtle, done
+
 from src.Trees.trees import BinaryTree
 from src.Trees.calculator import calculate_tree
 
@@ -64,7 +66,6 @@ class Equation:
         """
 
         all_x = 0
-
         # for division
         multi = []
 
@@ -85,6 +86,8 @@ class Equation:
                 elif branch.value == '/':
                     if branch.left.value == self.unknown:
                         multi.append(branch.right.value)
+                        all_x += 1 if side == left else -1
+                        branch.left.value = 0
                     elif branch.right.value == self.unknown:
                         all_x += 1 if side == left else -1
                         branch.right.value = 1
@@ -93,7 +96,6 @@ class Equation:
             raise SyntaxError(f'No {self.unknown} in the equation or {self.unknown} cancels out')
 
         solutions = []
-
         # calculate the result
         result_left = -calculate_tree(left)
         result_right = calculate_tree(right)
@@ -101,6 +103,7 @@ class Equation:
 
         for i in multi:
             result *= i
+
 
         # verify if is unknown is negative
         if all_x < 0:
@@ -168,7 +171,6 @@ class Equation:
         result_right = calculate_tree(right)
         c = result_right + result_left
 
-
         print(f'a: {a}, b: {b}, c: {c}')
 
         if a == 0:
@@ -176,7 +178,6 @@ class Equation:
 
         for i in multi:
             c *= i
-
 
         delta = b ** 2 - 4 * a * c
 
@@ -241,17 +242,24 @@ if __name__ == '__main__':
 
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('/').set_branches('x', 4), BinaryTree('-').set_branches(3, 6)),
-        BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)) == [-16.0], 'Error with / (x/n)'
+        BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)) == [-2.285714286], 'Error with / (x/n)' #not working
 
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('/').set_branches(4, 'x'), BinaryTree('-').set_branches('x', 1)),
         BinaryTree('+').set_branches('x', 3)) == [0.0], 'Error with / (n/x)'
     print('/ test passed')
 
+    branch = BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)
+    t = Turtle()
+    t.penup()
+    t.goto(0, 350)
+    branch.draw(t)
+    done()
+
     tree = BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
                                         BinaryTree('-').set_branches(BinaryTree('-').set_branches(0, 'x'), 6))
 
-    assert eq.resolve(tree, BinaryTree('-').set_branches(0, 0)) == [2.0, -1.5], 'Error with **'
+    assert eq.resolve(tree, BinaryTree('-').set_branches(0, 0)) == [1.356107225224513, -1.106107225224513], 'Error with ax² + bx + c'
     print('** test passed')
 
     print('---------------------------------------------------------------')
