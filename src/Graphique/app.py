@@ -102,7 +102,7 @@ class App:
 
         self.buttons_history: List[List[Tuple[str, Color, Color]]] = []
         self.buttons_calculs: List[List[Tuple[str, Color, Color]]] = []
-        self.is_in_history: bool = False
+        self.is_not_in_history: bool = True
         self.max_historique: int = 6
 
     @property
@@ -397,16 +397,16 @@ class App:
         """
         Affiche l'historique des calculs
         """
-        self.is_in_history != self.is_in_history
+        self.is_not_in_history = not self.is_not_in_history
 
-        if self.is_in_history:
+        if self.is_not_in_history:
             self.buttons = self.buttons_save
             self.width_part_count = len(self.buttons_mat[0])
             self.height_part_count = len(self.buttons_mat)
             self.resize_parts()
 
         else:
-            new = [Button(0, 0, 0, 0, "Hist.", "", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback,
+            new = [Button(0, 0, 0, 0, "Hist.", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback,
                           self.screen)]
             value_list = []
             for i in self.historique_calculs:
