@@ -74,7 +74,7 @@ class App:
              ("√", (255, 139, 61), (255, 157, 92)), ("+", (255, 139, 61), (255, 157, 92))],
             [("d/dx", (255, 139, 61), (255, 157, 92)), ("x^n", (255, 139, 61), (255, 157, 92)),
              ("x", (255, 139, 61), (255, 157, 92)), ("²", (255, 139, 61), (255, 157, 92))],
-            [("Draw", (255, 255, 0), (255, 240, 150)), ("Ans", (255, 255, 0), (255, 240, 150))],
+            [("Draw", (255, 255, 0), (255, 240, 150)), ("historique", (255, 255, 0), (255, 240, 150))],
             [("=", (255, 139, 61), (255, 157, 92)), ("EXE", (174, 181, 187), (146, 153, 158))],
         ]
         self.buttons: List[Button] = []
@@ -94,6 +94,8 @@ class App:
 
         # Previous result
         self.previous_result: str = ""
+
+        self.historique_calculs = []
 
     @property
     def screen_size(self):
@@ -174,6 +176,8 @@ class App:
             self.executed = False
 
         match button.value:
+            case "historique":
+                self.historique()
             case "=":
                 if "=" not in self.text_box.text:
                     self.text_box.write_value(self.text_box.text + "=")
@@ -184,6 +188,7 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
                 result = self.text_box.calculate()
+                self.historique.append(self.text_box.text + "=" + result)
                 self.text_box.clean_write(result)
                 self.executed = True
 
@@ -380,3 +385,12 @@ class App:
 
         # Update the display
         pygame.display.update()
+
+
+    def historique(self):
+        """
+        Affiche l'historique des calculs
+        """
+
+
+
