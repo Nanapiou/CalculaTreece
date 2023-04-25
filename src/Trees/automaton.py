@@ -29,7 +29,7 @@ class Automaton:
         """
         Test whether the string respect the automaton or not
 
-        :param string:
+        :param string: The string to test
         :return:
         """
         current_state = 0

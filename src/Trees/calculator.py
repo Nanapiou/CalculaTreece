@@ -16,7 +16,7 @@ def calculate_tree(tree: BinaryTree) -> Number:
     """
     Calculate the provided tree
 
-    :param tree:
+    :param tree: The tree to calculate
     :return:
     """
     branches = tree.branches
@@ -55,7 +55,7 @@ def infix_iter_with_parentheses(tree: BinaryTree) -> Generator[str | Number | Ca
     """
     Iterate over the tree in infix syntax, with parentheses
 
-    :param tree:
+    :param tree: The tree to iterate over
     :return:
     """
     branches = tree.branches
@@ -79,7 +79,7 @@ def calculate_infix(string: str) -> Number:
     """
     Return the result of the expression (or throw a syntax error)
 
-    :param string:
+    :param string: The expression to calculate
     """
     lis = infix_automaton.build(string)
     clean_list_to_infix(lis)

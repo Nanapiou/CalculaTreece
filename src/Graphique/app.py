@@ -119,6 +119,8 @@ class App:
     def resize_parts(self, screen_size: Tuple[int, int] | None = None):
         """
         Resize the parts of the screen (buttons and text box)
+
+        :param screen_size: The size of the screen (width, height)
         """
         # If screen_size is not provided, use the screen_size attribute of the class
         # Otherwise, use the provided screen_size
@@ -154,6 +156,8 @@ class App:
     def button_callback(self, button: Button):
         """
         Handle button clicks
+
+        :param button: The button that was clicked
         """
         match button.value:
             case "=":

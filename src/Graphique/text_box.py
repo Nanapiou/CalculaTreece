@@ -107,6 +107,8 @@ class TextBox:
     def clean_write(self, value):
         """
         Write the value on the screen
+
+        :param value: the value to write
         """
 
         if isinstance(value, str):

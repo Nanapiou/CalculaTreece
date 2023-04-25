@@ -60,6 +60,8 @@ class Button:
     def handle_event(self, event):
         """
         Handle mouse events for the button
+
+        :param event: pygame event
         """
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Check if the mouse is within the button's rect

@@ -25,6 +25,12 @@ class Equation:
         self.unknown = x
 
     def eval_level(self, left: BinaryTree, right: BinaryTree) -> int:
+        """
+        Evaluate the level of the equation
+
+        :param left: The left part of the equation
+        :param right: The right part of the equation
+        """
         level = 0
         for side in [left, right]:
             for branch in side.iter_branches():
@@ -63,6 +69,9 @@ class Equation:
     def level_1(self, left: BinaryTree, right: BinaryTree) -> list:
         """
         Solve the equation if it is simple ('+' or '-' or '*' or '/')
+
+        :param left: The left part of the equation
+        :param right: The right part of the equation
         """
 
         all_x = 0
@@ -120,6 +129,9 @@ class Equation:
     def level_2(self, left: BinaryTree, right: BinaryTree) -> list:
         """
         Solve the equation if type ax² + bx+ c = 0
+
+        :param left: The left part of the equation
+        :param right: The right part of the equation
         """
         a = 0  # x²
         b = 0  # x
@@ -202,6 +214,10 @@ class Equation:
     def __find_x(self, arbre: BinaryTree, v: int = 1) -> list:
         """
         Find the unknown variable in the equation
+
+        :param arbre: equation
+        :param v: number of unknown variable
+        :return: list of unknown variable
         """
         k = 1
         for i in arbre.iter_branches():
@@ -210,19 +226,26 @@ class Equation:
                     return i
                 k += 1
 
-    def __replace(self, arbre: BinaryTree, x, y):
+    @staticmethod
+    def __replace(arbre: BinaryTree, x, y):
         """
         Replace the value of the unknown variable by the value given (0)
+
+        :param arbre: equation
+        :param x: unknown variable
+        :param y: value
         """
         for i in arbre.iter_branches():
             if i.value == x:
                 i.value = y
 
-    def __verif(self, left: BinaryTree, right: BinaryTree) -> bool:
+    @staticmethod
+    def __verif(left: BinaryTree, right: BinaryTree) -> bool:
         """
         Check if the equation is simple
 
-        :param arbre: The equation
+        :param left: left side of the equation
+        :param right: right side of the equation
         :return: basic verification
         """
         return not (left is None or right is None)

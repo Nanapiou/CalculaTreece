@@ -9,6 +9,9 @@ Number = int | float
 def derive(tree: BinaryTree, variable: str) -> BinaryTree:
     """
     Derive the tree with respect to the variable
+
+    :param tree: the tree to derive
+    :param variable: the variable to derive with respect to
     """
     branches = tree.branches
     match len(branches):
@@ -54,6 +57,8 @@ def derive(tree: BinaryTree, variable: str) -> BinaryTree:
 def simplify(tree: BinaryTree) -> BinaryTree:
     """
     Simplify a tree (make possible calculations), including letters
+
+    :param tree: the tree to simplify
     """
     branches = tree.branches
     match len(branches):

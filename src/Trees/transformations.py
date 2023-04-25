@@ -14,7 +14,7 @@ def postfix_list_to_tree(lis: List[str | Number]) -> BinaryTree:
     """
     Create a tree from the list, wrote in postfix syntax
 
-    :param lis:
+    :param lis: The list to transform
     :return:
     """
     trees: List[BinaryTree] = list()
@@ -34,7 +34,7 @@ def tree_to_postfix_list(tree: BinaryTree) -> List[str | Number]:
     """
     Create a tree from the list, wrote in infix syntax
 
-    :param tree:
+    :param tree: The tree to transform
     :return:
     """
     return list(tree.postfix_iter())
@@ -45,7 +45,7 @@ def infix_list_to_tree(lis: List[str | Number | BinaryTree]) -> BinaryTree:
     """
     Create a tree from the list, wrote in infix syntax
 
-    :param lis:
+    :param lis: The list to transform
     :return:
     """
     if len(lis) == 0:
@@ -112,7 +112,7 @@ def clean_list_to_infix(lis: List[str | Number | List]) -> None:
 
     **Change the list itself.**
 
-    :param lis:
+    :param lis: The list to clean
     :return:
     """
     pad = -1
@@ -143,7 +143,7 @@ def tree_to_infix_list(tree: BinaryTree) -> List[str | Number]:
     Create a tree from the list, wrote in infix syntax, and respect priority
     A little overkill, but it's the only way I found to do it
 
-    :param tree:
+    :param tree: The tree to transform
     :return:
     """
     branches = tree.branches
@@ -166,7 +166,7 @@ def stringify_infix_list(lis: List[str | Number]) -> str:
     """
     Transform a list in postfix syntax to a string
 
-    :param lis:
+    :param lis: The list to transform
     :return:
     """
     new = deepcopy(lis)
