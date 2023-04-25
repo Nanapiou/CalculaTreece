@@ -140,7 +140,7 @@ class Equation:
         # add the result to the list
         solutions.append(result)
 
-        print(f'solutions: {solutions}')
+        #(f'solutions: {solutions}')
 
         return solutions
 
@@ -198,7 +198,6 @@ class Equation:
                         b += branch.right.value if side is left else -branch.right.value
                         branch.left.value = 0
                     elif branch.right.value == self.unknown:
-                        print(branch.left.value)
                         b += branch.left.value if side is left else -branch.left.value
                         branch.right.value = 0
 
