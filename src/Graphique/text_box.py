@@ -94,7 +94,7 @@ class TextBox:
 
                 eq = Equation('x')
                 result = eq.resolve(left, right)
-                return str(result[0])
+                return str('|'.join(result) if result else str('No solution'))
 
             else:
                 self.previous_text = self.text + " ="
