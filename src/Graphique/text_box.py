@@ -47,7 +47,7 @@ class TextBox:
         Rewrite the text on the screen
         """
         self.text_surf = self.font.render(self.text, True, self.text_color)
-        self.text_rect = self.text_surf.get_rect(right=self.x + self.width - 8, centery=self.y + self.height // 2 + 20)
+        self.text_rect = self.text_surf.get_rect(right=self.x + self.width - 8, centery=self.y + (self.height // 4) * 3)
 
     def draw(self):
         """
@@ -60,8 +60,7 @@ class TextBox:
         if self.previous_text:
             prev_font = pygame.font.Font(self.font_src, self.height // 3)
             prev_surf = prev_font.render(self.previous_text, True, (200, 200, 200))
-            prev_rect = prev_surf.get_rect(right=self.text_rect.right, centery=self.text_rect.centery,
-                                           top=self.text_rect.top - 30)
+            prev_rect = prev_surf.get_rect(right=self.text_rect.right, centery=self.y + self.height // 4)
             self.screen.blit(prev_surf, prev_rect)
 
     def write_value(self, value):
@@ -70,7 +69,7 @@ class TextBox:
         """
         self.text = value
         self.text_surf = self.font.render(self.text, True, self.text_color)
-        self.text_rect = self.text_surf.get_rect(right=self.x + self.width - 8, centery=self.y + self.height // 2 + 20)
+        self.text_rect = self.text_surf.get_rect(right=self.x + self.width - 8, centery=self.y + (self.height // 4) * 3)
 
         # if text is too long, cut it
 
