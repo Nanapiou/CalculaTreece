@@ -71,8 +71,6 @@ class TextBox:
         self.text_surf = self.font.render(self.text, True, self.text_color)
         self.text_rect = self.text_surf.get_rect(right=self.x + self.width - 8, centery=self.y + (self.height // 4) * 3)
 
-        # if text is too long, cut it
-
     def calculate(self):  # Fonction will calculate the result of the expression
         """
         Calculate the result of the expression
