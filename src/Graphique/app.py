@@ -103,7 +103,7 @@ class App:
         self.buttons_history: List[List[Tuple[str, Color, Color]]] = []
         self.buttons_calculs: List[List[Tuple[str, Color, Color]]] = []
         self.is_not_in_history: bool = True
-        self.max_historique: int = 6
+        self.max_historique: int = 4
 
     @property
     def screen_size(self):
@@ -197,7 +197,7 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
                 result = self.text_box.calculate()
-                if len(self.historique_calculs) >= self.max_historique:
+                if len(self.historique_calculs) <= self.max_historique:
                     self.historique_calculs.append(self.text_box.text + "=" + str(result))
                 else:
                     self.historique_calculs = self.historique_calculs[1:]
