@@ -167,6 +167,9 @@ class App:
             self.text_box.write_value("")
             self.executed = False
 
+        elif self.executed:
+            self.executed = False
+
         match button.value:
             case "=":
                 if "=" not in self.text_box.text:
