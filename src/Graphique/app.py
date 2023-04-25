@@ -27,7 +27,7 @@ class App:
         self.screen: pygame.Surface = screen
 
         # Set the background color
-        self.bg_color: Color = (49, 58, 66)  # White
+        self.bg_color: Color = (49, 58, 66)  # Grey
 
         # Set the clock
         self.clock: pygame.time.Clock = pygame.time.Clock()
@@ -190,7 +190,7 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
                 result = self.text_box.calculate()
-                self.historique_calculs.append(self.text_box.text + "=" + result)
+                self.historique_calculs.append(self.text_box.text + "=" + str(result))
                 self.text_box.clean_write(result)
                 self.executed = True
 
