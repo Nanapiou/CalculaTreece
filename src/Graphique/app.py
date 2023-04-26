@@ -101,9 +101,8 @@ class App:
 
         # History
         self.buttons_history: List[Button] = [Button(0, 0, 0, 0, "Return to calculator", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback, self.screen)]
-        self.len_history: int = 0
         self.is_not_in_history: bool = True
-        self.max_history: int = 5
+        self.max_history: int = 8
 
     @property
     def screen_size(self):
@@ -186,7 +185,7 @@ class App:
 
         match button.value:
             case "Hist.":
-                self.historique()
+                self.history()
             case "=":
                 if "=" not in self.text_box.text:
                     self.text_box.write_value(self.text_box.text + "=")
@@ -197,14 +196,11 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
                 result = self.text_box.calculate()
-                value = self.text_box.text + "=" + str(result)
                 self.buttons_history.insert(1,
-                    Button(0, 0, 0, 0, value, value, (100, 100, 100), (127, 127, 127), (0, 0, 0), self.button_callback,
+                    Button(0, 0, 0, 0, self.text_box.text, str(result), (100, 100, 100), (127, 127, 127), (0, 0, 0), self.button_callback,
                            self.screen))
-                if self.len_history < self.max_history:
-                    self.len_history += 1
-                else:
-                    del self.buttons_history[-1]
+                if len(self.buttons_history) > self.max_history:
+                    self.buttons_history.pop()
                 self.text_box.clean_write(result)
                 self.executed = True
             case "√":
@@ -239,6 +235,9 @@ class App:
             self.text_box.write_value("Error")
 
     def get_expression(self):
+        """
+        Get the expression from the text box
+        """
         try:
             float(self.text_box.text)
             return self.text_box.previous_text[:-2]
@@ -247,6 +246,11 @@ class App:
 
     @staticmethod
     def build_tree_and_calculate_result(expression):
+        """
+        Build the tree and calculate the result
+
+        :param expression: The expression to build the tree from
+        """
         try:
             lis = infix_automaton.build(expression)
             clean_list_to_infix(lis)
@@ -258,6 +262,12 @@ class App:
 
     @staticmethod
     def draw_tree_with_turtle(tree, result):
+        """
+        Draw the tree with turtle
+
+        :param tree: The tree to draw
+        :param result: The result of the calculation
+        """
         t = turtle.Turtle()
 
         turtle.bgcolor("#FFFFFF")
@@ -404,9 +414,9 @@ class App:
         # Update the display
         pygame.display.update()
 
-    def historique(self):
+    def history(self):
         """
-        Affiche l'historique des calculs
+        Show the calculation history
         """
         self.is_not_in_history = not self.is_not_in_history
 
@@ -418,5 +428,5 @@ class App:
         else:
             self.buttons = self.buttons_history
             self.width_part_count = 1
-            self.height_part_count = 7
+            self.height_part_count = max(len(self.buttons_history), 5) + 1
             self.resize_parts()
