@@ -175,14 +175,10 @@ class App:
 
         :param button: The button that was clicked
         """
-
-        if self.executed and button.value.isdigit():
+        if self.executed and button.value in "0123456789": # isdigit() doesn't work because it includes operators
             self.text_box.write_value("")
-            self.executed = False
 
-        elif self.executed:
-            self.executed = False
-
+        self.executed = False
         match button.value:
             case "Hist.":
                 self.history()
@@ -196,11 +192,12 @@ class App:
                 self.text_box.write_value(self.text_box.text[:-1])
             case "EXE":
                 result = self.text_box.calculate()
-                self.buttons_history.insert(1,
-                    Button(0, 0, 0, 0, self.text_box.text, str(result), (100, 100, 100), (127, 127, 127), (0, 0, 0), self.button_callback,
-                           self.screen))
-                if len(self.buttons_history) > self.max_history:
-                    self.buttons_history.pop()
+                if result != "Error":
+                    self.buttons_history.insert(1,
+                        Button(0, 0, 0, 0, self.text_box.text, str(result), (100, 100, 100), (127, 127, 127), (0, 0, 0), self.button_callback,
+                               self.screen))
+                    if len(self.buttons_history) > self.max_history:
+                        self.buttons_history.pop()
                 self.text_box.clean_write(result)
                 self.executed = True
             case "√":
@@ -217,10 +214,7 @@ class App:
             case "d/dx":
                 self.derive()
             case _:
-                if self.executed and button.value.isdigit():
-                    self.text_box.write_value("")
                 self.text_box.write_value(self.text_box.text + button.value)
-                self.executed = False
 
     def draw_tree(self):
         """
