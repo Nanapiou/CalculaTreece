@@ -412,15 +412,14 @@ class App:
         """
         Show the calculation history
         """
-        self.is_not_in_history = not self.is_not_in_history
-
         if self.is_not_in_history:
-            self.buttons = self.buttons_save
-            self.width_part_count = len(self.buttons_mat[0])
-            self.height_part_count = len(self.buttons_mat)
-            self.resize_parts()
-        else:
             self.buttons = self.buttons_history
             self.width_part_count = 1
             self.height_part_count = max(len(self.buttons_history), 5) + 1
-            self.resize_parts()
+        else:
+            self.buttons = self.buttons_save
+            self.width_part_count = len(self.buttons_mat[0])
+            self.height_part_count = len(self.buttons_mat)
+        self.resize_parts()
+
+        self.is_not_in_history = not self.is_not_in_history
