@@ -54,8 +54,6 @@ class Automaton:
         current_state = 0
         current_str = ''  # Used to build elements of multiple characters
         for elt in string:
-            if elt == '+':
-                False
             error_tracing += elt
             dic = self.base[current_state]
             if elt not in dic:
