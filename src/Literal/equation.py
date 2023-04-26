@@ -23,6 +23,7 @@ class Equation:
 
     def __init__(self, x):
         self.unknown = x
+        self.operator = ['+', '-', '*', '/']
 
     def eval_level(self, left: BinaryTree, right: BinaryTree) -> int:
         """
@@ -32,12 +33,12 @@ class Equation:
         :param right: The right part of the equation
         """
         level = 0
-        operator = ['+', '-', '*', '/']
         for side in [left, right]:
             for branch in side.iter_branches():
                 if branch.value == '/' and branch.left.value == self.unknown:
                     level = 2
-                elif branch.value == '*' and (branch.left.value in operator or branch.right.value in operator):
+                elif branch.value == '*' and (
+                        branch.left.value in self.operator or branch.right.value in self.operator):
                     level = 2
                 elif branch.value == self.unknown and not branch.is_leaf():
                     level = 2
@@ -45,7 +46,8 @@ class Equation:
                     level = 1
                 elif (branch.value == '**' or branch.value == '^') and branch.right.value != 2:
                     level = 2
-                elif not (isinstance(branch.value, (int, float)) or branch.value in operator or branch.value == self.unknown):
+                elif not (isinstance(branch.value,
+                                     (int, float)) or branch.value in self.operator or branch.value == self.unknown):
                     level = 2
         return level
 
@@ -89,27 +91,38 @@ class Equation:
 
         for side in [left, right]:
             for branch in side.iter_branches():
-                if branch.value == self.unknown:
-                    all_x += 1 if side is left else -1
-                    branch.value = 0
+                match branch.value:
 
-                elif branch.value == '*':
-                    if branch.left.value == self.unknown:
-                        all_x += branch.right.value if side is left else -branch.right.value
-                        branch.left.value = 0
-                    elif branch.right.value == self.unknown:
-                        all_x += branch.left.value if side is left else -branch.left.value
-                        branch.right.value = 0
-
-                elif branch.value == '/':
-                    # not working
-                    # if branch.left.value == self.unknown:
-                    #     multi.append(branch.right.value)
-                    #     all_x += 1 if side is left else -1
-                    #     branch.left.value = 0
-                    if branch.right.value == self.unknown:
+                    case self.unknown:
                         all_x += 1 if side is left else -1
-                        branch.right.value = 1
+                        branch.value = 0
+                    case '*':
+                        if branch.left.value == self.unknown:
+                            all_x += branch.right.value if side is left else -branch.right.value
+                            branch.left.value = 0
+                        elif branch.right.value == self.unknown:
+                            all_x += branch.left.value if side is left else -branch.left.value
+                            branch.right.value = 0
+                    case '/':
+                        if branch.right.value == self.unknown:
+                            all_x += 1 if side is left else -1
+                            branch.right.value = 1
+
+                    case '-':
+                        if branch.right.value in self.operator:
+                            if branch.right.value == '-' and branch.right.right.value == self.unknown:
+                                all_x += -1 if side is left else 1
+                                branch.right.right.value = 0
+                            elif branch.right.value == '-' and branch.right.left.value == self.unknown:
+                                all_x += -1 if side is left else 1
+                                branch.right.left.value = 0
+
+                        elif branch.left.value == self.unknown:
+                            all_x += 1 if side is left else -1
+                            branch.left.value = 0
+                        elif branch.right.value == self.unknown:
+                            all_x += -1 if side is left else 1
+                            branch.right.value = 0
 
         if all_x == 0:
             raise SyntaxError(f'No {self.unknown} in the equation or {self.unknown} cancels out')
@@ -138,7 +151,6 @@ class Equation:
     def level_1(self, left: BinaryTree, right: BinaryTree) -> list:
         """
         Solve the equation if type ax² + bx+ c = 0
-
         :param left: The left part of the equation
         :param right: The right part of the equation
         """
@@ -150,54 +162,49 @@ class Equation:
 
         for side in [left, right]:
             for branch in side.iter_branches():
+                match branch.value:
+                    case '-':
+                        if branch.right.value in self.operator:
+                            if branch.right.value == '-' and branch.right.right.value == self.unknown:
+                                b += -1 if side is left else 1
+                                branch.right.right.value = 0
+                            elif branch.right.value == '-' and branch.right.left.value == self.unknown:
+                                b += -1 if side is left else 1
+                                branch.right.left.value = 0
 
-                if branch.value == '-':
-
-                    if branch.left.value == self.unknown:
+                        elif branch.left.value == self.unknown:
+                            b += 1 if side is left else -1
+                            branch.left.value = 0
+                        elif branch.right.value == self.unknown:
+                            b += -1 if side is left else 1
+                            branch.right.value = 0
+                    case self.unknown:
                         b += 1 if side is left else -1
-                        branch.left.value = 0
-                    elif branch.right.value == self.unknown:
-                        b += -1 if side is left else 1
-                        branch.right.value = 0
+                        branch.value = 0
 
-                    elif branch.right.value == '*':
-                        if branch.right.left.value == self.unknown:
-                            b += -branch.right.right.value if side is left else branch.right.right.value
+                    case '**':
+                        if branch.right.value == 2 and branch.left.value == self.unknown:
+                            a += 1 if side is left else -1
+                            branch.left.value = 0
+                    case '*':
+                        if branch.right.value == '**' and branch.right.right.value == 2 and branch.right.left.value == self.unknown:
+                            a += branch.left.value if side is left else -branch.left.value
                             branch.right.left.value = 0
-                        elif branch.right.right.value == self.unknown:
-                            b += -branch.right.left.value if side is left else branch.right.left.value
-                            branch.right.right.value = 0
 
-                elif branch.value == self.unknown:
-                    b += 1 if side is left else -1
-                    branch.value = 0
+                        elif branch.left.value == '**' and branch.left.right.value == 2 and branch.left.left.value == self.unknown:
+                            a += branch.right.value if side is left else -branch.right.value
+                            branch.left.left.value = 0
 
-                elif (branch.value == '**' or branch.value == '^') and branch.right.value == 2:
-                    a += 1 if side is left else -1
-                    branch.left.value = 0
+                        elif branch.left.value == self.unknown:
+                            b += branch.right.value if side is left else -branch.right.value
+                            branch.left.value = 0
 
-                elif branch.value == '*':
-                    if branch.right.value == '**' and branch.right.right.value == 2:
-                        a += branch.left.value if side is left else -branch.left.value
-                        branch.right.left.value = 0
-
-                    elif branch.left.value == '**' and branch.left.right.value == 2:
-                        a += branch.right.value if side is left else -branch.right.value
-                        branch.left.left.value = 0
-
-                    elif branch.left.value == self.unknown:
-                        b += branch.right.value if side is left else -branch.right.value
-                        branch.left.value = 0
-                    elif branch.right.value == self.unknown:
-                        b += branch.left.value if side is left else -branch.left.value
-                        branch.right.value = 0
-
-                elif branch.value == '/':
-                    if branch.left.value == self.unknown:
-                        multi.append(branch.right.value)
-                    elif branch.right.value == self.unknown:
-                        b += 1 if side is left else -1
-                        branch.right.value = 1
+                        elif branch.right.value == self.unknown:
+                            b += branch.left.value if side is left else -branch.left.value
+                            branch.right.value = 0
+                    case '/':
+                        if branch.left.value == self.unknown:
+                            multi.append(branch.right.value)
 
         # calculate the result
         result_left = calculate_tree(left)
@@ -282,21 +289,21 @@ if __name__ == '__main__':
                       BinaryTree('+').set_branches(BinaryTree('*').set_branches(4, 'x'), 3)) == [1.0], 'Error with *'
     print('* test passed')
 
-    # assert eq.resolve(
-    #     BinaryTree('+').set_branches(BinaryTree('/').set_branches('x', 4), BinaryTree('-').set_branches(3, 6)),
-    #     BinaryTree('+').set_branches(BinaryTree('*').set_branches('x', 2), 1)) == [
-    #            -2.285714286], 'Error with / (x/n)'  # not working
-
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('/').set_branches(4, 'x'), BinaryTree('-').set_branches('x', 1)),
         BinaryTree('+').set_branches('x', 3)) == [0.0], 'Error with / (n/x)'
     print('/ test passed')
 
     assert eq.resolve(
-        BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
-                                     BinaryTree('-').set_branches(BinaryTree('-').set_branches(0, 'x'), 6)),
-        BinaryTree('-').set_branches(0, 0)) == [1.356107225224513, -1.106107225224513], 'Error with ax² + bx + c'
-    print('** test passed')
+        BinaryTree('+').set_branches(BinaryTree('**').set_branches('x', 2), BinaryTree('-').set_branches('x', 2)),
+        BinaryTree('-').set_branches(0, 0)) == [1, -2], 'Error with ax² + bx + c'
+
+    tree = BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
+                                        BinaryTree('-').set_branches("x", -6))
+
+    assert eq.resolve(tree, BinaryTree('-').set_branches(0, 0)) == [2.0, -1.5], 'Error with ax² + bx + c'
+
+    print('ax² + bx + c test passed')
 
     print('---------------------------------------------------------------')
     print('All tests passed')
