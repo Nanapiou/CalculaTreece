@@ -274,7 +274,7 @@ class App:
         t.penup()
         t.color("Red")
         style = ("Verdana", 20, "italic")
-        result_str = str(int(result) if isinstance(result, float) and result.is_integer() else round(result, 4))
+        result_str = str(int(result) if isinstance(result, float) and result.is_integer() else "≈" + str(round(result, 4)))
         t.goto(0, 300)
 
         if len(result_str) > 7:

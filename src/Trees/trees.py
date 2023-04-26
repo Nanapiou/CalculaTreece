@@ -116,8 +116,8 @@ class RootedTree:
 
     # TODO Maybe use smt else than trtl
     def draw(self, trtl: Turtle, radius: int = 20) -> Turtle:
-        def draw_text_and_circle(text: str, font_size: int) -> None:
-            trtl.write(text, align='center', font=('', font_size, ''))
+        def draw_text_and_circle(text1: str, font_size1: int) -> None:
+            trtl.write(text1, align='center', font=('', font_size1, ''))
             trtl.circle(radius)
 
         self._draw_getup(trtl, -radius)
