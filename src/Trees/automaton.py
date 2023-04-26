@@ -372,6 +372,7 @@ for e in postfix_states:
         gentle_assign(e, copied)
 # ---
 
+# TODO In the infix automaton, a letter succeeded by a number gives a string, fix it (e.g. "2a4" gives [2, "*", "a4"])
 if __name__ == '__main__':
     from src.Trees.transformations import clean_list_to_infix
 
