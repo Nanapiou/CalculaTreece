@@ -154,6 +154,7 @@ class Equation:
         :param left: The left part of the equation
         :param right: The right part of the equation
         """
+        raise NotImplementedError('Quadratics equation are not implemented yet')
         a = 0  # x²
         b = 0  # x
 

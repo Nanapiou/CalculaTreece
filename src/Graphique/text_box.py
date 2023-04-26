@@ -104,7 +104,7 @@ class TextBox:
                 result = eq.resolve(left, right)
 
                 if result is None:
-                    raise SyntaxError("Quadratics equations are not supported yet")
+                    raise NotImplementedError('Quadratics equation are not implemented yet')
 
                 round_result = []
                 len_floats = 0
@@ -122,7 +122,7 @@ class TextBox:
             else:
                 self.previous_text = self.text + " ="
                 return calculate_infix(self.text)
-        except (SyntaxError, TypeError, IndexError) as e:
+        except (SyntaxError, TypeError, IndexError, NotImplementedError) as e:
             print('-' * 20)
             print(e)
             return "Error"
