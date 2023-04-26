@@ -376,7 +376,7 @@ if __name__ == '__main__':
     from src.Trees.transformations import clean_list_to_infix
 
     math_auto = Automaton(infix_states)
-    lis = math_auto.build('x(x+1)')
+    lis = math_auto.build('68416fq46qzf')
     print(lis)
     clean_list_to_infix(lis)
     print(lis)

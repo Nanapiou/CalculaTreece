@@ -22,18 +22,20 @@ def calculate_tree(tree: BinaryTree) -> Number:
     branches = tree.branches
     match len(branches):
         case 0:
+            if isinstance(tree.value, str):
+                raise TypeError(f"{type(tree.value)} is not a valid type to calculate")  # For now...
             return tree.value
         case 1:
             t_a = branches[0]
-            a = t_a.value if t_a.is_leaf() else calculate_tree(t_a)
+            a = calculate_tree(t_a)
             if hasattr(tree.value, '__call__'):
                 return tree.value(a)
             else:
                 raise TypeError(type(tree.value))  # For now...
         case 2:
             t_a, t_b = branches
-            a = t_a.value if t_a.is_leaf() else calculate_tree(t_a)
-            b = t_b.value if t_b.is_leaf() else calculate_tree(t_b)
+            a = calculate_tree(t_a)
+            b = calculate_tree(t_b)
             match tree.value:
                 case '*':
                     return a * b
