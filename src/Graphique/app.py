@@ -46,7 +46,8 @@ class App:
         self.calculation: str = ""
 
         # Set the desktop size
-        self.desktop_size: Tuple[int, int] = pygame.display.get_desktop_sizes()[0]
+        info = pygame.display.Info()
+        self.desktop_size = (info.current_w, info.current_h)
 
         # Set the default screen size
         self.default_size: Tuple[int, int] = screen.get_size()
@@ -73,8 +74,8 @@ class App:
              ("3", (100, 100, 100), (127, 127, 127)), ("-", (255, 139, 61), (255, 157, 92))],
             [(".", (255, 139, 61), (255, 157, 92)), ("0", (100, 100, 100), (127, 127, 127)),
              ("√", (255, 139, 61), (255, 157, 92)), ("+", (255, 139, 61), (255, 157, 92))],
-            [("d/dx", (255, 139, 61), (255, 157, 92)), ("x^n", (255, 139, 61), (255, 157, 92)),
-             ("x", (255, 139, 61), (255, 157, 92)), ("²", (255, 139, 61), (255, 157, 92))],
+            [("d/dx", (255, 102, 0), (255, 120, 31)), ("x^n", (255, 102, 0), (255, 120, 31)),
+             ("x", (255, 102, 0), (255, 120, 31)), ("²", (255, 139, 61), (255, 157, 92))],
             [("Draw", (255, 255, 0), (255, 240, 150)), ("Hist.", (255, 255, 0), (255, 240, 150))],
             [("=", (255, 139, 61), (255, 157, 92)), ("EXE", (174, 181, 187), (146, 153, 158))],
         ]
@@ -103,6 +104,8 @@ class App:
         self.buttons_history: List[Button] = [Button(0, 0, 0, 0, "Return to calculator", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback, self.screen)]
         self.is_not_in_history: bool = True
         self.max_history: int = 8
+
+        self.buttons_save = None
 
     @property
     def screen_size(self):
@@ -220,15 +223,15 @@ class App:
         """
         Draw the tree
         """
-        expression = self.get_expression()
-        tree, result = self.build_tree_and_calculate_result(expression)
+        expression = self._get_expression()
+        tree, result = self._build_tree_and_calculate_result(expression)
 
         if tree is not None:
-            self.draw_tree_with_turtle(tree, result)
+            self._draw_tree_with_turtle(tree, result)
         else:
             self.text_box.write_value("Error")
 
-    def get_expression(self):
+    def _get_expression(self):
         """
         Get the expression from the text box
         """
@@ -239,7 +242,7 @@ class App:
             return self.text_box.text
 
     @staticmethod
-    def build_tree_and_calculate_result(expression):
+    def _build_tree_and_calculate_result(expression):
         """
         Build the tree and calculate the result
 
@@ -254,8 +257,7 @@ class App:
         except SyntaxError:
             return None, None
 
-    @staticmethod
-    def draw_tree_with_turtle(tree, result):
+    def _draw_tree_with_turtle(self, tree, result):
         """
         Draw the tree with turtle
 
@@ -275,20 +277,29 @@ class App:
 
         tree.draw(t)
 
-        t.penup()
-        t.color("Red")
-        style = ("Verdana", 20, "italic")
-        result_str = str(int(result) if isinstance(result, float) and result.is_integer() else "≈" + str(round(result, 4)))
-        t.goto(0, 300)
-
-        if len(result_str) > 7:
-            result_str = result_str[0] + "." + result_str[1:7] + " e+" + str(len(result_str) - 1)
-            t.write(result_str, align="center", font=style)
-        else:
-            t.write(result_str, align="center", font=style)
+        self._write_result(t, result)
 
         turtle.done()
         turtle.TurtleScreen._RUNNING = True
+
+    @staticmethod
+    def _write_result(t, result):
+        t.penup()
+        t.color("Red")
+        style = ("Verdana", 20, "italic")
+        result_str = (
+            str(int(result))
+            if isinstance(result, float) and result.is_integer()
+            else ("≈" + str(round(result, 4)) if round(result, 4) != result else str(round(result, 4)))
+        )
+        t.goto(0, 300)
+
+        if "≈" not in result_str:
+            result_as_float = float(result_str)
+            if len(str(int(result_as_float))) > 7:
+                result_str = f"{result_as_float:.7e}"
+                result_str = result_str.replace("e+0", " e+")
+        t.write(result_str, align="center", font=style)
 
     def derive(self):
         """
