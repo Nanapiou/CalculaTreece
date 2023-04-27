@@ -116,9 +116,8 @@ class TextBox:
                 else:
                     round_result = result
 
-                values = ', '.join(str(v) for v in round_result)
-                return values
-
+                self.previous_text = self.text
+                return ', '.join(str(v) for v in round_result)
             else:
                 self.previous_text = self.text + " ="
                 return calculate_infix(self.text)
