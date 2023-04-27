@@ -5,11 +5,13 @@ import pygame
 from typing import Tuple, List
 from src.Graphique.button import Button
 from src.Graphique.text_box import TextBox
-from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree, tree_to_infix_list, stringify_infix_list
+from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree, tree_to_infix_list, stringify_infix_list, tree_to_sympy_expression
 from src.Trees.automaton import infix_states, Automaton
 from src.Trees.calculator import calculate_tree
 from src.Trees.trees import BinaryTree
 from src.Literal.derivation import derive, simplify
+from src.Graphique.CurvePlotter import CurvePlotter
+from sympy import symbols, lambdify, sympify, simplify
 import turtle
 
 infix_automaton = Automaton(infix_states)
@@ -107,6 +109,8 @@ class App:
 
         self.buttons_save = None
 
+        self.curve_plotter = CurvePlotter()
+
     @property
     def screen_size(self):
         """
@@ -188,6 +192,18 @@ class App:
             case "=":
                 if "=" not in self.text_box.text:
                     self.text_box.write_value(self.text_box.text + "=")
+                else:
+                    equation = self.text_box.text.split("=")
+                    if len(equation) == 2:
+                        try:
+                            lhs = sympify(equation[0])
+                            rhs = sympify(equation[1])
+                            f = simplify(lhs - rhs)
+                            x_min = -10  # Vous pouvez définir vos propres limites ici
+                            x_max = 10
+                            self.curve_plotter.plot_function(f, x_min, x_max)
+                        except (SyntaxError, ValueError):
+                            self.text_box.write_value("Error")
             case "C":
                 self.text_box.write_value("")
                 self.text_box.previous_text = ""
@@ -325,6 +341,27 @@ class App:
 
         turtle.done()
         turtle.TurtleScreen._RUNNING = True  # This is a hack to make turtle work with pygame
+
+    def plot_graph(self):
+        x = symbols('x')
+        expression = self._get_expression()
+        tree, _ = self._build_tree_and_calculate_result(expression)
+
+        if tree is not None:
+            # Convert tree to sympy expression
+            sympy_expression = tree_to_sympy_expression(tree)
+
+            # Create a lambda function for the expression
+            f = lambdify(x, sympy_expression)
+
+            # Create an instance of the CurvePlotter class
+            plotter = CurvePlotter()
+
+            # Plot the function
+            plotter.plot_function(f, -10, 10)
+
+        else:
+            self.text_box.write_value("Error")
 
     def run(self):
         """

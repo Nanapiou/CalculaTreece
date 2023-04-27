@@ -6,6 +6,7 @@ from typing import List
 from string import ascii_letters
 from src.Trees.trees import BinaryTree
 from copy import deepcopy
+from sympy import symbols
 
 Number = int | float
 
@@ -179,6 +180,23 @@ def stringify_infix_list(lis: List[str | Number]) -> str:
         elif hasattr(e, '__call__'):
             new[i] = e.__name__
     return ' '.join(map(str, new)) if len(lis) < 2 else ('(' + ' '.join(map(str, new)) + ')')
+
+
+def tree_to_sympy_expression(tree):
+    if tree is None:
+        return None
+
+    if tree.is_leaf():
+        if isinstance(tree.data, str) and tree.data.isalpha():
+            return symbols(tree.data)
+        else:
+            return tree.data
+
+    left_expr = tree_to_sympy_expression(tree.left)
+    right_expr = tree_to_sympy_expression(tree.right)
+
+    return eval(f"{left_expr} {tree.data} {right_expr}")
+
 
 
 if __name__ == '__main__':
