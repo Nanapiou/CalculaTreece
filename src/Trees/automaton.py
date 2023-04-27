@@ -372,6 +372,7 @@ for e in postfix_states:
 # ---
 
 # TODO In the infix automaton, a letter succeeded by a number gives a string, fix it (e.g. "2a4" gives [2, "*", "a4"])
+# TODO In the infix automaton, "8----" gives [8, "-", "-", "-", "-"], fix it (because of "-" in state 0)
 if __name__ == '__main__':
     from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
     from turtle import Turtle
