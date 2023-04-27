@@ -23,7 +23,7 @@ class Equation:
 
     def __init__(self, x):
         self.unknown = x
-        self.operator = ['+', '-', '*', '/']
+        self.operators = ['+', '-', '*', '/']
 
     def eval_level(self, left: BinaryTree, right: BinaryTree) -> int:
         """
@@ -38,7 +38,7 @@ class Equation:
                 if branch.value == '/' and branch.left.value == self.unknown:
                     level = 2
                 elif branch.value == '*' and (
-                        branch.left.value in self.operator or branch.right.value in self.operator):
+                        branch.left.value in self.operators or branch.right.value in self.operators):
                     level = 2
                 elif branch.value == self.unknown and not branch.is_leaf():
                     level = 2
@@ -47,7 +47,7 @@ class Equation:
                 elif (branch.value == '**' or branch.value == '^') and branch.right.value != 2:
                     level = 2
                 elif not isinstance(branch.value, (
-                        int, float)) and branch.value not in self.operator and branch.value != self.unknown:
+                        int, float)) and branch.value not in self.operators and branch.value != self.unknown:
                     level = 2
         return level
 
@@ -105,7 +105,7 @@ class Equation:
                             branch.right.value = 1
 
                     case '-':
-                        if branch.right.value in self.operator:
+                        if branch.right.value in self.operators:
                             if branch.right.value == '-' and branch.right.right.value == self.unknown:
                                 all_x += -1 if side is left else 1
                                 branch.right.right.value = 0
@@ -150,7 +150,6 @@ class Equation:
         :param left: The left part of the equation
         :param right: The right part of the equation
         """
-        raise NotImplementedError('Quadratics equation are not implemented yet')
         a = 0  # x²
         b = 0  # x
 
@@ -161,7 +160,7 @@ class Equation:
             for branch in side.iter_branches():
                 match branch.value:
                     case '-':
-                        if branch.right.value in self.operator:
+                        if branch.right.value in self.operators:
                             if branch.right.value == '-' and branch.right.right.value == self.unknown:
                                 b += -1 if side is left else 1
                                 branch.right.right.value = 0
@@ -179,12 +178,12 @@ class Equation:
                         b += 1 if side is left else -1
                         branch.value = 0
 
-                    case '**':
+                    case '**' | '^':
                         if branch.right.value == 2 and branch.left.value == self.unknown:
                             a += 1 if side is left else -1
                             branch.left.value = 0
                     case '*':
-                        if branch.right.value == '**' and branch.right.right.value == 2 and branch.right.left.value == self.unknown:
+                        if branch.right.value in ('**', '^') and branch.right.right.value == 2 and branch.right.left.value == self.unknown:
                             a += branch.left.value if side is left else -branch.left.value
                             branch.right.left.value = 0
 
@@ -274,6 +273,10 @@ if __name__ == '__main__':
     """
     Unit test
     """
+    from src.Trees.automaton import Automaton, infix_states
+    from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
+    from turtle import Turtle
+    auto = Automaton(infix_states)
 
     eq = Equation('x')
 
@@ -291,16 +294,17 @@ if __name__ == '__main__':
         BinaryTree('+').set_branches('x', 3)) == [0.0], 'Error with / (n/x)'
     print('/ test passed')
 
-    assert eq.resolve(
-        BinaryTree('+').set_branches(BinaryTree('**').set_branches('x', 2), BinaryTree('-').set_branches('x', 2)),
-        BinaryTree('-').set_branches(0, 0)) == [1, -2], 'Error with ax² + bx + c'
-
-    branch = BinaryTree('+').set_branches(BinaryTree('**').set_branches('x', 2), BinaryTree('-').set_branches('x', 2))
+    l = auto.build("x^2+x-2")
+    clean_list_to_infix(l)
+    tree = infix_list_to_tree(l)
     t = Turtle()
-    t.penup()
-    t.goto(0, 350)
-    branch.draw(t)
-    done()
+    t.speed(0)
+    tree.draw(t)
+    r = eq.resolve(tree, BinaryTree(0))
+    print(r)
+
+    assert r == [1, -2], 'Error with ax² + bx + c'
+
 
     tree = BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
                                         BinaryTree('-').set_branches("x", -6))

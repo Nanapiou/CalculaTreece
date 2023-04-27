@@ -209,6 +209,7 @@ infix_states: States = [
     #  5
     {  # Opened parentheses
         '': (0, '('),
+        '-': (6, ('(', 0)),
     },
     #  6
     {  # Other operations
@@ -372,10 +373,14 @@ for e in postfix_states:
 
 # TODO In the infix automaton, a letter succeeded by a number gives a string, fix it (e.g. "2a4" gives [2, "*", "a4"])
 if __name__ == '__main__':
-    from src.Trees.transformations import clean_list_to_infix
+    from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
+    from turtle import Turtle
 
     math_auto = Automaton(infix_states)
-    lis = math_auto.build('68416fq46qzf')
-    print(lis)
+    lis = math_auto.build('6-----3')
     clean_list_to_infix(lis)
     print(lis)
+    # tree = infix_list_to_tree(lis)
+    # t = Turtle()
+    # t.speed(0)
+    # tree.draw(t)

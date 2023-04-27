@@ -50,6 +50,8 @@ def infix_list_to_tree(lis: List[str | Number | BinaryTree]) -> BinaryTree:
     """
     if len(lis) == 0:
         return BinaryTree(0)
+    elif len(lis) == 1:
+        return BinaryTree(lis[0])
     for i in range(len(lis)):
         e = lis[i]
         if isinstance(e, list):
@@ -180,10 +182,5 @@ def stringify_infix_list(lis: List[str | Number]) -> str:
 
 
 if __name__ == '__main__':
-    from automaton import Automaton, infix_states
-    auto = Automaton(infix_states)
-    lis = auto.build('(5x^2+3x+2)//sqrt(x+1)')
-    clean_list_to_infix(lis)
-    tree = infix_list_to_tree(lis)
-    lis_bis = tree_to_infix_list(tree)
-    print(stringify_infix_list(lis_bis))
+    # from automaton import Automaton, infix_states
+    print(infix_list_to_tree(['6.06.0', 'azf']))
