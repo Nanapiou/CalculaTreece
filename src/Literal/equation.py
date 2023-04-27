@@ -170,6 +170,9 @@ class Equation:
                             elif branch.right.value == '*' and branch.right.right.value == self.unknown:
                                 b += -branch.right.left.value if side is left else branch.right.left.value
                                 branch.right.right.value = 0
+                            elif branch.right.value == '*' and branch.right.left.value == self.unknown:
+                                b += -branch.right.right.value if side is left else branch.right.right.value
+                                branch.right.left.value = 0
 
                         elif branch.left.value == self.unknown:
                             b += 1 if side is left else -1
@@ -209,7 +212,7 @@ class Equation:
         result_right = -calculate_tree(right)
         c = result_left + result_right
 
-        print(a, b, c)
+        #print(a, b, c)
         if a == 0:
             raise SyntaxError('The equation is not a quadratic equation')
 
@@ -229,6 +232,8 @@ class Equation:
         else:
             solutions.append((-b + sqrt(delta)) / (2 * a))
             solutions.append((-b - sqrt(delta)) / (2 * a))
+
+        print(solutions)
 
         return solutions
 
@@ -298,7 +303,7 @@ if __name__ == '__main__':
         BinaryTree('+').set_branches('x', 3)) == [0.0], 'Error with / (n/x)'
     print('/ test passed')
 
-    l = auto.build("x^2-2x")
+    l = auto.build("x^2-x*2")
     clean_list_to_infix(l)
     tree = infix_list_to_tree(l)
     t = Turtle()
