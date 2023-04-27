@@ -46,13 +46,12 @@ class Equation:
                     level = 1
                 elif (branch.value == '**' or branch.value == '^') and branch.right.value != 2:
                     level = 2
-                elif not (isinstance(branch.value,
-                                     (int, float)) or branch.value in self.operator or branch.value == self.unknown):
+                elif not isinstance(branch.value, (
+                        int, float)) and branch.value not in self.operator and branch.value != self.unknown:
                     level = 2
         return level
 
     def resolve(self, left: BinaryTree, right: BinaryTree = BinaryTree(0)) -> list:
-
         """
         Resolve the equation
 
@@ -63,21 +62,18 @@ class Equation:
         result (list): solution(s) of the equation
         """
         assert self.__verif(left, right), 'Tree is empty'
-
         level = self.eval_level(left, right)
-        # print(f'level: {level}')
 
-        match level:
-            case 0:
-                result = self.level_0(left, right)
-            case 1:
-                result = self.level_1(left, right)
-            case 2:
-                result = None
+        if level == 0:
+            result = self.solve_level_0(left, right)
+        elif level == 1:
+            result = self.solve_level_1(left, right)
+        else:
+            result = None
 
         return result
 
-    def level_0(self, left: BinaryTree, right: BinaryTree) -> list:
+    def solve_level_0(self, left: BinaryTree, right: BinaryTree) -> list:
         """
         Solve the equation if it is simple ('+' or '-' or '*' or '/')
 
@@ -148,7 +144,7 @@ class Equation:
 
         return solutions
 
-    def level_1(self, left: BinaryTree, right: BinaryTree) -> list:
+    def solve_level_1(self, left: BinaryTree, right: BinaryTree) -> list:
         """
         Solve the equation if type ax² + bx+ c = 0
         :param left: The left part of the equation
@@ -298,6 +294,13 @@ if __name__ == '__main__':
     assert eq.resolve(
         BinaryTree('+').set_branches(BinaryTree('**').set_branches('x', 2), BinaryTree('-').set_branches('x', 2)),
         BinaryTree('-').set_branches(0, 0)) == [1, -2], 'Error with ax² + bx + c'
+
+    branch = BinaryTree('+').set_branches(BinaryTree('**').set_branches('x', 2), BinaryTree('-').set_branches('x', 2))
+    t = Turtle()
+    t.penup()
+    t.goto(0, 350)
+    branch.draw(t)
+    done()
 
     tree = BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
                                         BinaryTree('-').set_branches("x", -6))
