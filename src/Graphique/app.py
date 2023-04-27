@@ -426,7 +426,7 @@ class App:
         if self.is_not_in_history:
             self.buttons = self.buttons_history
             self.width_part_count = 1
-            self.height_part_count = max(len(self.buttons_history), 5) + 1
+            self.height_part_count = max(len(self.buttons_history), 6) + 1
         else:
             self.buttons = self.buttons_save
             self.width_part_count = len(self.buttons_mat[0])
