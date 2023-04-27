@@ -2,8 +2,6 @@
 Module to solve an equation
 """
 from math import sqrt
-from turtle import Turtle, done
-
 from src.Trees.trees import BinaryTree
 from src.Trees.calculator import calculate_tree
 
@@ -100,9 +98,15 @@ class Equation:
                             all_x += branch.left.value if side is left else -branch.left.value
                             branch.right.value = 0
                     case '/':
-                        if branch.right.value == self.unknown:
-                            all_x += 1 if side is left else -1
+                        if branch.left.value == self.unknown:
+                            multi.append(branch.right.value if side is left else -branch.right.value)
                             branch.right.value = 1
+
+                        elif branch.left.value in self.operators:
+                            if branch.left.value == '*' and (
+                                    branch.left.left.value == self.unknown or branch.left.right.value == self.unknown):
+                                multi.append(branch.right.value if side is left else -branch.left.right.value)
+                                branch.right.value = 1
 
                     case '-':
                         if branch.right.value in self.operators:
@@ -205,14 +209,20 @@ class Equation:
 
                     case '/':
                         if branch.left.value == self.unknown:
-                            multi.append(branch.right.value)
+                            multi.append(branch.right.value if side is left else -branch.right.value)
+
+                        elif branch.left.value in self.operators:
+                            if branch.left.value == '*' and (
+                                    branch.left.left.value == self.unknown or branch.left.right.value == self.unknown):
+                                multi.append(branch.right.value if side is left else -branch.left.right.value)
+                                branch.right.value = 1
 
         # calculate the result
         result_left = calculate_tree(left)
         result_right = -calculate_tree(right)
         c = result_left + result_right
 
-        #print(a, b, c)
+        # print(a, b, c)
         if a == 0:
             raise SyntaxError('The equation is not a quadratic equation')
 
@@ -233,7 +243,7 @@ class Equation:
             solutions.append((-b + sqrt(delta)) / (2 * a))
             solutions.append((-b - sqrt(delta)) / (2 * a))
 
-        print(solutions)
+        # print(solutions)
 
         return solutions
 
@@ -281,9 +291,9 @@ if __name__ == '__main__':
     """
     Unit test
     """
+    from turtle import Turtle, done
     from src.Trees.automaton import Automaton, infix_states
     from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
-    from turtle import Turtle
 
     auto = Automaton(infix_states)
 
@@ -298,21 +308,21 @@ if __name__ == '__main__':
                       BinaryTree('+').set_branches(BinaryTree('*').set_branches(4, 'x'), 3)) == [1.0], 'Error with *'
     print('* test passed')
 
-    assert eq.resolve(
-        BinaryTree('+').set_branches(BinaryTree('/').set_branches(4, 'x'), BinaryTree('-').set_branches('x', 1)),
-        BinaryTree('+').set_branches('x', 3)) == [0.0], 'Error with / (n/x)'
-    print('/ test passed')
-
-    l = auto.build("x^2-x*2")
+    l = auto.build("(2x)/4-4")
     clean_list_to_infix(l)
     tree = infix_list_to_tree(l)
-    t = Turtle()
-    t.speed(0)
-    #tree.draw(t)
     r = eq.resolve(tree, BinaryTree(0))
-    # print(r)
 
-    assert r == [2, 0], 'Error with ax² + bx + c'
+    assert r == [8.0], 'Error with x/n'  # n/x is not supported
+
+    print('x/n test passed')
+
+    l = auto.build("x**2+x-2")
+    clean_list_to_infix(l)
+    tree = infix_list_to_tree(l)
+    r = eq.resolve(tree, BinaryTree(0))
+
+    assert r == [1, -2], 'Error with ax² + bx + c'
 
     assert eq.resolve(
         BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
