@@ -167,6 +167,9 @@ class Equation:
                             elif branch.right.value == '-' and branch.right.left.value == self.unknown:
                                 b += -1 if side is left else 1
                                 branch.right.left.value = 0
+                            elif branch.right.value == '*' and branch.right.right.value == self.unknown:
+                                b += -branch.right.left.value if side is left else branch.right.left.value
+                                branch.right.right.value = 0
 
                         elif branch.left.value == self.unknown:
                             b += 1 if side is left else -1
@@ -183,7 +186,9 @@ class Equation:
                             a += 1 if side is left else -1
                             branch.left.value = 0
                     case '*':
-                        if branch.right.value in ('**', '^') and branch.right.right.value == 2 and branch.right.left.value == self.unknown:
+                        if branch.right.value in (
+                                '**',
+                                '^') and branch.right.right.value == 2 and branch.right.left.value == self.unknown:
                             a += branch.left.value if side is left else -branch.left.value
                             branch.right.left.value = 0
 
@@ -191,13 +196,10 @@ class Equation:
                             a += branch.right.value if side is left else -branch.right.value
                             branch.left.left.value = 0
 
-                        elif branch.left.value == self.unknown:
-                            b += branch.right.value if side is left else -branch.right.value
-                            branch.left.value = 0
-
                         elif branch.right.value == self.unknown:
                             b += branch.left.value if side is left else -branch.left.value
                             branch.right.value = 0
+
                     case '/':
                         if branch.left.value == self.unknown:
                             multi.append(branch.right.value)
@@ -207,6 +209,7 @@ class Equation:
         result_right = -calculate_tree(right)
         c = result_left + result_right
 
+        print(a, b, c)
         if a == 0:
             raise SyntaxError('The equation is not a quadratic equation')
 
@@ -276,6 +279,7 @@ if __name__ == '__main__':
     from src.Trees.automaton import Automaton, infix_states
     from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
     from turtle import Turtle
+
     auto = Automaton(infix_states)
 
     eq = Equation('x')
@@ -294,22 +298,21 @@ if __name__ == '__main__':
         BinaryTree('+').set_branches('x', 3)) == [0.0], 'Error with / (n/x)'
     print('/ test passed')
 
-    l = auto.build("x^2+x-2")
+    l = auto.build("x^2-2x")
     clean_list_to_infix(l)
     tree = infix_list_to_tree(l)
     t = Turtle()
     t.speed(0)
-    tree.draw(t)
+    #tree.draw(t)
     r = eq.resolve(tree, BinaryTree(0))
-    print(r)
+    # print(r)
 
-    assert r == [1, -2], 'Error with ax² + bx + c'
+    assert r == [2, 0], 'Error with ax² + bx + c'
 
-
-    tree = BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
-                                        BinaryTree('-').set_branches("x", -6))
-
-    assert eq.resolve(tree, BinaryTree('-').set_branches(0, 0)) == [2.0, -1.5], 'Error with ax² + bx + c'
+    assert eq.resolve(
+        BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
+                                     BinaryTree('-').set_branches("x", -6)), BinaryTree(0)) == [2.0,
+                                                                                                -1.5], 'Error with ax² + bx + c'
 
     print('ax² + bx + c test passed')
 
