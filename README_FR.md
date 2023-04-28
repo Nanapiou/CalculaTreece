@@ -14,7 +14,7 @@ Une calculatrice liée aux arbres
 ## Comment utiliser
 
 - Téléchargez Python 3.10 à partir de [ce lien](https://www.python.org/downloads/)
-- Téléchargez ce dépôt en utilisant git clone ou le bouton de téléchargement
+- Téléchargez ce dépôt en utilisant `git clone` ou le bouton de téléchargement
 - Ouvrez un terminal dans le dossier où vous avez téléchargé le dépôt
 - Exécutez la commande `python -m pip install -r requirements.txt` pour installer les dépendances
 - Exécutez la commande `python main.py` pour lancer le programme
