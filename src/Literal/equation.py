@@ -33,17 +33,28 @@ class Equation:
         level = 0
         for side in [left, right]:
             for branch in side.iter_branches():
-                if branch.value == '/' and branch.left.value == self.unknown:
+                if branch.value == '/' and branch.right.value == self.unknown and branch.left.value == self.unknown:
+                    branch.right.value = 1
+                    branch.left.value = 1
+                elif branch.value == '/' and branch.left.value == self.unknown:
                     level = 2
+
+                elif branch.value == '*' and branch.left.value == self.unknown and branch.right.value == self.unknown:
+                    branch.value = '**'
+                    branch.right.value = 2
+                    branch.left.value = self.unknown
+
                 elif branch.value == '*' and (
                         branch.left.value in self.operators or branch.right.value in self.operators):
                     level = 2
                 elif branch.value == self.unknown and not branch.is_leaf():
                     level = 2
+
                 elif (branch.value == '**' or branch.value == '^') and branch.right.value == 2:
                     level = 1
                 elif (branch.value == '**' or branch.value == '^') and branch.right.value != 2:
                     level = 2
+
                 elif not isinstance(branch.value, (
                         int, float)) and branch.value not in self.operators and branch.value != self.unknown:
                     level = 2
