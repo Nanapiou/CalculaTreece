@@ -252,9 +252,12 @@ class App:
             lis = infix_automaton.build(expression)
             clean_list_to_infix(lis)
             tree = infix_list_to_tree(lis)
-            result = calculate_tree(tree)
-            return tree, result
-        except SyntaxError:
+            try:
+                result = calculate_tree(tree)
+                return tree, result
+            except (ZeroDivisionError, TypeError):
+                return tree, None
+        except (SyntaxError, IndexError):
             return None, None
 
     def _draw_tree_with_turtle(self, tree, result):
@@ -277,7 +280,8 @@ class App:
 
         tree.draw(t)
 
-        self._write_result(t, result)
+        if result is not None:
+            self._write_result(t, result)
 
         turtle.done()
         turtle.TurtleScreen._RUNNING = True

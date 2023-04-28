@@ -121,7 +121,7 @@ class TextBox:
             else:
                 self.previous_text = self.text + " ="
                 return calculate_infix(self.text)
-        except (SyntaxError, TypeError, IndexError, NotImplementedError) as e:
+        except (SyntaxError, TypeError, IndexError, NotImplementedError, ZeroDivisionError) as e:
             print('-' * 20)
             print(e)
             return "Error"
