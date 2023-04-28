@@ -3,10 +3,10 @@
 ![logo.png](./logo.png)
 
 <div align="center">
-    <img alt="Taille du code GitHub en octets" src="https://img.shields.io/github/languages/code-size/Nanapiou/CalculaTreece">
-    <img alt="Nombre d'étoiles du référentiel GitHub" src="https://img.shields.io/github/stars/Nanapiou/CalculaTreece?logo=github&style=plastic">
-    <img alt="Dernier commit GitHub" src="https://img.shields.io/github/last-commit/Nanapiou/CalculaTreece?logo=github&style=plastic">
-    <img alt="GitHub" src="https://img.shields.io/github/license/Nanapiou/CalculaTreece?style=plastic">
+    <img alt="Taille du code GitHub en octets" src="https://img.shields.io/github/languages/code-size/Nanapiou/CalculaTreece?label=taille%20du%20code">
+    <img alt="Nombre d'étoiles du référentiel GitHub" src="https://img.shields.io/github/stars/Nanapiou/CalculaTreece?logo=github&style=plastic&label=etoiles">
+    <img alt="Dernier commit GitHub" src="https://img.shields.io/github/last-commit/Nanapiou/CalculaTreece?logo=github&style=plastic&label=dernier%20commit">
+    <img alt="GitHub" src="https://img.shields.io/github/license/Nanapiou/CalculaTreece?style=plastic&label=licence">
 </div>
 
 Une calculatrice liée aux arbres
