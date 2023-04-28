@@ -25,7 +25,7 @@ A calculator, linked to trees
 - Derive expressions, for example `sqrt(x)` will be derived to `1/2sqrt(x)`
 - And the coolest feature, you can draw your expressions, here is the result of `5(3+18)/6^2*9`:
 
-![image.png](./examples/tree_expression.png)
+![image.png](./examples/tree.png)
 
 All this calculator works with trees, expressions are converted to trees and then calculated, derived or drawn.
 For now, you can only use infix expressions, but we plan to add support for prefix and postfix expressions.
