@@ -164,6 +164,7 @@ def tree_to_infix_list(tree: BinaryTree) -> List[str | Number]:
             raise ValueError('Invalid tree')
     return result
 
+
 def stringify_infix_list(lis: List[str | Number]) -> str:
     """
     Transform a list in postfix syntax to a string

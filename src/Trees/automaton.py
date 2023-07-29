@@ -72,7 +72,8 @@ class Automaton:
                     result.append(new)
                 elif isinstance(new, Iterable):  # Or hasattr(new, '__iter__')
                     for new_elt in new:
-                        if new_elt != '':  # To avoid empty strings, happens with letters in state 1 for infix for example
+                        if new_elt != '':  # To avoid empty strings
+                            # happens with letters in state 1 for infix for example
                             result.append(new_elt)
                 else:
                     result.append(new)
@@ -375,8 +376,7 @@ for e in postfix_states:
 # TODO In the infix automaton, a letter succeeded by a number gives a string, fix it (e.g. "2a4" gives [2, "*", "a4"])
 # TODO In the infix automaton, "8----" gives [8, "-", "-", "-", "-"], fix it (because of "-" in state 0)
 if __name__ == '__main__':
-    from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
-    from turtle import Turtle
+    from src.Trees.transformations import clean_list_to_infix
 
     math_auto = Automaton(infix_states)
     lis = math_auto.build('6-----3')

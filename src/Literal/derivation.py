@@ -6,6 +6,7 @@ from math import sqrt, cos, sin
 
 Number = int | float
 
+
 def derive(tree: BinaryTree, variable: str) -> BinaryTree:
     """
     Derive the tree with respect to the variable
@@ -26,11 +27,13 @@ def derive(tree: BinaryTree, variable: str) -> BinaryTree:
             if hasattr(tree.value, '__call__'):
                 match tree.value.__name__:
                     case 'sqrt':
-                        return BinaryTree('/').add_branches(a, BinaryTree('*').add_branches(BinaryTree(2), BinaryTree(sqrt).add_branches(t_a)))
+                        return BinaryTree('/').add_branches(a, BinaryTree('*').add_branches(BinaryTree(2), BinaryTree(
+                            sqrt).add_branches(t_a)))
                     case 'sin':
                         return BinaryTree('*').add_branches(a, BinaryTree(cos).add_branches(t_a))
                     case 'cos':
-                        return BinaryTree('*').add_branches(BinaryTree('-').add_branches(BinaryTree(0), a), BinaryTree(sin).add_branches(t_a))
+                        return BinaryTree('*').add_branches(BinaryTree('-').add_branches(BinaryTree(0), a),
+                                                            BinaryTree(sin).add_branches(t_a))
                     case _:
                         raise NotImplementedError(f'Function {tree.value.__name__} is not implemented')
             else:
@@ -41,17 +44,25 @@ def derive(tree: BinaryTree, variable: str) -> BinaryTree:
             b = derive(v, variable)
             match tree.value:
                 case '*':
-                    return BinaryTree('+').add_branches(BinaryTree('*').add_branches(a, v), BinaryTree('*').add_branches(u, b))
+                    return BinaryTree('+').add_branches(BinaryTree('*').add_branches(a, v),
+                                                        BinaryTree('*').add_branches(u, b))
                 case '+':
                     return BinaryTree('+').add_branches(a, b)
                 case '-':
                     return BinaryTree('-').add_branches(a, b)
                 case '/' | '//':
-                    return BinaryTree(tree.value).add_branches(BinaryTree('-').add_branches(BinaryTree('*').add_branches(a, v), BinaryTree('*').add_branches(u, b)), BinaryTree('^').add_branches(v, BinaryTree(2)))
+                    return BinaryTree(tree.value).add_branches(
+                        BinaryTree('-').add_branches(BinaryTree('*').add_branches(a, v),
+                                                     BinaryTree('*').add_branches(u, b)),
+                        BinaryTree('^').add_branches(v, BinaryTree(2)))
                 case '%':
-                    return BinaryTree('%').add_branches(BinaryTree('-').add_branches(BinaryTree('*').add_branches(a, v), BinaryTree('*').add_branches(u, b)), BinaryTree('^').add_branches(v, BinaryTree(2)))
+                    return BinaryTree('%').add_branches(BinaryTree('-').add_branches(BinaryTree('*').add_branches(a, v),
+                                                                                     BinaryTree('*').add_branches(u,
+                                                                                                                  b)),
+                                                        BinaryTree('^').add_branches(v, BinaryTree(2)))
                 case '**' | '^':
-                    return BinaryTree('*').add_branches(BinaryTree('*').add_branches(BinaryTree('^').add_branches(u, BinaryTree('-').add_branches(v, BinaryTree(1))), v), a)
+                    return BinaryTree('*').add_branches(BinaryTree('*').add_branches(
+                        BinaryTree('^').add_branches(u, BinaryTree('-').add_branches(v, BinaryTree(1))), v), a)
 
 
 def simplify(tree: BinaryTree) -> BinaryTree:
@@ -151,21 +162,24 @@ def simplify(tree: BinaryTree) -> BinaryTree:
                         return BinaryTree(1)
                     elif isinstance(b.value, Number) and b.value == 1:
                         return a
-                    elif hasattr(a.value, '__call__') and a.value.__name__ == 'sqrt' and isinstance(b.value, Number) and b.value == 2:
+                    elif (hasattr(a.value, '__call__')
+                          and a.value.__name__ == 'sqrt'
+                          and isinstance(b.value, Number)
+                          and b.value == 2):
                         return a.branches[0]
                     else:
                         return BinaryTree(tree.value).add_branches(a, b)
 
 
-
 if __name__ == '__main__':
     from src.Trees.automaton import Automaton, infix_states
-    from src.Trees.transformations import infix_list_to_tree, clean_list_to_infix, stringify_infix_list, tree_to_infix_list
+    from src.Trees.transformations import infix_list_to_tree, clean_list_to_infix
     from turtle import Turtle, done
+
     auto = Automaton(infix_states)
     lis = auto.build('((a * (x * 2)) + b)')
     clean_list_to_infix(lis)
-    tree = infix_list_to_tree(lis)
+    treem = infix_list_to_tree(lis)
 
     # tree_d = simplify(derive(tree, 'x'))
     # print(stringify_infix_list(tree_to_infix_list(tree_d)))
@@ -174,5 +188,5 @@ if __name__ == '__main__':
     t.penup()
     t.goto(0, 300)
     t.pendown()
-    tree.draw(t)
+    treem.draw(t)
     done()

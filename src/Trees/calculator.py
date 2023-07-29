@@ -90,10 +90,9 @@ def calculate_infix(string: str) -> Number:
 
 
 if __name__ == '__main__':
-    from turtle import Turtle, done
-    lis = infix_automaton.build('sqrt(8x+3)')
-    clean_list_to_infix(lis)
-    print(lis)
+    li = infix_automaton.build('sqrt(8x+3)')
+    clean_list_to_infix(li)
+    print(li)
     # tree = infix_list_to_tree(lis)
     # tree.draw(Turtle())
     # done()

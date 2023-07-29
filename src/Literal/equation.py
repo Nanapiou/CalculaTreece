@@ -12,9 +12,9 @@ class Equation:
     x (str): The unknown of the equation
 
     methods:
-        resolve(left: BinaryTree, right: BinaryTree = 0) -> list: Resolve the equation
-        level_1(left: BinaryTree, right: BinaryTree) -> list: Solve the equation if it is simple ('+' or '-' or '*' or '/')
-        level_2(left: BinaryTree, right: BinaryTree) -> list: Solve the equation if type ax² + bx+ c = 0
+      resolve(left: BinaryTree, right: BinaryTree = 0) -> list Resolve the equation
+      level_1(left: BinaryTree, right: BinaryTree) -> list Solve the equation if it is simple ('+' or '-' or '*' or '/')
+      level_2(left: BinaryTree, right: BinaryTree) -> list Solve the equation if type ax² + bx+ c = 0
 
     result (list): solution(s) of the equation
     """
@@ -210,7 +210,9 @@ class Equation:
                             a += branch.left.value if side is left else -branch.left.value
                             branch.right.left.value = 0
 
-                        elif branch.left.value == '**' and branch.left.right.value == 2 and branch.left.left.value == self.unknown:
+                        elif (branch.left.value == '**'
+                              and branch.left.right.value == 2
+                              and branch.left.left.value == self.unknown):
                             a += branch.right.value if side is left else -branch.right.value
                             branch.left.left.value = 0
 
@@ -302,7 +304,6 @@ if __name__ == '__main__':
     """
     Unit test
     """
-    from turtle import Turtle, done
     from src.Trees.automaton import Automaton, infix_states
     from src.Trees.transformations import clean_list_to_infix, infix_list_to_tree
 
@@ -319,26 +320,29 @@ if __name__ == '__main__':
                       BinaryTree('+').set_branches(BinaryTree('*').set_branches(4, 'x'), 3)) == [1.0], 'Error with *'
     print('* test passed')
 
-    l = auto.build("(2x)/4-4")
-    clean_list_to_infix(l)
-    tree = infix_list_to_tree(l)
+    lis = auto.build("(2x)/4-4")
+    clean_list_to_infix(lis)
+    tree = infix_list_to_tree(lis)
     r = eq.resolve(tree, BinaryTree(0))
 
     assert r == [8.0], 'Error with x/n'  # n/x is not supported
 
     print('x/n test passed')
 
-    l = auto.build("x**2+x-2")
-    clean_list_to_infix(l)
-    tree = infix_list_to_tree(l)
+    lis = auto.build("x**2+x-2")
+    clean_list_to_infix(lis)
+    tree = infix_list_to_tree(lis)
     r = eq.resolve(tree, BinaryTree(0))
 
     assert r == [1, -2], 'Error with ax² + bx + c'
 
     assert eq.resolve(
-        BinaryTree('-').set_branches(BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
-                                     BinaryTree('-').set_branches("x", -6)), BinaryTree(0)) == [2.0,
-                                                                                                -1.5], 'Error with ax² + bx + c'
+        BinaryTree('-').set_branches(
+            BinaryTree('*').set_branches(2, BinaryTree('**').set_branches('x', 2)),
+            BinaryTree('-').set_branches("x", -6)
+        ),
+        BinaryTree(0)
+    ) == [2.0,  -1.5], 'Error with ax² + bx + c'
 
     print('ax² + bx + c test passed')
 

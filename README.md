@@ -52,4 +52,4 @@ Ambiguous buttons are listed here, the other are just easy to understand
 - `Draw` : Draw the input into a tree
 - `Hist.` : Switch to the history tab
 - `=` : Add `=` to the input
-- `EXE` : Calculate the input (or solve the equation, depending of the presence of `=` in the expression)
+- `EXE` : Calculate the input (or solve the equation, depending on the presence of `=` in the expression)

@@ -2,7 +2,7 @@
 Just trees
 """
 from typing import List, Dict, Generator
-from turtle import Turtle, done
+from turtle import Turtle
 
 
 class RootedTree:
@@ -52,7 +52,7 @@ class RootedTree:
         """
         Add some branches to the tree (which is a branch itself)
 
-        :param branches: Branches too add (*args)
+        :param branches: Branches to add (*args)
         :type branches: RootedTree
         :return: self
         """
@@ -116,7 +116,19 @@ class RootedTree:
 
     # TODO Maybe use smt else than trtl
     def draw(self, trtl: Turtle, radius: int = 20) -> Turtle:
+        """
+        Draw the tree
+
+        :param trtl: The turtle to use
+        :param radius: The radius of the circle
+        """
         def draw_text_and_circle(text1: str, font_size1: int) -> None:
+            """
+            Draw the text and the circle
+
+            :param text1: The text to draw
+            :param font_size1: The font size
+            """
             trtl.write(text1, align='center', font=('', font_size1, ''))
             trtl.circle(radius)
 

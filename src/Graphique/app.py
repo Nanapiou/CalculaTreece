@@ -58,7 +58,7 @@ class App:
         self.padding: int = 10
 
         # Create the text box, at 0, 0, with a width and height of 0 (just to initialize it)
-        self.text_box: TextBox = TextBox(self.screen, 0, 0, 0, 0, "C:\Windows\Fonts\micross.ttf", (127, 127, 127),
+        self.text_box: TextBox = TextBox(self.screen, 0, 0, 0, 0, "C:\\Windows\\Fonts\\micross.ttf", (127, 127, 127),
                                          (0, 0, 0))
 
         # Creating buttons
@@ -101,7 +101,9 @@ class App:
         self.previous_result: str = ""
 
         # History
-        self.buttons_history: List[Button] = [Button(0, 0, 0, 0, "Return to calculator", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0), self.button_callback, self.screen)]
+        self.buttons_history: List[Button] = [
+            Button(0, 0, 0, 0, "Return to calculator", "Hist.", (255, 255, 0), (255, 240, 150), (0, 0, 0),
+                   self.button_callback, self.screen)]
         self.is_not_in_history: bool = True
         self.max_history: int = 8
 
@@ -178,7 +180,7 @@ class App:
 
         :param button: The button that was clicked
         """
-        if self.executed and button.value in "0123456789": # isdigit() doesn't work because it includes operators
+        if self.executed and button.value in "0123456789":  # isdigit() doesn't work because it includes operators
             self.text_box.write_value("")
 
         self.executed = False
@@ -197,8 +199,9 @@ class App:
                 result = self.text_box.calculate()
                 if result != "Error":
                     self.buttons_history.insert(1,
-                        Button(0, 0, 0, 0, self.text_box.text, str(result), (100, 100, 100), (127, 127, 127), (0, 0, 0), self.button_callback,
-                               self.screen))
+                                                Button(0, 0, 0, 0, self.text_box.text, str(result), (100, 100, 100),
+                                                       (127, 127, 127), (0, 0, 0), self.button_callback,
+                                                       self.screen))
                     if len(self.buttons_history) > self.max_history:
                         self.buttons_history.pop()
                 self.text_box.clean_write(result)
