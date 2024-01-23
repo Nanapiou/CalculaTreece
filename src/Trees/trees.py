@@ -1,7 +1,8 @@
 """
 Just trees
 """
-from typing import List, Dict, Generator
+from typing import List, Dict, Generator, Deque
+from collections import deque
 from turtle import Turtle
 
 
@@ -289,16 +290,24 @@ class BinaryTree(RootedTree):
 
         :return:
         """
-        for i in range(1, self.height + 1):
-            yield from (br.value for br in self.get_branches_at_height(i))
+        queue: Deque[BinaryTree] = deque()
+        queue.append(self)
+        while queue:
+            elt = queue.popleft()
+            yield elt.value
+            if elt.left is not None:
+                queue.append(elt.left)
+            if elt.right is not None:
+                queue.append(elt.right)
 
 
 if __name__ == '__main__':
     branch = BinaryTree('*').set_branches(BinaryTree('-').set_branches(12, 2), BinaryTree('/').set_branches(30, 3))
-    b = branch
-    print(branch == b, b is branch)
+    # b = branch
+    # print(branch == b, b is branch)
     # t = Turtle()
     #     # t.penup()
     #     # t.goto(0, 350)
     #     # branch.draw(t)
     #     # done()
+    print(" ".join(str(e) for e in branch.width_iter()))
