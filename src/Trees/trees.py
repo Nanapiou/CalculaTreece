@@ -282,7 +282,6 @@ class BinaryTree(RootedTree):
         if self.right is not None:
             yield from self.right.infix_iter()
 
-    # TODO Use another algorithm (lighter)
     def width_iter(self) -> Generator[any, None, None]:
         """
         A width iteration of the tree (height by height)
